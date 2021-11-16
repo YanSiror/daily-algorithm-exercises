@@ -267,6 +267,105 @@ int * bubbleSortAC(int * nums,int size){
 
 
 
+## 4.2 快速排序
+
+### 降序
+
+```c
+/*
+ * 输入: 整型数组 最小下标 最大下标
+ * 输出: 降序排序后的数组
+*/
+int * quickSortAC(int * nums, int low, int high)
+{
+    int left = low;
+    int right = high;
+    int key = nums[left];   //从 low 开始
+
+    if(low >= high)
+        return;
+
+    //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
+    //左侧寻找一个小于 key 的数, 两者交换
+    //最后使得 最终位置 左侧都小于 key,右侧都大于 key ,也即key
+    //来到了它的最终位置 FinalPosition
+    while(left < right){
+        while(left < right && nums[right] < key)    right--;    //从右向左查找第一个小于K的数
+        nums[left] = nums[right];
+
+        while(left < right && nums[left] > key)    left++;    //从左向右查找第一个小于K的数
+        nums[right] = nums[left];
+    }
+
+    nums[left] = key;
+    // 递归调用
+    quickSortAC(nums, low, left - 1);     // 排序k左边
+    quickSortAC(nums, left + 1, high);    // 排序k右边
+}
+```
+
+### 升序
+
+```c
+/*
+ * 输入: 整型数组 最小下标 最大下标
+ * 输出: 降序排序后的数组
+*/
+int * quickSortAC(int * nums, int low, int high)
+{
+    int left = low;
+    int right = high;
+    int key = nums[left];   //从 low 开始
+
+    if(low >= high)
+        return;
+
+    //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
+    //左侧寻找一个小于 key 的数, 两者交换
+    //最后使得 最终位置 左侧都小于 key,右侧都大于 key ,也即key
+    //来到了它的最终位置 FinalPosition
+    while(left < right){
+        while(left < right && nums[right] > key)    right--;    //从右向左查找第一个小于K的数
+        nums[left] = nums[right];
+
+        while(left < right && nums[left] < key)    left++;    //从左向右查找第一个小于K的数
+        nums[right] = nums[left];
+    }
+
+    nums[left] = key;
+    // 递归调用
+    quickSortAC(nums, low, left - 1);     // 排序k左边
+    quickSortAC(nums, left + 1, high);    // 排序k右边
+}
+```
+
+
+
+# 5 查找
+
+### 二分查找
+
+```c
+/**
+ * 输入: 整型数组 最小下标 最大下标 待查找的目标值
+ * 输出: 查找到返回下标,未查找到返回-1
+ **/
+int binSearch(int * nums,int low,int high,int target){
+    int left = low,right = high;
+    while(left <= right){
+        int mid = (left+right)/2;
+        if(nums[mid] == target){
+            return mid;
+        } else if(nums[mid] < target){
+            left = mid + 1;
+        } else if(nums[mid] > target){
+            right = mid - 1;
+        }
+    }
+    return -1;
+}
+```
+
 
 
 
