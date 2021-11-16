@@ -1,6 +1,6 @@
 # 1 数组翻转
 
-## 1.1 整型数组的翻转
+### 整型数组的翻转
 
 ```c
 /*
@@ -20,7 +20,7 @@ int * reverseInt(int * nums,int size){
 
 
 
-## 1.2 字符数组的翻转
+### 字符数组的翻转
 
 ```c
 /*
@@ -40,11 +40,9 @@ char * reverseChar(char * str,int size){
 
 
 
+# 2 进制运算
 
-
-
-
-## 2、十进制转二进制数组
+### 十进制转二进制
 
 ```c
 /*
@@ -86,7 +84,7 @@ int * tenToBinArray(int num,int * size){
 
 
 
-## 3、十进制转 N 进制数组(进阶)
+### 十进制转N进制
 
 ```c
 /*
@@ -128,85 +126,7 @@ int * tenToNArray(int num,int * size,int n){
 
 
 
-## 4、CHAR 与 INT 的相互转换
-
-CHAR(字符型)  转换到 INT(整型)
-
-```c
-/*
- * 输入: 字符 c
- * 输出: 整数 
-*/
-int charToInt(char c){
-	return c - '0';
-}
-```
-
-INT(整型)  转换到 CHAR(字符型)
-
-```
-/*
- * 输入: 整数 
- * 输出: 字符 c
-*/
-char intToChar(int n){
-	return n + '0';
-}
-```
-
-
-
-## 5、冒泡排序
-
-**降序**
-
-```c
-/*
- * 输入: 整型数组 数组大小
- * 输出: 返回型参数返回数组结果 或 返回整型数组
- * 说明: 降序排序
-*/
-int * bubbleSortDC(int * nums,int size){
-    int i,j;
-    for(i = 0;i < size - 1;i++){
-        for(j = 0;j < size - i - 1;j++){
-            if(nums[j] < nums[j+1]){
-                int temp = nums[j];
-                nums[j] = nums[j+1];
-                nums[j+1] = temp;
-            }
-        }
-    }
-    return nums;
-}
-```
-
-**升序**
-
-```c
-/*
- * 输入: 整型数组 数组大小
- * 输出: 返回型参数返回数组结果 或 返回整型数组
- * 说明: 升序排序
-*/
-int * bubbleSortAC(int * nums,int size){
-    int i,j;
-    for(i = 0;i < size - 1;i++){
-        for(j = 0;j < size - i - 1;j++){
-            if(nums[j] > nums[j+1]){
-                int temp = nums[j];
-                nums[j] = nums[j+1];
-                nums[j+1] = temp;
-            }
-        }
-    }
-    return nums;
-}
-```
-
-
-
-## 6、二进制求和
+### 二进制求和
 
 ```c
 /*
@@ -264,6 +184,90 @@ char * plusBinary(char * a, char * b){
     return result;
 }
 ```
+
+
+
+# 3 CHAR 与 INT 的相互转换
+
+### CHAR to INT
+
+```c
+/*
+ * 输入: 字符 c
+ * 输出: 整数 
+*/
+int charToInt(char c){
+	return c - '0';
+}
+```
+
+### INT to CHAR
+
+```c
+/*
+ * 输入: 整数 
+ * 输出: 字符 c
+*/
+char intToChar(int n){
+	return n + '0';
+}
+```
+
+
+
+# 4 排序
+
+## 4.1 冒泡排序
+
+### 降序
+
+```c
+/*
+ * 输入: 整型数组 数组大小
+ * 输出: 返回型参数返回数组结果 或 返回整型数组
+ * 说明: 降序排序
+*/
+int * bubbleSortDC(int * nums,int size){
+    int i,j;
+    for(i = 0;i < size - 1;i++){
+        for(j = 0;j < size - i - 1;j++){
+            if(nums[j] < nums[j+1]){
+                int temp = nums[j];
+                nums[j] = nums[j+1];
+                nums[j+1] = temp;
+            }
+        }
+    }
+    return nums;
+}
+```
+
+### 升序
+
+```c
+/*
+ * 输入: 整型数组 数组大小
+ * 输出: 返回型参数返回数组结果 或 返回整型数组
+ * 说明: 升序排序
+*/
+int * bubbleSortAC(int * nums,int size){
+    int i,j;
+    for(i = 0;i < size - 1;i++){
+        for(j = 0;j < size - i - 1;j++){
+            if(nums[j] > nums[j+1]){
+                int temp = nums[j];
+                nums[j] = nums[j+1];
+                nums[j+1] = temp;
+            }
+        }
+    }
+    return nums;
+}
+```
+
+
+
+
 
 
 
