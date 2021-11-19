@@ -38,7 +38,19 @@ char * reverseChar(char * str,int size){
 }
 ```
 
-### 交换
+### 整型数字的交换
+
+```c
+/*
+ * 输入: 待交换的两个数
+ * 输出: 交换后的结果
+*/
+void swap(int * a,int * b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+```
 
 
 
