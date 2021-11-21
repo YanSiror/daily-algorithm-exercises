@@ -285,6 +285,14 @@ int * bubbleSortAC(int * nums,int size){
 
 ## 4.2 快速排序
 
+调用 C 库函数内置 `qsort()` 函数
+
+```
+int cmp(const void *a,const void *b){
+    return *(int*)a - *(int*)b;
+}
+```
+
 ### 降序
 
 ```c
