@@ -5368,9 +5368,175 @@ bool divisorGame(int n){
 
 
 
-91、
+## 91、最后一块石头的重量（LC 1046）
+
+有一堆石头，每块石头的重量都是正整数。
+
+每一回合，从中选出两块 最重的 石头，然后将它们一起粉碎。假设石头的重量分别为 x 和 y，且 x <= y。那么粉碎的可能结果如下：
+
+如果 x == y，那么两块石头都会被完全粉碎；
+如果 x != y，那么重量为 x 的石头将会完全粉碎，而重量为 y 的石头新重量为 y-x。
+最后，最多只会剩下一块石头。返回此石头的重量。如果没有石头剩下，就返回 0。
+
+**示例**
+
+```
+输入：[2,7,4,1,8,1]
+输出：1
+解释：
+先选出 7 和 8，得到 1，所以数组转换为 [2,4,1,1,1]，
+再选出 2 和 4，得到 2，所以数组转换为 [2,1,1,1]，
+接着是 2 和 1，得到 1，所以数组转换为 [1,1,1]，
+最后选出 1 和 1，得到 0，最终数组转换为 [1]，这就是最后剩下那块石头的重量。
+```
+
+**代码**
+迭代 每次取两个最值进行计算得出结果
+
+```c
+int lastStoneWeight(int* stones, int stonesSize){
+    //每次选取两个最大数，复杂度为 O（2n）
+    int i,max1 = 0,max2 = 0,tag1=0,tag2=0,flag=0;
+    while(1){
+        for(i = 0;i < stonesSize;i++){
+            //循环终止计数
+            if(stones[i] != 0)
+                flag++;
+            if(max1 < stones[i]){
+                max1 = stones[i];
+                tag1 = i;
+            }
+        }
+        if(flag == 1)
+            break;
+        else if(flag == 0){
+            max1 = 0;
+            break;
+        }
+        stones[tag1] = 0;       //去掉该值，防止比较失败
+        for(i = 0;i < stonesSize;i++){
+            if(max2 < stones[i]){
+                max2 = stones[i];
+                tag2 = i;
+            }
+        }
+        //printf("%d %d  %d %d      ",max1,max2,tag1,tag2);
+        //只有一个石头时返回最大值即可 max1
+        if(max1 == max2){
+            stones[tag1] = stones[tag2] = 0;    //粉碎
+        } else if(max1 > max2){
+            stones[tag2] = 0;
+            stones[tag1] = max1 - max2;
+        } else if(max1 < max2){
+            stones[tag1] = 0;
+            stones[tag2] = max2 - max1;
+        }
+        //重置计数
+        tag1 = tag2 = 0;
+        max1 = max2 = 0;
+        flag = 0;
+    }
+    return max1;
+}
+```
 
 
 
+## 92、删除字符串中的所有重复项（LC 1047）
 
+给出由小写字母组成的字符串 S，重复项删除操作会选择两个相邻且相同的字母，并删除它们。
+在 S 上反复执行重复项删除操作，直到无法继续删除。
+在完成所有重复项删除操作后返回最终的字符串。答案保证唯一。
+
+**示例**
+
+```
+输入："abbaca"
+输出："ca"
+解释：
+例如，在 "abbaca" 中，我们可以删除 "bb" 由于两字母相邻且相同，这是此时唯一可以执行删除操作的重复项。之后我们得到字符串 "aaca"，其中又只有 "aa" 可以执行重复项删除操作，所以最后的字符串为 "ca"。
+```
+
+**代码**
+
+```c
+char* removeDuplicates(char* s) {
+    int length = strlen(s);  //获取字符串长度
+    char * result = malloc(sizeof(char) * (length + 1));    //结果字符串
+    int retSize = 0;    //结果字符串大小
+    //取两个字符串相比较， 如果出现相同的指针就-1回溯再与另一串的后续比较，当串为空
+    //就进行赋值
+    //相当于栈  a 入 b 入（b与b相等） b 出 （a与a相等）a出 c入 a 入
+    //结果为 ca  栈的思想
+    for (int i = 0; i < length; i++) {
+        //当结果字符串大小》0并且结果字符串前一个位置 == s【i】
+        if (retSize > 0 && result[retSize - 1] == s[i]) {
+            retSize--;
+        } else {
+            result[retSize++] = s[i];
+        }
+    }
+    result[retSize] = '\0';
+    return result;
+}
+```
+
+
+
+## 93、高度检查器（LC 1051）
+
+学校打算为全体学生拍一张年度纪念照。根据要求，学生需要按照 非递减 的高度顺序排成一行。
+
+排序后的高度情况用整数数组 expected 表示，其中 expected[i] 是预计排在这一行中第 i 位的学生的高度（下标从 0 开始）。
+
+给你一个整数数组 heights ，表示 当前学生站位 的高度情况。heights[i] 是这一行中第 i 位学生的高度（下标从 0 开始）。
+返回满足 heights[i] != expected[i] 的 下标数量 。
+
+**示例**
+
+```
+输入：heights = [1,1,4,2,1,3]
+输出：3 
+解释：
+高度：[1,1,4,2,1,3]
+预期：[1,1,1,2,3,4]
+下标 2 、4 、5 处的学生高度不匹配。
+示例 2：
+输入：heights = [5,1,2,3,4]
+输出：5
+解释：
+高度：[5,1,2,3,4]
+预期：[1,2,3,4,5]
+所有下标的对应学生高度都不匹配。
+示例 3：
+输入：heights = [1,2,3,4,5]
+输出：0
+解释：
+高度：[1,2,3,4,5]
+预期：[1,2,3,4,5]
+所有下标的对应学生高度都匹配。
+```
+
+**代码**
+
+```c
+排序比较 实际上就是递增排序后比较与排序结果不同的项数目
+int cmp(const void *a,const void *b){
+    return *(int*)a-*(int*)b;
+}
+
+int heightChecker(int* heights, int heightsSize){
+    //实际上就是递增排序后比较与排序结果不同的项数目
+    int * nums = malloc(sizeof(int) * heightsSize);
+    //赋值
+    int i,count=0;
+    for(i = 0;i < heightsSize;i++)
+        nums[i] = heights[i];
+    qsort(nums,heightsSize,sizeof(int),cmp);
+    for(i = 0;i < heightsSize;i++)
+        if(nums[i] != heights[i])
+            count++;
+    return count;
+}
+```
 
