@@ -52,6 +52,48 @@ void swap(int * a,int * b){
 }
 ```
 
+### 整形数组最大值
+
+```c
+/*
+ * 输入: 数组 数组大小 可返回的最大值下标位置
+ * 输出: 最大值
+*/
+int getMax(int * nums,int numsSize,int * index){
+    int i = 0,max = 0;
+    *index = 0;		//初始化index
+    for(i = 0;i < numsSize;i++){
+        if(max < nums[i]){
+            max = nums[i];
+            *index = i;
+        }
+    }
+    return max;
+}
+```
+
+### 整形数组最小值
+
+```c
+/*
+ * 输入: 数组 数组大小 可返回的最小值下标位置
+ * 输出: 最小值
+*/
+int getMin(int * nums,int numsSize,int * index){
+    if(numsSize == -1)
+        return -1;
+    int i = 0,min = nums[0];
+    *index = 0;		//初始化index
+    for(i = 0;i < numsSize;i++){
+        if(min > nums[i]){
+            min = nums[i];
+            *index = i;
+        }
+    }
+    return min;
+}
+```
+
 
 
 
