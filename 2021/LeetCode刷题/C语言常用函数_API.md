@@ -1,4 +1,6 @@
-# 1 数组翻转
+# 1 数组处理
+
+## 1.1  数组翻转
 
 ### 整型数组的翻转
 
@@ -92,6 +94,85 @@ int getMin(int * nums,int numsSize,int * index){
     }
     return min;
 }
+```
+
+### 整形数组取子数组元素
+
+```c
+/*
+ * 输入: 数组 数组大小 起始下标 终止下标 结果数组大小
+ * 输出: 数组值 / NULL
+*/
+int * getSubArr(int * nums,int numsSize,int start,int end,int * returnSize){
+    int i,j,tag = 0;
+    //判断错误
+    if(start < 0 || end > numsSize - 1){
+        printf("参数错误!");
+        return NULL;
+    }
+
+    int * result = malloc(sizeof(int) * (end - start + 1));
+    for(i = start;i <= end;i++)
+        result[tag++] = nums[i];
+    *returnSize = tag;
+    return result;
+}
+```
+
+
+
+## 1.2 字符数组
+
+### 二维转一维
+
+`code::blocks` 版本
+
+```c
+/*
+ * 输入: 数组 数组大小
+ * 输出: 平铺后的一维字符数组
+*/
+char * flatten(char str[][10],int strSize){
+    //统计长度
+    int i,j,length = 0;
+    for(i = 0;i < strSize;i++)
+        for(j = 0;j < strlen(str[i]);j++)
+            length++;
+    //平铺
+    char * result = malloc(sizeof(char) * (length+1));
+    int tag = 0;    //记录下标
+    for(i = 0;i < strSize;i++)
+        for(j = 0;j < strlen(str[i]);j++)
+            result[tag++] = str[i][j];
+    result[tag] = '\0';     //标识终止符
+    printf("%s ",result);
+    return result;
+}
+```
+
+`LeetCode` 版本
+
+```c
+/*
+ * 输入: 数组 数组大小
+ * 输出: 平铺后的一维字符数组
+*/
+char * flatten(char ** str,int strSize){
+    //统计长度
+    int i,j,length = 0;
+    for(i = 0;i < strSize;i++)
+        for(j = 0;j < strlen(str[i]);j++)
+            length++;
+    //平铺
+    char * result = malloc(sizeof(char) * (length+1));
+    int tag = 0;    //记录下标
+    for(i = 0;i < strSize;i++)
+        for(j = 0;j < strlen(str[i]);j++)
+            result[tag++] = str[i][j];
+    result[tag] = '\0';     //标识终止符
+    return result;
+}
+
 ```
 
 
@@ -431,8 +512,6 @@ int binSearch(int * nums,int low,int high,int target){
     return -1;
 }
 ```
-
-
 
 
 
