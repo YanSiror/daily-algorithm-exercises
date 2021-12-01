@@ -1,4 +1,4 @@
-# 1 数组处理
+# 1 数据处理
 
 ## 1.1  数组翻转
 
@@ -17,26 +17,6 @@ int * reverseInt(int * nums,int size){
         nums[size-i-1] = temp;
     }
     return nums;
-}
-```
-
-
-
-### 字符数组的翻转
-
-```c
-/*
- * 输入: 字符数组 长度
- * 输出: 翻转后的数组
-*/
-char * reverseChar(char * str,int size){
-    int i,j;
-    for(i = 0;i < size/2;i++){
-        int temp = str[i];
-        str[i] = str[size-i-1];
-        str[size-i-1] = temp;
-    }
-    return str;
 }
 ```
 
@@ -121,6 +101,115 @@ int * getSubArr(int * nums,int numsSize,int start,int end,int * returnSize){
 
 
 
+### 整型数字拆分
+
+- **倒序**
+
+  与输入的数字高低位 相反  `reverse order`
+
+  ```c
+  /*
+   * 输入: 数字 可返回的数字位数
+   * 输出: 数字拆分后的一维数组(倒序)  reverse order
+  */
+  int * splitDigitRE(int num,int * size){
+      //记录数字位数
+      int length = 0,temp = num;
+      while(temp){
+          temp /= 10;
+          length++;
+      }
+      *size = length;
+  
+      //划分数组
+      int * nums = malloc(sizeof(int) * length);
+      temp = num;
+      int i = 0;
+      while(temp){
+          nums[i++] = temp % 10;
+          temp /= 10;
+      }
+      return nums;
+  }
+  ```
+
+- **正序**
+
+  与输入的数字高低位 相同  `positive order`
+
+  ```c
+  /*
+   * 输入: 数字 可返回的数字位数
+   * 输出: 数字拆分后的一维数组(正序 - 翻转即可) positive order
+  */
+  int * splitDigitPO(int num,int * size){
+      //记录数字位数
+      int length = 0,temp = num;
+      while(temp){
+          temp /= 10;
+          length++;
+      }
+      *size = length;
+  
+      //划分数组
+      int * nums = malloc(sizeof(int) * length);
+      temp = num;
+      int i = 0;
+      while(temp){
+          nums[i++] = temp % 10;
+          temp /= 10;
+      }
+  
+      //翻转
+      for(i = 0;i < length/2;i++){
+          int temp = nums[i];
+          nums[i] = nums[length-i-1];
+          nums[length-i-1] = temp;
+      }
+      return nums;
+  }
+  ```
+
+  
+
+### 整型数组合并
+
+- **倒序**
+
+  与输入的数字高低位 相反   `reverse order`
+
+  ```c
+  /*
+   * 输入: 拆分后的数组 长度 
+   * 输出: 合并后的数字  reverse order
+  */
+  int digitCombinationRE(int * nums,int size){
+      int i,result = 0;
+      for(i = 0;i < size;i++)
+          result += nums[i] * pow(10,i);
+      return result;
+  }
+  ```
+
+- **正序**
+
+  与输入的数字高低位 相同   `positive order`
+
+  ```c
+  /*
+   * 输入: 拆分后的数组 长度 
+   * 输出: 合并后的数字 positive order
+  */
+  int digitCombinationPO(int * nums,int size){
+      int i,result = 0;
+      for(i = size - 1;i >= 0;i--)
+          result += nums[i] * pow(10,size - i - 1);
+      return result;
+  }
+  ```
+
+  
+
 ## 1.2 字符数组
 
 ### 二维转一维
@@ -177,9 +266,27 @@ char * flatten(char ** str,int strSize){
 
 
 
+### 字符数组的翻转
+
+```c
+/*
+ * 输入: 字符数组 长度
+ * 输出: 翻转后的数组
+*/
+char * reverseChar(char * str,int size){
+    int i,j;
+    for(i = 0;i < size/2;i++){
+        int temp = str[i];
+        str[i] = str[size-i-1];
+        str[size-i-1] = temp;
+    }
+    return str;
+}
+```
 
 
-# 2 进制运算
+
+## 1.3 进制运算
 
 ### 十进制转二进制
 
@@ -326,169 +433,171 @@ char * plusBinary(char * a, char * b){
 
 
 
-# 3 CHAR 与 INT 的相互转换
+## 1.4 CHAR 与 INT 的相互转换
 
-### CHAR to INT
+- `char to int`
 
-```c
-/*
- * 输入: 字符 c
- * 输出: 整数 
-*/
-int charToInt(char c){
-	return c - '0';
-}
-```
+  ```c
+  /*
+   * 输入: 字符 c
+   * 输出: 整数 
+  */
+  int charToInt(char c){
+  	return c - '0';
+  }
+  ```
 
-### INT to CHAR
+- `int to char`
 
-```c
-/*
- * 输入: 整数 
- * 输出: 字符 c
-*/
-char intToChar(int n){
-	return n + '0';
-}
-```
+  ```c
+  /*
+   * 输入: 整数 
+   * 输出: 字符 c
+  */
+  char intToChar(int n){
+  	return n + '0';
+  }
+  ```
 
+  
 
+# 2 排序
 
-# 4 排序
+## 2.1 冒泡排序
 
-## 4.1 冒泡排序
+- **降序**
 
-### 降序
+  ```c
+  /*
+   * 输入: 整型数组 数组大小
+   * 输出: 返回型参数返回数组结果 或 返回整型数组
+   * 说明: 降序排序
+  */
+  int * bubbleSortDC(int * nums,int size){
+      int i,j;
+      for(i = 0;i < size - 1;i++){
+          for(j = 0;j < size - i - 1;j++){
+              if(nums[j] < nums[j+1]){
+                  int temp = nums[j];
+                  nums[j] = nums[j+1];
+                  nums[j+1] = temp;
+              }
+          }
+      }
+      return nums;
+  }
+  ```
 
-```c
-/*
- * 输入: 整型数组 数组大小
- * 输出: 返回型参数返回数组结果 或 返回整型数组
- * 说明: 降序排序
-*/
-int * bubbleSortDC(int * nums,int size){
-    int i,j;
-    for(i = 0;i < size - 1;i++){
-        for(j = 0;j < size - i - 1;j++){
-            if(nums[j] < nums[j+1]){
-                int temp = nums[j];
-                nums[j] = nums[j+1];
-                nums[j+1] = temp;
-            }
-        }
-    }
-    return nums;
-}
-```
+- **升序**
 
-### 升序
+  ```c
+  /*
+   * 输入: 整型数组 数组大小
+   * 输出: 返回型参数返回数组结果 或 返回整型数组
+   * 说明: 升序排序
+  */
+  int * bubbleSortAC(int * nums,int size){
+      int i,j;
+      for(i = 0;i < size - 1;i++){
+          for(j = 0;j < size - i - 1;j++){
+              if(nums[j] > nums[j+1]){
+                  int temp = nums[j];
+                  nums[j] = nums[j+1];
+                  nums[j+1] = temp;
+              }
+          }
+      }
+      return nums;
+  }
+  ```
 
-```c
-/*
- * 输入: 整型数组 数组大小
- * 输出: 返回型参数返回数组结果 或 返回整型数组
- * 说明: 升序排序
-*/
-int * bubbleSortAC(int * nums,int size){
-    int i,j;
-    for(i = 0;i < size - 1;i++){
-        for(j = 0;j < size - i - 1;j++){
-            if(nums[j] > nums[j+1]){
-                int temp = nums[j];
-                nums[j] = nums[j+1];
-                nums[j+1] = temp;
-            }
-        }
-    }
-    return nums;
-}
-```
-
-
-
-## 4.2 快速排序
-
-调用 C 库函数内置 `qsort()` 函数
-
-```c
-int cmp(const void *a,const void *b){
-    return *(int*)a - *(int*)b;
-}
-```
-
-### 降序
-
-```c
-/*
- * 输入: 整型数组 最小下标 最大下标
- * 输出: 降序排序后的数组
-*/
-int * quickSortAC(int * nums, int low, int high)
-{
-    int left = low;
-    int right = high;
-    int key = nums[left];   //从 low 开始
-
-    if(low >= high)
-        return;
-
-    //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
-    //左侧寻找一个小于 key 的数, 两者交换
-    //最后使得 最终位置 左侧都小于 key,右侧都大于 key ,也即key
-    //来到了它的最终位置 FinalPosition
-    while(left < right){
-        while(left < right && nums[right] < key)    right--;    //从右向左查找第一个小于K的数
-        nums[left] = nums[right];
-
-        while(left < right && nums[left] > key)    left++;    //从左向右查找第一个小于K的数
-        nums[right] = nums[left];
-    }
-
-    nums[left] = key;
-    // 递归调用
-    quickSortAC(nums, low, left - 1);     // 排序k左边
-    quickSortAC(nums, left + 1, high);    // 排序k右边
-}
-```
-
-### 升序
-
-```c
-/*
- * 输入: 整型数组 最小下标 最大下标
- * 输出: 降序排序后的数组
-*/
-int * quickSortAC(int * nums, int low, int high)
-{
-    int left = low;
-    int right = high;
-    int key = nums[left];   //从 low 开始
-
-    if(low >= high)
-        return;
-
-    //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
-    //左侧寻找一个小于 key 的数, 两者交换
-    //最后使得 最终位置 左侧都小于 key,右侧都大于 key ,也即key
-    //来到了它的最终位置 FinalPosition
-    while(left < right){
-        while(left < right && nums[right] > key)    right--;    //从右向左查找第一个小于K的数
-        nums[left] = nums[right];
-
-        while(left < right && nums[left] < key)    left++;    //从左向右查找第一个小于K的数
-        nums[right] = nums[left];
-    }
-
-    nums[left] = key;
-    // 递归调用
-    quickSortAC(nums, low, left - 1);     // 排序k左边
-    quickSortAC(nums, left + 1, high);    // 排序k右边
-}
-```
+  
 
 
 
-# 5 查找
+## 2.2 快速排序
+
+- **调用 C 库函数内置 `qsort()` 函数**
+
+  ```c
+  int cmp(const void *a,const void *b){
+      return *(int*)a - *(int*)b;
+  }
+  ```
+
+- **降序**
+
+  ```c
+  /*
+   * 输入: 整型数组 最小下标 最大下标
+   * 输出: 降序排序后的数组
+  */
+  int * quickSortAC(int * nums, int low, int high)
+  {
+      int left = low;
+      int right = high;
+      int key = nums[left];   //从 low 开始
+  
+      if(low >= high)
+          return;
+  
+      //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
+      //左侧寻找一个小于 key 的数, 两者交换
+      //最后使得 最终位置 左侧都小于 key,右侧都大于 key ,也即key
+      //来到了它的最终位置 FinalPosition
+      while(left < right){
+          while(left < right && nums[right] < key)    right--;    //从右向左查找第一个小于K的数
+          nums[left] = nums[right];
+  
+          while(left < right && nums[left] > key)    left++;    //从左向右查找第一个小于K的数
+          nums[right] = nums[left];
+      }
+  
+      nums[left] = key;
+      // 递归调用
+      quickSortAC(nums, low, left - 1);     // 排序k左边
+      quickSortAC(nums, left + 1, high);    // 排序k右边
+  }
+  ```
+
+- **升序**
+
+  ```c
+  /*
+   * 输入: 整型数组 最小下标 最大下标
+   * 输出: 升序排序后的数组
+  */
+  int * quickSortAC(int * nums, int low, int high)
+  {
+      int left = low;
+      int right = high;
+      int key = nums[left];   //从 low 开始
+  
+      if(low >= high)
+          return;
+  
+      //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
+      //左侧寻找一个小于 key 的数, 两者交换
+      //最后使得 最终位置 左侧都小于 key,右侧都大于 key ,也即key
+      //来到了它的最终位置 FinalPosition
+      while(left < right){
+          while(left < right && nums[right] > key)    right--;    //从右向左查找第一个小于K的数
+          nums[left] = nums[right];
+  
+          while(left < right && nums[left] < key)    left++;    //从左向右查找第一个小于K的数
+          nums[right] = nums[left];
+      }
+  
+      nums[left] = key;
+      // 递归调用
+      quickSortAC(nums, low, left - 1);     // 排序k左边
+      quickSortAC(nums, left + 1, high);    // 排序k右边
+  }
+  ```
+
+  
+
+# 3 查找
 
 ### 二分查找
 
