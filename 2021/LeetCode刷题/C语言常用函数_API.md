@@ -180,11 +180,12 @@ int * getSubArr(int * nums,int numsSize,int start,int end,int * returnSize){
 
   ```c
   /*
-   * 输入: 拆分后的数组 长度 
-   * 输出: 合并后的数字  reverse order
+   * 输入: 拆分后的数组 长度
+   * 输出: 合并后的数字 reverse order
   */
-  int digitCombinationRE(int * nums,int size){
-      int i,result = 0;
+  int digitCombinationRO(int * nums,int size){
+      int i;
+      double result = 0;
       for(i = 0;i < size;i++)
           result += nums[i] * pow(10,i);
       return result;
@@ -283,6 +284,80 @@ char * reverseChar(char * str,int size){
     return str;
 }
 ```
+
+
+
+### 字符数组转整型
+
+```c
+/*
+ * 输入: 可转换为数字的字符数组
+ * 输出: 转换后的数字
+*/
+int strToInt(char * str){
+    int length = strlen(str);
+    int i;
+    int * nums = malloc(sizeof(int) * length);
+    for(i = 0;i < length;i++)
+        nums[i] = str[i] - '0';
+
+    //合并数组为整数
+    double result = 0;
+    for(i = length - 1;i >= 0;i--)
+        result += nums[i] * pow(10,length - i - 1);
+    return result;
+}
+```
+
+
+
+### 按字符分割字符串
+
+```c
+/*
+ * 输入: 将字符串根据字符 ch 进行划分
+ * 输出: 划分后的二维数组
+ * 可接受: ss1bb1  以1位分割符
+*/
+char ** splitAsChar(char * str,char ch,int * returnsize){
+    //首先记录字符长度
+    int length = 1,i;
+    char * head = str;
+    while(*head){
+        if(*head == ch)
+            length++;
+        head++;
+    }
+
+    //生成二维数组
+    int ** result = malloc(sizeof(char*) * length);
+    for(i = 0;i < length;i++)
+        result[i] = malloc(sizeof(char) * 20);
+
+    //开始分割
+    head = str;
+    char temp[10];
+    int tag = 0,cur = 0;
+    while(*head){
+        if(*head != ch){
+            temp[tag++] = *head;
+            temp[tag] = '\0';
+        } else{
+            strcpy(result[cur++],temp);
+            temp[tag] = '\0';
+            tag = 0;
+        }
+        head++;
+    }
+    //末尾没有进行赋值
+    strcpy(result[cur],temp);
+
+    *returnsize = length;
+    return result;
+}
+```
+
+
 
 
 
