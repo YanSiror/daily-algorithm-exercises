@@ -359,6 +359,26 @@ char ** splitAsChar(char * str,char ch,int * returnsize){
 
 
 
+## 字符串拷贝
+
+```c
+/*
+ * 输入: 需要拷贝的字符串
+ * 输出: 拷贝完成后的的字符串指针
+*/
+char * strCopy(char * s){
+    //拷贝一份
+    int i = 0;
+    char * temp = malloc(sizeof(char) * (strlen(s)+1));
+    for(i = 0;i < strlen(s);i++)
+        temp[i] = s[i];
+    temp[i] = '\0';
+    return temp;
+}
+```
+
+
+
 
 
 ## 1.3 进制运算
