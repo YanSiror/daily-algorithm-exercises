@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="GB2312">
+    <title>冒泡排序</title>
+    <link rel="stylesheet" href="../../highlights/railscasts.min.css">
+</head>
+<body>
+<h3>冒泡排序</h3>
+<p>降序</p>
+<pre class='hljs'>
+    <code class="c">
+/*
+ * 输入: 整型数组 数组大小
+ * 输出: 返回型参数返回数组结果 或 返回整型数组
+ * 说明: 降序排序
+*/
+int * bubbleSortDC(int * nums,int size){
+    int i,j;
+    for(i = 0;i < size - 1;i++){
+        for(j = 0;j < size - i - 1;j++){
+            if(nums[j] < nums[j+1]){
+                int temp = nums[j];
+                nums[j] = nums[j+1];
+                nums[j+1] = temp;
+            }
+        }
+    }
+    return nums;
+}
+    </code>
+</pre>
+
+<h3>冒泡排序</h3>
+<p>升序</p>
+<pre class='hljs'>
+    <code class="c">
+/*
+ * 输入: 整型数组 数组大小
+ * 输出: 返回型参数返回数组结果 或 返回整型数组
+ * 说明: 升序排序
+*/
+int * bubbleSortAC(int * nums,int size){
+    int i,j;
+    for(i = 0;i < size - 1;i++){
+        for(j = 0;j < size - i - 1;j++){
+            if(nums[j] > nums[j+1]){
+                int temp = nums[j];
+                nums[j] = nums[j+1];
+                nums[j+1] = temp;
+            }
+        }
+    }
+    return nums;
+}
+    </code>
+</pre>
+
+</body>
+</html>

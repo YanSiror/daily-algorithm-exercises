@@ -1,0 +1,797 @@
+// ---------------- A propos des localisations : 
+// ---------------- 
+// Les utilisateurs peuvent adapter le contenu qui suit le symbole '=' pour l'adapter manuellement à leur propre langue, 
+// Mais ne rien changer devant ce symbole '='. 
+// les expressions telles que '%s', '%d', '\n' ne sont pas des localisations. 
+// ---------------- 
+// Si le fichier de langage que vous envisagez d'adapter n'est pas fourni avec le logiciel 
+// veuillez vérifier cette absence sur le site web de l'auteur : (http://www.eTextWizard.com), 
+// Il sera très apprécié que vous nous fassiez parvenir ce fichier par courriel, 
+// et s'il est accepté par l'auteur, 
+// le traducteur pourra obtenir l'enregistrement de ce programme (Licence utilisateur unique). 
+// Veuillez bien nous faire parvenir le fichier avec l'extension lng ou sous forme de fichier zip.
+// Nous n'accepterons pas d'autres formats, tels que .exe, .doc, etc.  
+// ---------------------------- 
+// Par défaut, nous fournirons le nom et l'addresse email du traducteur à nos utilisateurs, 
+// si vous ne souhaitez pas que ces informations soient rendues publiques, faites-nous le savoir. 
+// ---------------------------- 
+// Avant de nous envoyer un fichier de langage, vérifiez S'il vous plaît les points suivants : 
+//  1. Est-ce que le fichier de ce langage existe déjà sur le site web de l'auteur ?   
+//  2. Etes-vous disposé à nous aider dans la traduction de toute future version de ce programme ?    
+//  3. Existe-t-il certains termes impropres ou mots choquants dans votre traduction ?  
+//  4. Avez vous déjà traduit le langage de l'un de nos logiciels et a-t-il été accepté ? 
+//     Ne traduisez SVP qu'un seul de nos programmes.  
+// ---------------------------- 
+// Nous répondrons chaque fois au traducteur que le fichier de langage soit accepté ou non, 
+// si vous n'avez pas reçu de réponse, renvoyez-nous un courriel.  
+// Merci pour votre support !    
+// ---------------------------- 
+// Faites-nous part SVP de toute erreur qui pourrait apparaître dans ce fichier de langage, avec tous nos remerciements.  
+// 
+// Notre adresse email:  webmaster@etextwizard.com 
+//                       webmater@zipghost.com 
+//                       Guohua Soft  
+//                       http://www.eTextWizard.com  
+//                       http://www.zipghost.com  
+
+
+
+[Common] 
+ExeName=EasyCHM.exe 
+Language=Français 
+LanguageSelector= 
+FontName=Ms sans serif 
+FontSize=8 
+HelpFileName=
+BuyNowFileName=BuyNowFR.html
+TipsFileName=
+
+[Translator] 
+Translator Name=Alain C.
+
+[AppInfo] 
+0=Guohua Soft 
+1=Auteur : Guohua Soft 
+2=Page d'accueil 
+3=Email                                                                                                                                                                                                                               
+4=Ok 
+5=&Acheter  
+6=&Annuler 
+7=Introduire les données d'enregistrement :  
+8=Nom d'enregistrement : 
+9=Code d'enregistrement : 
+10=Merci de vous être enregistré ! 
+11=Désolé, le numéro de série que vous avez utilisé est incorrect. 
+12=L'application a été modifiée ! 
+13=Ce programme ne démarrera plus. 
+14=Veuillez télécharger une nouvelle copie pour la réinstaller. 
+15=Débogueurs trouvés ! 
+16=Pour des raisons de sécurité, ce programme est stoppé pendant qu'un débogage est en cours. 
+17=Veuiller supprimer ou désactiver le système de débogage avant d'essayer de relancer ce programme. 
+18=Version d'essai. 
+19=Version enregistrée. 
+20=Enregistrée à : 
+21=Licence pour utilisateur unique.  
+22=License de site illimitée. 
+23=Licence multi-utilisateurs. 
+24=La version de cette application est trop ancienne, pour des raisons de sécurité, ce programme est définitevement arrêté. 
+25=Veuillez télécharger une nouvelle copie pour la réinstaller. 
+26=Les utilisateurs peuvent toujours télécharger une nouvelle version à partir de : 
+27=Le numéro de série que vous avez introduit a été mis en liste noire. Pour obtenir davantage d'informations, veuillez envoyer un courriel à l'auteur. 
+28=Le numéro de série que vous avez introduit correspond à une ancienne version. Si vous êtes un utilisateur enregistré, veuillez demander à l'auteur un nouveau code d'enregistrement. Merci de votre compréhension. 
+29=Erreur ! 
+30=Information : 
+31=Attention ! 
+32=Il existe une nouvelle version sur : 
+33=Souhaitez-vous télécharger la nouvelle version maintenant ? 
+34=La durée de la version d'essai a expiré ! 
+35=Veuillez vous enregistrer. 
+37=Veuillez réinstaller l'application. 
+38=L'application a été infectée par un virus ou modifiée illégalement par quelqu'un. 
+39=Non enregistré. 
+40=Version non enregistrée. 
+41=Cliquer pour aller sur le site de l'auteur. 
+42=Cliquer pour envoyer un courriel à l'auteur. 
+43=Achetez chez Qwerks 
+44=Achetez cher ShareIt 
+45=Commander en ligne.  
+46=Acheter
+47=Type de licence : 
+48=A propos de 
+36=Installation incomplète ! Il manque certains fichiers.
+
+[Messagebox] 
+0=Information 
+1=Confirmer 
+2=Avertissement 
+3=Erreur 
+4=&Oui 
+5=&Non 
+6=Ok 
+7=&Annuler 
+8=&Arrêter 
+9=&Réessayer 
+10=&Ignorer 
+11=&Tout 
+12=N&on à tout 
+13=Oui à &tout 
+14=&Aide 
+
+[Message] 
+Msg0=OK
+Msg1=Ecriture de la table des matières :  
+Msg2=Ecriture du fichier index :  
+Msg3=Ecriture du fichier projet : 
+Msg4=Nom du projet : 
+Msg5=Nom du fichier CHM : 
+Msg6=&Annuler
+Msg7=Souhaitez-vous vraiment arrêter maintenant ?
+Msg8=Opération annulée ...
+Msg9=Arrêt en cours...
+Msg10=Création du CHM  
+Msg11=Recherche...  
+Msg12=Tri...  
+Msg13=Patientez SVP...  
+Msg14=Suppression des répertoires vides... 
+Msg15=Selectionner un répertoire : 
+Msg16=Ne trouve pas : 
+Msg17=L'application requiert ce programme pour créer un fichier CHM. 
+Msg18=Extraction... 
+Msg19=Ceci va réinitialiser les réglages par défaut et toutes les modifications seront ignorées.  
+Msg20=Continuer ? 
+Msg21=Tous les réglages ont déjà été réinitialisés par défaut. 
+Msg22=Recherche sans résultat 
+Msg23=Remplacement réussi
+Msg24=Nouveau titre 
+Msg25=Le contenu du fichier a été modifié. 
+Msg26=Souhaitez-vous enregistrer ce fichier ? 
+Msg27=Le contenu du fichier a été modifié par un autre programme. 
+Msg28=Voulez-vous recharger ce fichier ? 
+Msg29=Format de texte non supporté 
+Msg30=Pas de fichiers correspondant trouvés.
+Msg31=Auto-détection et suppression de la numérotation pour tous les items de la TOC ? 
+Msg32=Compression du fichier projet...  
+Msg33=Enregistrement du fichier projet... 
+Msg34=Effacement du fichier projet...  
+Msg35=Chargement du fichier projet... 
+Msg36=Décompression du fichier projet...  
+Msg37=Impossible de charger %s - Ce fichier peut avoir été effacé ou déplacé. 
+Msg38=%s n'est pas un fichier projet %s valide. 
+Msg39=Echec à l'ouverture du fichier. 
+Msg40=Echec pendant l'enregistrement du fichier. 
+Msg41=Enregistrement %s impossible, vérifiez s'il y a assez de place sur le disque choisi. 
+Msg42=Choisissez 'Nouveau' ou 'Ouvrir' pour créer ou ouvrir un projet. 
+Msg43=Choisissez 'Compiler' pour créer un fichier CHM à partir du projet en cours. 
+Msg44=Le fichier projet a été modifié, 
+Msg45=enregistrer le projet maintenant ? 
+Msg46=Effacer le schéma "%s" actuel ? 
+Msg47=Repositionnez le schéma actuel "%s" en mode par défaut ? 
+Msg48=Enregistrer les modifications vers le schéma actuel "%s"? 
+Msg49=Ecraser le schéma existant "%s"? 
+Msg50=Compilation terminée. 
+Msg51=Annulé par l'utilisateur. 
+Msg52=Supprimer le(s) item(s) sélectionné(s) ? 
+Msg53=Effectuer un tri maintenant ? 
+Msg54=Effectuer des remplacements maintenant ? 
+Msg55=Enregistrer les modifications ? 
+Msg56=Arrêté 
+Msg57=Traitement des fichiers Alias et MAP 
+Msg58=Répertoires d'importation 
+Msg59=Copyright(C) 
+Msg60=Tous droits réservés 
+Msg61=Ajouter %s à la TOC
+Msg62=Ajouter %s enfant à la TOC
+Msg63=Propriétés de %s
+Msg64=l'élément
+Msg65=ce mot-clé
+Msg66=Enregistrer les données courantes comme valeurs par défaut générales. 
+Msg67= 
+Msg68= 
+Msg69= 
+Msg70= 
+Msg71= 
+Msg72= 
+Msg73= 
+Msg74= 
+Msg75= 
+Msg76= 
+Msg77= 
+Msg78= 
+Msg79= 
+Msg80= 
+Msg81= 
+Msg82= 
+Msg83= 
+Msg84= 
+Msg85= 
+Msg86= 
+Msg87= 
+Msg88= 
+Msg89= 
+Msg90= 
+Msg91= 
+Msg92= 
+Msg93= 
+Msg94= 
+Msg95= 
+Msg96= 
+Msg97= 
+Msg98= 
+Msg99= 
+
+
+[TipsDLG] 
+0=&Ok 
+1=&Suivante
+2=&Précédente 
+3=&Afficher les astuces au démarrage 
+4=Astuce  du jour 
+5=(Fichier des astuces non trouvé) 
+6=Le savez-vous ?    
+
+
+[frmLoadSaveCustomSettings] 
+10edec58f48a2062173a5dbbfeb30d2c=Charger/Enregistrer les réglages 
+ad594540d2bb974fced5c2363ecd3b33=Enregistrer la liste des réglages : 
+9e9f3258aa19e0d7c368bf9388c7105e=Description : 
+16b44c3a28f46f729b16e9a053e2e82b=Nom : 
+8e773dcc303ff62c94b2a8c03b3e1933=&OK 
+f71794c9160e4113d3423d3bfee74444=&Supprimer
+
+[FormNewscheme]
+b010a794999ad73c1fcc8d8dddd2278b=OK 
+a559fba9a064cae9e9255bd73c1febc2=Annuler 
+0ffffea86d94aa2ed7c95fc5a6813217=Nom du nouveau schéma :
+
+[FormFileListDlg]
+aa91eb03430b8cdc10f24fe54f3a7895=Liste des fichiers du projet en cours : 
+b010a794999ad73c1fcc8d8dddd2278b=OK 
+a559fba9a064cae9e9255bd73c1febc2=Annuler 
+cce7526cdca177bbfc16fcde251d592d=Légende : 
+c36bb0e57e69f7bcd7c0cd2f777860e7=Fichier ou URL : 
+3ff18ac024d526b03e3a09cda5c7ab40=Afficher tous les fichiers  
+a6453dec1c661c8df7952e436d263a78=Afficher uniquement les fichiers inclus 
+94cf24bb3ac07c417d8cc93506734801=Afficher tous les fichiers 
+015f279dd27f3ce0ef364fb7cc27630f=&Aide 
+
+[ChmCompileStatusDlg] 
+444c09b91797a36e216722aa07fa565b=Créer un CHM 
+062a9a7019c058e18d8b08108ef036c1=&Fermer 
+1d14661f9dca5f79bd585c6ff895f2e8=&Arrêter
+
+[NewURLDlg] 
+b010a794999ad73c1fcc8d8dddd2278b=OK 
+a559fba9a064cae9e9255bd73c1febc2=Annuler 
+16b44c3a28f46f729b16e9a053e2e82b=Entrez une adresse URL valide : 
+
+[FormAutoSizerDlg]
+9edf94a909a00984e8a34d7a23a6cbc6=Auto-dimensionnement 
+a559fba9a064cae9e9255bd73c1febc2=Annuler 
+b010a794999ad73c1fcc8d8dddd2278b=OK 
+9c258d2a4d54ac794c333a0af269f237=Fenêtre CHM (Gauche=%d, Haut=%d, Largeur=%d, Hauteur=%d), Panneau de navigation
+(Largeur=%d ) 
+
+[FormCompileNow] 
+98cdf433efe4b7cfea3b5630d10c8246=Compiler le projet en un fichier CHM 
+476c7134d12380c2dd9e49f90dd8964c=&Créer un fichier CHM 
+ef8f87e598bc65d1e80fd57bbab3290d=Compiler maintenant le projet en cours en un fichier CHM  
+f71794c9160e4113d3423d3bfee74444=Annuler 
+00e4f8f9a35db12348f6e1aace0c6aba=Paramètres du projet  
+ee8cafe17dca8033dad1fe12d052efd2=&Paramètres CHM  
+c28e87f80e15ac16edad080705c3faf2=Paramètres du fichier CHM 
+e6272d3e8340f7f57427d60018d8416b=&Aide 
+0759f1ddff050e5dd2f1cae670596e27=Général 
+b47fb1036891eff7736f09691a13c910=Titre du fichier CHM : 
+eecfd2c763d1e7f43b014bc205b69239=Cette page apparaîtra lorsque le bouton HOME (Début) sera cliqué 
+80a0bdaf35fc6b56ad9dc3002f4c8034=Page d'accueil du fichier CHM :  
+02ba38bb997746e48fc62f9b70a2ab81=Cette page apparaîtra lorsque le fichier CHM sera ouvert 
+23142647a0eee0740c54d6762fb0ce55=Page par défaut du fichier CHM :  
+1a8b28ee17bc5b142c6e6a8d08b544cc=Enregistrer le fichier CHM sous :  
+eb32beda46c3749697cf7cbf9b4d93f7=Compiler le répertoire racine en un fichier CHM :  
+5282990534e4b0cf9877aebd0086837c=API Html
+6447d9be26fc60bdffd64b60f55fab79=Fichiers de définitons d'aide contextuelle 
+b137ad2c78d0c878706270c693e9c882=Fichier d'en-têtes MAP : 
+97381c79d8e0c6c4bc480b785ff86c83=Fichiers Alias : 
+e308bf754bc8a58fdcff317a0706b751=Créer automatiquement les fichiers Alias et MAP 
+8e5c2bca3116ebb7c8a0548e92c4f935=Inclure les informations API Html
+b21a26e23842b5cd69b3b072f0871402=A l'usage des programmeurs uniquement 
+cbf76ad117d4f71788fa3aba3fcb7cec=Fichiers de définition des textes popup  
+b2f7c2d0ab20320cbc7ac3aa36a8e13e=Fichiers texte : 
+14a9165c84da05ca1d688241485c0014=Fichier d'en-têtes des popup : 
+a040c5c3414d2c51ce049267d09dc643=&Autres 
+c8f3dbcc1010a7113c7979b3954a1d2b=Nom du projet 
+fe0e804f0dedb21e7e645d476350f541=Enregistrer le fichier Index (.HHK) sous : 
+08d2f928eb234ce33667c4a781577806=Enregistrer le fichier TOC (.HHC) sous : 
+c10b6fd0311bf31c227459b80f17e3c5=&Appliquer 
+787235148d7850185180d71b738c2590=Enregistrer les paramètres du projet 
+c23f19a1122cc6ffacd3d6098ecc8bc8=&Afficher le CHM 
+fe6a558fca8b42376ad7c4f58ffc17e3=Afficher le fichier CHM compilé
+
+[FormAutoNodeNum]
+c4739c5f2ee1db0895517712229062dc=Numérotation automatique des lignes
+10cef7bff8282dd95ef777ddf227b414=OK 
+a07e9db022ee93ebcf1f67a9196abe8a=Accepte les paramétrages et les exécute 
+1f7364265286b5250f5617e0511083e9=&Annuler 
+e0e1dd64a9c6a4d56bac9b0f98845cd1=Annuler
+9e608697be6eec4fd29025ef5c4f4373=Supprimer la numérotation 
+d4d5fc467eb03cfbe7835d8192b05c63=Supprimer toute la numérotation 
+e0079a4383aa51266e37ec661fdc2132=Portée de la numérotation 
+2a4fc654ab7e160ff5021ff124ab9326=Appliquer à toute l'arborescence 
+0870309f443fe305e7a11bc03b60c755=Appliquer à la branche en cours 
+bdde372409e959f456fced722cf75184=Numérotation et méthode 
+6140fc8e834d4240cd8bb11b00e5e308=Ajouter des numéros au nom des éléments de la TOC 
+475d8df8cf7dc41b4ee62af45a92d100=Remplacer le nom des éléments de la TOC par la numérotation 
+6447d9be26fc60bdffd64b60f55fab79=Profondeur de numérotation  
+378f085353340b2eb79eb2fd82936e23=Limiter la profondeur du niveau de numérotation à : 
+81ee48021ee5d1d31a061f21df14a52d=Appliquer la numérotation à tous les niveaux 
+b95f6d143f17f025370083e8d1ac0eb1=Style de numérotation 
+ad594540d2bb974fced5c2363ecd3b33=&Commencer la numérotation à : 
+
+[FormCHMoptions]
+d6f11f3eadeb9df43c91c9bf8137c5a4=Paramètres du CHM
+e6272d3e8340f7f57427d60018d8416b=&Aide
+83307b4ceadfa50f951085aacbddaf53=Général
+b6bb13992de0a07804862865821aebe5=Compiler l'information de recherche texte
+1d9e5da45c2aa41e2cde3f75f398818c=Si coché les utilisateurs peuvent rechercher un texte dans le fichier CHM 
+313a7373cac8be48774dad9fb2f4f05c=Ne pas inclure de répertoires dans un fichier compilé
+17a959b957767c06098b68fa43d41914=Il n'y aura pas de structures de répertoires dans le CHM, tous les fichiers seront stockés à la racine.
+864f72ac11b09a22166b6b9eb80c837d=Support amélioré de décompilation
+789cfd9e2133726f3d72471229d0ec7f=Créer une TOC binaire
+8da924c1417c5e66b6dc863bac22d246=Cochez si vous souhaitez faire apparaître les boutons  Précédent/Suivant
+db87db19aaf1fc2c0e824e7270599564=Créer un Index binaire
+457dba36310c1dd30b5dacc067e88f08=Créer un fichier CHI
+5418d6510e3e56680637f7923192e218=Créer un fichier Log 
+c5a3fb868ad2856e9ccfca2e80723812=Si coché le fichier log de compilation sera sauvegardé
+301be206ed346c102ae0298338b08919=Supprimer les fichiers  HHP/.HHC/.HHK lorsque le CHM est généré
+8f6b0d9c1e70cb1d99c011356ff401fb=A cocher si vous ne désirez pas conserver les fichiers .HHP/.HHC/.HHK 
+8086cb2b02f21c7515ecfd37091b8cb4=A cochez si vous désirez maintenir la fenêtre du CHM en avant-plan
+324a4795171d24f9027f48821bd9f628=Mémoriser la position de la fenêtre CHM 
+cb4730fe62d41454916c3a012a7914be=Afficher le menu MSDN 
+f1b6735974bf073aabba39cd82e424a9=Panneaux
+9c913efc0fe5fbbb802c9ff2ce0eddd5=Montrez les panneaux de navigation, barre des boutons et panneau des sujets
+d0cd7cedf95e4b7bc593c1e7fd7c1472=Panneau de navigation :
+ad594540d2bb974fced5c2363ecd3b33=Onglet de navigation par défaut :
+6f140bf9fe6fa517e47b4f9c8f0b9f85=Largeur du panneau de navigation :
+9e9f3258aa19e0d7c368bf9388c7105e=Position de l'onglet navigation :
+cbd12fa8f909d550ca3d44ff6245d430=Contenus
+f50cf4be54acdc6e11e001991de8f1e0=Index
+481ceb8bc89aacb3611b71bea61c03c8=Rechercher
+8c9bca01e3cec516a8b6268e3785e163=Favoris
+80a29a1ea402d795088101166313c159=Contenus
+46126c500d99fd6b71785b3256b77b62=Haut
+1f974116f6d9bbd60ea71d4d7ccf4073=Gauche
+3531b6cb4ade66012ee69853f9415fde=Bas
+130532d95513d928e534b4ca8b9ae768=Haut
+cbf76ad117d4f71788fa3aba3fcb7cec=Afficher
+978e7db1f4ea9d9ce471f16d17f99ce6=Onglet Contenu
+458c6fa58f2ec29529501d85a252e045=Onglet Index 
+a465db39e85a16a8dd38d0c5212caeb8=Onglet Recherche
+70d5dfeca0a3a9ed713e9992fb7e9f59=Onglet Recherche avancée 
+b350a5659498fcdd19d9afe4ce648ae0=Onglet Favoris
+5b5bd43315fcbb7acae6829956d7b601=Propriétés du panneau de navigation 
+ad95458ac78d16f3b3ce58b233c420c7=Fermé au démarrage
+75409eadb5b285e8d8fd6e827d98d4a0=Afficher/cacher automatiquement le panneau de  navigation
+f5aa3a5f47e7c0a2b8da8a1a019b3e9b=Synchronisation automatique
+fa69a83356139180ce541fae858e5bf4=Boutons
+d071f54fff504d1439fd00c29608cfce=&Grand bouton
+4b8f3ee0bb508a87806f3993e76d4df0=Types de boutons
+8c978975a5d39234ac47339db2ace6fb=Cacher/A&fficher
+48c1083a4abadc5be433f8f885822f44=En a&rrière
+3479e3bf7915b3d97ca2575cebc7b534=En a&vant
+f8826a9242787576baaa6539e2e5e3bb=Arrê&t
+33df3a6c73b7e5010d9dae8867cb10bb=Ra&fraîchir
+06b8366580e53dd9971b0ad6ae0669a8=&Début
+aa1ee6afb12f66cb690d862189fc956f=O&ptions
+3533e59f6640738fd6eaf86cb8e74b57=I&mprimer
+d83dde6abbf7de6e968cd35e5626dcfa=Rec&hercher
+1ebec5bfa007d7a6c386820d1077ab34=Saut 1
+4067803f4e65f2d0c94d049669ba3405=Saut 2
+9fb2ddc2e6b5deb64928661e1d0542b5=Sui&vant
+f5d6440595fa3ecbc049a2a53f48c3ea=&Précédent
+451bdd835386cfae849dac47bbc8cb60=Police
+8812a6fed966640cda4e7ee3d7188e6c=Renommer
+d3a281c96064fdcc58d0a19d69cf9d24=Renommer
+86a32179c8bc0f900090681840866167=Saut au texte &1 :
+6840eb9e516cc887d601a903e764323d=Saut au texte &2 :
+f8c62f0e62c85536143fea87983c7c44=Saut à l'URL &1 :
+27b1fcf9a6af3e11d6b229f7453568f6=Saut à l'URL &2 :
+773925964d2714096a65d6428be100e7=Afficher la barre de boutons 
+367dabe2f6579454e989c8c884639543=Position
+f85bd4efc85bbeaa734c1b3a88099948=Dimensions et position de la fenêtre 
+37bd7d4eeece289dee6b8ff925b0e710=Gauche :
+c05981f70b056e3c4b0ee7a4311b4591=Largeur :
+a67155179bba1daab96b364b71930102=Haut :
+b33b4512dee84bcfd59d741431ed1a6a=Hauteur :
+b8f3ad9292662fa55122c5f3c0ab8ff5=Auto-dimensionnement
+2dec471002b9dbceee580aaa02a1d07a=Position par défaut
+a3f4dde5a36f8e442a796c620890048a=Auto-enregistrer la position de la fenêtre définie après un premier usage
+be4a97225079da2523805cf8754663ac=Styles
+b95f6d143f17f025370083e8d1ac0eb1=Propriétés de la fenêtre
+dd8ad51c81727588be16451a91fa0ebb=Avec bouton maximiser
+5702665a60cdba680d7d7b7ff60f13f3=Avec bouton minimiser
+cb05d42f1033c194c6b98814eb455117=Bordure fine
+63a5a8cdcb0279f84146a28e129c5a65=Maximisée à l'ouverture
+e3f1b94c69054cb8a0b68378e83d4771=Minimisée à l'ouverture
+822d0a07210003eb20384292b41b2a51=Avec cadre sans titre 
+d63a1e4870cc61c25e28377608dce5e3=Créer une fenêtre pop-up
+1fc8a8234f47c70c86aac37c9e6e5ffd=Barre de défilement vert. 
+2b9bd5e0dfd1b660ff75685dac31935b=Visible à l'ouverture
+01e6239969abfe9a2da7eec722c45f26=Avec menu système
+769c93c22bf54408f302a5a3e5ced009=Création fenêtre enfant
+27efd2e009c63b2474338e687ccb00e4=Couper autour fenêtre enfant pendant son affichage
+8ed68fc00c61f14bd7cad6ee9e2113a6=Couper autour fenêtre sous-enfant pendant son affichage
+16ccb09e505e5ac4e62e9f3904c78ea6=Cadre large
+c0996f02697f564840dc541453e71456=Avec bordure et titre
+ac98b8516dfb6bed6378c040e0ff8b21=Désactivée
+b291140e8736cb179e93b6c4bfa83f18=Avec barre de défilement horizontal
+1fc44d1a059205ccb919d4c3f9627e13=Styles étendus
+6447d9be26fc60bdffd64b60f55fab79=Propriétés de la fenêtre
+68351dd926220cdff5cf6d6a93d1f5e9=Barre d'outils flottante
+52229600b6129082a93ea7b9e568202f=Accepte Drag&&Drop fichier
+186d33efb1743e57d9688986addbe70a=Sans notification parent
+1000fb148a9103730956da09042c1408=Bordure client en creux
+49e518ace8e84f244a7ad2e41a930390=Toujours au premier plan
+a38635f15873a3f37bbebb85d7f5b19d=Scrolling vert. à gauche
+5414167198fa0114ea8841a332380607=Bordure en 3D
+e0c159fe365af9b14bf251b7e766cc26=Activer l'aide contextuelle
+dc1aa2a1ad556dc291129563ccc4f4ec=Transparente
+30a19b165ba33992b7f7d02a1d871d00=Texte avec alignement à droite
+742862345b09eea07f403574ac8ee7f6=Lecture de droite à gauche
+05f84022136e7ad6ccbcd74133a6b3ae=Fenêtre de contrôle parent
+a040c5c3414d2c51ce049267d09dc643=Autres
+00e4f8f9a35db12348f6e1aace0c6aba=Propriétés TOC et Index 
+5361e73527c22c5136f6ea2b1bb72097=Propriétés de la TOC 
+ec81fc7371c6a971b0cda32ab2b8bb62=Propriétés de l'Index  
+2d8a5cc24ade9449ab5445a473ebad3b=Choix de la langue :
+c603acf3e17f2e66f064f9e8441cfdb5=Par défaut
+e3e0e2e8753a773fc1250e3a2f4fee0b=Passer au langage par défaut du système
+8e773dcc303ff62c94b2a8c03b3e1933=&Ok
+f71794c9160e4113d3423d3bfee74444=&Annuler
+30942ad0385594bfcc73c70726fdfe19=&Rétablir
+0dffc6f3d13e42d97a16b37c64ca70d3=Schémas
+ad531e2e2b63cbe87a0f88a88b3d47b8=Charger les &paramètres...
+b0ee7308342fefabf143d7a15d3c65f8=&Enregistrer les paramètres...
+
+[FormDecompileSingleDlg]
+f4dbc0c94bb7adde71e81b9996b53ed6=Décompiler un fichier CHM  
+015f279dd27f3ce0ef364fb7cc27630f=&Aide
+b010a794999ad73c1fcc8d8dddd2278b=&Démarrer 
+a559fba9a064cae9e9255bd73c1febc2=&Annnuler 
+ce6cef4f349f40cad2f03385184ad5db=Sélectionner un fichier CHM : 
+4b6f62cdc77ab0cd0b35b099aa7d7cc3=Enregistrer les résultats dans ce répertoire : 
+1442f656584dadc81c59669d429b9256=&Parcourir... 
+f2f5096d5cbc3d433cd6250e13ac839f=P&arcourir... 
+6a699e0ff914c999e5eeff94e36ea68b=Utiliser le nom du fichier CHM comme répertoire 
+8a74a8e9d35ab86a92b93d18f2c47283=Ouvrir le répertoire de destination après décompilation 
+
+[FormAddFileWithinADirDlg] 
+e00aeb880969ff1ca790698a01eb2f2a=Ouvrir un fichier (ou plusieurs)
+604a3962fd0250c9d4462ae7285f84dd=Type de fichier : 
+50f813ded8d76a5698480d6ca0e2fa39=Nom de fichier : 
+b010a794999ad73c1fcc8d8dddd2278b=&Ouvrir 
+a559fba9a064cae9e9255bd73c1febc2=&Annuler 
+e429fe28de986fbfb6b5b8244c13e4f3=Remonter d'un niveau 
+
+[FormCompileStatus]
+7910569b3b9b30e7427fcd90fbad9eb0=Création du CHM
+062a9a7019c058e18d8b08108ef036c1=&Fermer
+91f61c7b1f2c29565b4d596208d445d7=En cours...
+4114ec15b5025d7e02b369fe2957574a=Avertissements :
+ba14fde6e54eae101052fd7d05688b21=Erreurs :
+1d14661f9dca5f79bd585c6ff895f2e8=&Arrêter
+
+[FormExportAliasAndMapDlg]
+015f279dd27f3ce0ef364fb7cc27630f=&Aide
+b010a794999ad73c1fcc8d8dddd2278b=&Démarrer 
+a559fba9a064cae9e9255bd73c1febc2=Annuler
+6f140bf9fe6fa517e47b4f9c8f0b9f85=Exporter les fichiers Alias et Map 
+37bd7d4eeece289dee6b8ff925b0e710=Crée automatiquement les IDs d'aide contextuelle et les fichiers Map pour le  programmeur. Vous pouvez éditer les fichiers exportés et ensuite les spécifier dans les paramètres du projet.  
+b95f6d143f17f025370083e8d1ac0eb1=Cible : 
+53605f586f25e208d34563c475ddda72=Nom du fichier Alias : 
+62c5b54907363615a1c51744a4593593=Nom du fichier MAP : 
+6447d9be26fc60bdffd64b60f55fab79=Options pour les constantes numériques des IDs 
+ad594540d2bb974fced5c2363ecd3b33=Démarrer avec : 
+9e9f3258aa19e0d7c368bf9388c7105e=Incrémenter de : 
+
+[FormItemPropertyDlg]
+1b5f1ab1162035e5400826ed7663ddfd=Propriété 
+84037f52e4b3eb16576182c446528fc1=Nom de l'élément : 
+73010efbcc892e38bd307b62bad55524=Icône : 
+9e9f3258aa19e0d7c368bf9388c7105e=Lier l'élément à un signet existant du fichier ci-dessus  : 
+721b39808c702981e0dce3eed7f621a1=&Aide
+b010a794999ad73c1fcc8d8dddd2278b=&OK 
+a559fba9a064cae9e9255bd73c1febc2=&Supprimer 
+54cdbd5f3677ef1e3785b0e2eb4f99e2=Nom du fichier : 
+9b3cc827e8a57ff667145418f413d3a4=&Parcourir... 
+ad594540d2bb974fced5c2363ecd3b33=P&osition : 
+9c6d255fad3806f0b3d97331534a2cc6=Insérer avant 
+23cf1fa02f26879ebd4420a989b347ec=Insérer après 
+1bf821936f7cf339af2e1384303a0a34=Ajouter comme premier enfant 
+4b773cbcb449a8a3e0e17a14f43a8839=Ajouter comme dernier enfant 
+702f5359473f8ac1f5178663347e46f9=Insérer avant 
+67a714b3702d560c2451024e8aa54c5c=Lier à un signet existant dans un fichier .htm tel que #top 
+ 
+[FormImportDlg] 
+1a73d6d649fb6bb0fe00902fa377212b=Nouveau répertoire projet 
+015f279dd27f3ce0ef364fb7cc27630f=&Aide 
+b010a794999ad73c1fcc8d8dddd2278b=&OK 
+a559fba9a064cae9e9255bd73c1febc2=&Annuler 
+a850153ad9352446eaa48f654962463a=Filtres de fichier : 
+9a7ed84a5d716510d902cd144f56a97a=Répertoire du pro&jet :  
+c8dfa9a3e90d97989e04cd5b5670d8a8=&Parcourir... 
+315121130016bdaab0388d3495491b9b=Inclure tous les sous-répertoires 
+0a0a850e0536d73f5852ffe424cdb544=Options d'&importation... 
+d0aed5e5e516a045d8e8fa819a69b61a=&Options d'importation 
+
+[FormIndexPropertyDlg]
+8f70abe961e0724701e302bd0f0a256f=Propriétés de l'index
+015f279dd27f3ce0ef364fb7cc27630f=&Aide 
+b010a794999ad73c1fcc8d8dddd2278b=&OK 
+a559fba9a064cae9e9255bd73c1febc2=&Annuler 
+0759f1ddff050e5dd2f1cae670596e27=Général 
+85eaec5c81e150ed766a2932aa2e2fe0=&Table de caractères : 
+c5e56c000598db2d75e2c371040d39d7=&Police : 
+cad6b98f4c41f4c5e83496dd9923c9d7=&Rétablir 
+9dca4433d9e470680c4f8313888f7992=Rétablir par défaut 
+
+[FormPreferencesDlg]
+22c9c75122d80ecf328f1426ad938c9c=Préférences 
+721b39808c702981e0dce3eed7f621a1=&Aide 
+0759f1ddff050e5dd2f1cae670596e27=Général 
+0b5c1ec57d973d96fcd5ccac78a7f07a=Mémoriser l'état de la fenêtre 
+cbf76ad117d4f71788fa3aba3fcb7cec=Fichiers récents 
+ad594540d2bb974fced5c2363ecd3b33=Ma&ximum de fichiers récents
+9e9f3258aa19e0d7c368bf9388c7105e=Taille maxi du nom des fichiers récents 
+b5e971ea60a627d614f6cd0208e80a5b=Messages 
+b95f6d143f17f025370083e8d1ac0eb1=Afficher les messages d'avertissement
+70bb141809057a9f4e1431f15318eee9=Sur les éléments effacés 
+29421a77c13a91c01fc184572ee82c2e=Sur les éléments remplaçés 
+f7ea8e37ae792c07f8700d69b4ff5fa7=Sur les éléments triés  
+b010a794999ad73c1fcc8d8dddd2278b=&OK 
+a559fba9a064cae9e9255bd73c1febc2=&Annuler 
+dcc02a44ef1e37ff7ecda99c0c07dc7a=&Appliquer 
+8aca9f903abb5ac56f4c601712191139=&Rétablir 
+
+[FormTOCpropertyDlg] 
+b4465bc8dbc447796c08596fe8b3c73f=Propriétés de la table des matières (TOC)
+721b39808c702981e0dce3eed7f621a1=&Aide 
+29633360c4bcd9deb08068068cac5b97=&OK 
+bd9f9bc278223cc143781adbafbcbfb2=&Annuler 
+5282990534e4b0cf9877aebd0086837c=Général 
+ad594540d2bb974fced5c2363ecd3b33=Ta&ble de caractères : 
+a3edb3511ae64b49f57ae8a692ea789b=Couleur d'avant plan : 
+9684708ff382a1c4faf1fc4ad05e0870=Couleur d'arrière plan : 
+50254c73f6372df6be8d0106cdc3c798=Police : 
+527ed94438ff434281e94aad6342782b=Utilise la couleur TOC par défaut (arrière-plan blanc)
+0a32870d6a6f6635fbe77669734a51b3=Styles 
+61ffc11eccb8ef608bfa24b7a5462bf7=Suivi automatique de la sélection  
+0cf5ecae9fefbe9eefb9316d8578d621=Avec bordure 
+9bc9fc6c0723d187c24bab21035a9ef8=Avec cadre de style dialogue  
+d3e14839927605cdc1153bc14eba059d=Relier les items entre eux par des lignes
+ccb1a12060a887959f2bb71f92c180c9=Développer une seule branche du sommaire 
+923d158e93fdf5897422e80b4bc66f2f=Carré Plus/Moins 
+4537f35ff37adaa55e271f1ac8bf745d=Avec bordure en relief 
+4706e77896b2c1cfc974e3500a12a16a=Lecture de droite à gauche 
+c2f8ddda89335a3e39810bd4cef73f91=Avec barre de défilement à gauche 
+f9b8f7a6b0edfcdbbc737f59eca596a7=Avec sélection de ligne entière 
+777c0740cc24b993e6f5dedb10feef9e=Montrer la sélection lorsque le focus est perdu 
+73fd8b432f5184d142912d497ea90a60=Avec début de ligne à la racine  
+69e7995976a8b1638b476c445ea8977b=Avec bordure en creux 
+cad6b98f4c41f4c5e83496dd9923c9d7=&Restaurer 
+9dca4433d9e470680c4f8313888f7992=Restaurer par défaut 
+
+[FormTreeView_ReplaceDlg] 
+2dde2df86eaf6922bec1b4c3784bd5f6=Recherche et remplacement de texte
+028eb8015aced938a44ebd7098b4f924=Texte à rechercher : 
+946411df6c3e5e93de9bdc59808e84ee=Remplacer par : 
+b010a794999ad73c1fcc8d8dddd2278b=&Démarrer 
+a559fba9a064cae9e9255bd73c1febc2=A&nnuler 
+9c17cb611cc58a472bd19b2d44feef3a=Options 
+adc36b2098d47feb4abc454c56a31a1d=Sensible à la casse 
+d2d60e235a17c6871bfe6f3e7d0e4c78=Demander pour remplacer 
+d29103f5149eb44015913f15132f3e3c=Suppression automatique des espaces de début et de fin 
+d406525c72f67454610b88aa0f16ae29=Portée des recherches/remplacements 
+ed287e329715abdeca39938de9b776fd=Item(s) sélectionné(s) 
+45fba6118c2d682c655dd21770d234f3=&Tous les items 
+5bd5cbb3c3f9796050ab438b99343f64=Tous les en-têtes d'éléments - les chapitres
+d233cfbad756ee0e3e6c2c270d697244=Tous les sujets - ne pas inclure les chapitres
+5a1832d767ff778f6ab3e1c20a1e3cc8=Remplacer tout 
+efb3fadae687d74ae03c2fe45e3c0c8a=Direction 
+8e8be53d8e2ebc99c251c077967fc852=Vers le bas 
+e0e548126b7e2f5aa06e8d69b25d56db=Vers le haut 
+
+[form_ChangeIcons]
+f5b87d8fcd7d0fe94db504a478b02053=Changer les icônes de la TOC par lots 
+015f279dd27f3ce0ef364fb7cc27630f=&Aide
+b010a794999ad73c1fcc8d8dddd2278b=OK 
+a559fba9a064cae9e9255bd73c1febc2=Annuler 
+ad594540d2bb974fced5c2363ecd3b33=Répertoire des i&cônes : 
+9e9f3258aa19e0d7c368bf9388c7105e=Fichier icône : 
+26fcaeceb79500d1918cea02b0866a5d=Par défaut (livre pour chapitre et icône ? pour sujet)
+776495d51f0bf13b2b5c2815bb4066ef=Par défaut 2 (livre pour chapitre et icône document pour sujet) 
+a17c4c94668859ec74b4aeba674569bc=Icône répertoire au lieu du livre (icône document pour sujet)
+2e019fb1f3148aade88daafba4b0f060=Défini par l'utilisateur 
+e0079a4383aa51266e37ec661fdc2132= Portée de l'affichage des icônes
+2a4fc654ab7e160ff5021ff124ab9326=Appliquer à toute l'arborescence 
+0870309f443fe305e7a11bc03b60c755=Appliquer à la branche en cours 
+afa4b96b74929f883345b3e3031bf432=Ignorer les icônes autres que les choix ci-dessus 
+e63671a0820e02ffe6a76079fa7774d6=Enregistrer par défaut le paramètrage des icônes  
+ 
+[FormImportOptions]
+a63809d5c3469c83458a3b36754c69d1=Options d'Importation 
+721b39808c702981e0dce3eed7f621a1=&Aide 
+71030155a691198a08fea07171f80269=Titre de la TOC 
+3bfd9a7f312661b5f2a3fc92fb6bb690=*.htm/*.html/*.mht 
+d05a1d20fdbc3c616cb9fc9fe4aa5702=Analyser le texte entre <title></title>
+f394acba2bd0283be813e1c2d6d76e29=Utiliser le nom entier du fichier 
+28d24e5d3ad363fbc35e85f2a96c26c3=Utiliser le nom du fichier sans extension 
+50405bc1e7dfff4dbcbe1e44e272b66e=Autres types de fichiers 
+a9deb9edd324512c52112d74905ac058=Utiliser le nom entier du fichier 
+8eb8af359cfbf9a2f59e8db46cbbf2a6=Utiliser le nom du fichier sans extension
+abf382ff600d592f316413722ad4987c=*.txt 
+bd7b761bf60cd8c66857e67353754198=Utiliser le nom entier du fichier 
+782f2a027eac2c3d150f0816d64b2aca=Utiliser le nom du fichier sans extension  
+5e26a98eb4de49b43c321880288f3573=Analyse de ligne(s) non vide(s) 
+d01ed53caf6562389d39ccf57503c74d=Icône de TOC  
+ad594540d2bb974fced5c2363ecd3b33=Icône de répertoire : 
+9e9f3258aa19e0d7c368bf9388c7105e=Icône de fichier : 
+26fcaeceb79500d1918cea02b0866a5d=Par défaut (livre pour chapitre et icône ? pour sujet) 
+776495d51f0bf13b2b5c2815bb4066ef=Par défaut 2 (livre pour chapitre et icône document pour sujet) 
+a17c4c94668859ec74b4aeba674569bc=Icône répertoire au lieu du livre (icône document pour sujet) 
+2e019fb1f3148aade88daafba4b0f060=Défini par l'utilisateur 
+a040c5c3414d2c51ce049267d09dc643=Autres 
+0823d8f352560aff8e7ba2e3caadd240=Ignorer les répertoires vides 
+a048b38d83d55c6049bcd4d75d0056ab=En ajoutant des répertoires et des fichiers à la TOC 
+53d6a455793ccfeab80733eae88c5ea5=Afficher les fichiers avant les répertoires  
+d96c69684e18be792cc7339dd61c3d8b=Afficher les répertoires avant les fichiers (comme dans l'explorateur) 
+9c4a1d05e9b358e83366495035b3efb1=Remplacer "_" par " " (caractère d'espace) dans les éléments de la TOC  
+96c14dc0cf52f6b3fccda00c4032457e=Mettre en majuscule la première lettre des éléments de la TOC 
+9509e36234e8e9aa7b36b32a9f589af3=&OK 
+75535e5aec302beb9c504f9ac12787b6=&Annuler 
+163bf2d17bc27fc04f1b661e57573042=&Rétablir
+
+[FormMain] 
+2b35c0378439c585b4de34051b7eeddd=Easy CHM 
+1ee9578a2edbf14133cac99cc2e7dce3=&Contenu 
+3f4c975600ec08103e1bb0effce64539=Ajouter un élément... 
+bcdc8eec4d68f3ff5986c901c956e918=Propriétés de la TOC 
+13b67d43026cf868314d2bd8445f7bac=Déplacer à gauche 
+62368991abbb028ca4dbddcdeff3bdf9=Déplacer à droite 
+9eeef0d0d7002944a82ad36b7393368f=Déplacer vers le haut
+e9561d5a9163631e5d2d13c61e5a006e=Déplacer vers le bas 
+b6b961662597938e685592042ab68e7e=Supprimer 
+fd8bdf505279e99dd7408f8d7d7257bd=Propriétés des sujets de la TOC  
+13899bbb299030e9931bf89987f92a55=Index 
+3ba3fc06d0e56a0f87af3c2d87b888cb=Ajouter un mot-clé 
+2370af1372942137dbe581233364d2d8=Propriétés des mots-clés 
+0c811719ff78ef67778f8e7358fe3f2a=Déplacer vers la gauche 
+5e0431e94ac60ba77392770bf90cc665=Déplacer vers la droite 
+b134497e21f26aa236e7fafe542e19e6=Déplacer vers le haut 
+159a89d663966a8d175bb923a3c26697=Déplacer vers le bas 
+0e953e21adfd7b424cd9c96a57275020=Supprimer 
+4bb460aa8a8e09f766c4c922fc8997ea=Propriétés de l'Index  
+d3f5d39b47d73555775a5ec7b071d9ff=&Source 
+faa97404640f20f19ba98ffd5d35514e=Enregistrer 
+3a0d442ad81354b9e8fe76d1b655a6e9=Couper 
+7e7f9da4826af5ba39c7a07ec4ea24f3=Copier 
+ee7a483dcf5acf231c3d42501e2d44cd=Coller 
+ea5446ea119b0efd20de068372ab4b11=Annuler 
+c30f4ca0e6a1d59bfdff845ecb98bdc7=Rétablir 
+8ebbc3b2ea33b646a01d9bf2f5edef1c=Utiliser ou pas la césure de mot 
+47e24863e1654e5982aef6ea5f7f4604=Mettre le texte choisi comme titre 
+578496a8917a70cb706f480ac951863b=Editer 
+8e46decf99f6cf54e29c3d2a8097180e=&Aperçu 
+f23fc184bcd5a82658feed752c54f30b=Nouveau 
+2fe9529ca7e66cc46474e0ae6e490013=Nouveau projet... 
+896728c4f0b8f299b0a7378b8ea54362=Ouvrir 
+08912e314eb1df325a124df82f009ad1=Ouvrir un projet... 
+bc1dbe9bf16620ec52e0a44d36d45d6b=Enregistrer 
+0ba8d3ba623801377911d281bc74778d=Enregistrer le projet 
+f10d7776bf3569531c0ec66f27f32832=Compiler 
+493d0f2addccc7b84ff56d2cc72c49f7=Compiler le projet en CHM... 
+c8e16253f12d60978228b97bc9d90235=Commander 
+d024c7f316c3782dc6fac9810b20f4e4=Comment payer 
+3a0fca02dcaefc1a6ed42f017e6289fc=&Fichier 
+d502ecce33c03779d592b0602723e9e9=&Enregistrer 
+a81a1c215f79481ecfca583bb219d481=&Options 
+09640fdf37eaf05de17c672dc36b52e8=O&utils 
+0f6994a885e8f3f0e2c270be6917575e=&Aide 
+74ec55f12cdfe182b3b3fe072ec24aed= CAPS  
+af2971e5b835fe3390b827555d99230f= NUM  
+bcbcd1e3155df2fe8a9dfbbcc0a7583c= SCROLL  
+e2187c1fa358cf394beffc3b41d8e695=&Vider les listes MRU  
+74e7756154932a3a839610be3d575fbb=&Supprimer les entrées périmées 
+9d1a92844460cc9f9d1c5ddafb792129=Réouvrir 
+8de82017b33d4428d97ace7abc7f158f=&Ajouter un élément 
+068b44275058a6c09ad661aca698d7f9=Ajouter un élément enfant
+fcbc97710a37e19f11c951baa8926aa6=&Importer 
+08833c6166b27c9c9524d25cb16e9692=Importer un répertoire... 
+ff64542a4df2ae8206351e1fc4714066=I&mporter des fichiers.. 
+64c532a09d27a3e61b0d891900c37e8c=Inclure un fichier... 
+01f2bf2e210bcb8cf2e1073b19b5509d=Exporter
+7d795926684ccacb71b6dab8b083a147=Exporter l'arborescence dans un fichier
+20dba6fc6d454b5b2f312670ebb37bac=Exporter les fichiers Alias et MAP... 
+04dbc990f1e71000f224664c95d075ff=&Déplacer 
+0e40a42acf39b24a878e44634979a06d=Vers la gauche 
+a2285f505b83f9ebba7950d22e0d969d=Vers la droite 
+786775dff4298183d0f6114e45c5097b=Vers le haut
+7bf9c04b93b7fbfc8a7740d91ca7a161=Vers le bas 
+5d83d02084a896aed586e43710ddfc94=Au début de la branche en cours
+56def76809582ea5bd1fcc6fd8753dd6=A la fin de la branche en cours
+e10da754ab6df029e756853881714626=Tout au début de la TOC
+5d924d12c6d4ca04f94f3b39ba0b553b=Tout à la fin de la TOC
+473725f0e83d99651d1f7d47dced8e67=&Supprimer 
+14b94b9bbfbf0af2598190bb6f74f197=&Remplacer... 
+b34285246cf44182a7b29256a44ea152=&Trier
+6674a39e2b31b2fde087c845cd4e63f0=&Trier l'arborescence entière
+989564bf3e76642b83cc68109f5cffa0=Trier une branche de l'arborescence
+ba22d0e89097d827d0e8074c6e9ce9fa=Numérotation automatique des lignes... 
+10f3aac180119d63e4909146a9e5ef03=Changer les icônes par lots... 
+ddac45212691c947ccb452cc1946ddd9=Développer l'arborescence 
+2de658d2b17cbbbf6ea9ac1572f8fdd1=Réduire l'arborescence
+39183e48a4872a0fce2c8837fa186a25=&Editer 
+9e1ec58a12df0a13fd5aa119b7073749=Propriétés de la TOC 
+631bd5dac86bf0aa9cbcbf5ae22dc0ba=&Annuler 
+4fb8961aacb19fb905b47285662a61c9=&Refaire
+efa8df1ac0da75a2024a4723a8b59738=C&ouper 
+0575bb4049a55b2639a7c6c833cc7945=&Copier 
+67c4cd6a85d7129baf8fda4317abaf03=Co&ller 
+ee156c8f070129d6d0a071cf06752916=Sélectionner &tout
+8f7b38ffce4acf38cadf29892a258b1d=Définir comme &titre 
+cd8cf818098f8a9e75f04673fc7d9b74=Editeurs favoris
+738e6034eaee892865f89b9105609748=Texte vers la doite 
+228df6c196bf709db8edc9b0b1e33068=Texte vers le bas 
+e7bd956437112ae5c566e198e0dc7562=A propos
+a93f035296bac989c480756c2823333f=Mise à jour automatique ...
+0f07cc9fb9723c24c167299b380e651d=Nous envoyer un Email
+337fbb1dfbb6365e7d54d36f3ac8c566=Aller sur notre site 
+6a8f4be57434adf6f5a8bed829d6656c=&Davantage... 
+e83958518dd02556134b06300eda1789=Produits de Guohua Soft 
+6aba04e219ce3a13c7826cb3968e47d6=Astuce du jour
+e46492cde41f042103e7aba198ebe55b=&Fichier 
+b31c98f3aa9499b072dfa5d758f5b42c=&Nouveau projet... 
+1d382c99f07a6ee7306d9bf555507cec=Ouvrir un projet... 
+2e1c1a985c316cdbde743809338bd766=Changer le répertoire racine du projet... 
+62e2f61c654f9dfe17fbd0526f54c9a0=&Fermer le projet 
+0cc2595a1448880c5f2c058fce692d44=&Enregistrer le projet 
+3d864518744b7a021f8388049ff1f2e5=Enregistrer le projet &sous... 
+273a53de027c3af120e66102b74a9874=Compi&ler le projet... 
+a2e0d286d18387b0697ac9da82ed0973=Qu&itter 
+1bf8ea775bd8a5ace0b26d29abb918a5=Sortir de cette application 
+329767db0c68c8fcb5bf70660978d56c=S'enregistrer
+debcec41fde1146658c818f4eb918345=Comment acheter 
+4eda86cae9f2fc049714237dffa500cb=Entrer la clé d'enregistrement... 
+e9cf6a4f58eaefda80aefb939d63040a=&Options 
+b160c08545d626208bfd15b8c4ce0bc8=&Préférences... 
+1a7cef4cb2f62d6f2107959aacb8f35a=&Options d'importation... 
+54c5e44a0182a37e162c1f2bc076a94c=Paramètres du CHM ... 
+e8be41476dd12a1212c9ef23f19fad1a=Remettre tous les paramètres par défaut 
+46376e040ed473ed98594ec83ed9a881=&Outils 
+fc1e4e8b920963f0dd5a9e458862d016=&Décompiler un CHM... 
+79238180dafa1f8356a41a94b7b5b63e=&Aide
+5953d9b9691db94603f5d208bec17734=&Contenus 
+a1e79aefcf5ff22fd4f9005e60016109=Comment acheter 
+d0ec0091933adc1056f353690ba69cd1=Entrer la clé d'enregistrement... 
+ee3b0ab97c6f1bc66dc41439828e6d9d=Réentrer la clé d'enregistrement...
+b1fb22912c046a72b176ea86dd16eef3=Écran d'accueil  
+8d100a388f50c59d207feac03b62f65b=&Ajouter un mot-clé 
+35b8c2ecb73f30913853637680ab1d07=&Déplacer 
+fc84eb68109faaa45b97a726010808a7=&A gauche 
+f70d79d50b50fc32acefc2aa7be7d7de=A &droite 
+584529743bf9ce07256a28e7bb04ccd7=&Vers le haut 
+0e5069deb48047737f4291a9b22d09ea=Ve&rs bas 
+e9450aa4b43b2d6c57c777adde3989ba=&Supprimer 
+0e36619770c82d6add12b95cac64ccb1=&Editer l'élément 
+073376dedf30f841f927b77f92760904=Propriétés des &mots-clés 
+
+[FormAskForRootPathDlg] 
+6f140bf9fe6fa517e47b4f9c8f0b9f85=Si vous avez un fichier CHM, vous pouvez le décompiler dans un répertoire, et ensuite de choisir ce répertoire comme répertoire racine du projet en cours. 
+015f279dd27f3ce0ef364fb7cc27630f=&Aide
+b010a794999ad73c1fcc8d8dddd2278b=OK 
+a559fba9a064cae9e9255bd73c1febc2=Annuler 
+6aab7be8895591b72f8774b9735f39c9=Impossible de trouver le répertoire racine du projet en cours ! 
+9e9f3258aa19e0d7c368bf9388c7105e=Sélectionnez un répertoire de manière à ce que le programme puisse trouver tous les fichiers liés et les associer à ce répertoire. 
+8665228755d409e0ddc9765a1eb20207=Modifier le répertoire racine du projet en cours 
+d7b4a50f6d850872ac77917322b0e996=Répertoire &racine du projet : 
+22d694d121893768bd8cd2170bc79afa=Nom du fichier projet en cours &ouvert : 
+130995d430a87c5b081a08b42f53f856=Sélectionner un répertoire racine pour le fichier projet :

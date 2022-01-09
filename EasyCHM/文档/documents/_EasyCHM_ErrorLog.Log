@@ -1,0 +1,29 @@
+Microsoft HTML Help Compiler 4.74.8702
+
+Compiling d:\InsPath\EasyCHM\文档\documents.CHM
+
+HHC3004: Warning: 二分查找.html : The HTML tag "= right){        int mid = (left+right)/2;    ..." is not a valid HTML tag (it does not begin with an alphanumeric character).
+C-API\查找\二分查找.html
+C-API\排序\快速排序.html
+C-API\排序\冒泡排序.html
+HHC3004: Warning: 进制运算.html : The HTML tag "= i){            plus = 0 + b[i] - '0' + tag; ..." is not a valid HTML tag (it does not begin with an alphanumeric character).
+C-API\数据处理\进制运算.html
+HHC3004: Warning: 数组翻转.html : The HTML tag "= end;i++)        result[tag++] = nums[i];    ..." is not a valid HTML tag (it does not begin with an alphanumeric character).
+C-API\数据处理\数组翻转.html
+C-API\数据处理\字符数组.html
+highlights\railscasts.min.css
+highlights\template.html
+TOC-Created-By-Easy-CHM.HHC
+Index-Created-By-Easy-CHM.HHK
+C:\Users\coco\AppData\Local\Temp\Easy-CHM-HtmlHelp-Maker.HTML
+c:\Users\coco\AppData\Local\Temp\Easy-CHM-HtmlHelp-Maker.GIF
+
+Compile time: 0 minutes, 0 seconds
+10	Topics
+26	Local links
+11	Internet links
+1	Graphic
+
+
+Created d:\InsPath\EasyCHM\文档\documents.CHM, 29,637 bytes
+Compression decreased file by 6,024 bytes.
