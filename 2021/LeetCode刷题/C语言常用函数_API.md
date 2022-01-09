@@ -554,7 +554,48 @@ char * plusBinary(char * a, char * b){
   }
   ```
 
-  
+
+
+
+## 1.5  数组数据重置
+
+### 整型数组
+
+```c
+/*
+ * 输入: 整型数组
+ * 输出: 经重新赋值的数组
+ * 参数: 数组 数组大小 目标值
+*/
+void resetArrayOfInt(int * nums,int size,int value){
+    int i;
+    for(i = 0;i < size;i++)
+        nums[i] = value;
+}
+```
+
+
+
+### 字符数组
+
+```c
+/*
+ * 输入: 字符数组
+ * 输出: 经重新赋值的字符数组
+ * 参数: 数组 数组大小 目标值
+*/
+void resetArrayOfCh(char str[],int size,char value){
+    int i;
+    for(i = 0;i < size;i++)
+        str[i] = value;
+}
+```
+
+
+
+
+
+
 
 # 2 排序
 
