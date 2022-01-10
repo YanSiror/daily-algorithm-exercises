@@ -595,8 +595,6 @@ void resetArrayOfCh(char str[],int size,char value){
 
 
 
-
-
 # 2 排序
 
 ## 2.1 冒泡排序
@@ -665,34 +663,35 @@ void resetArrayOfCh(char str[],int size,char value){
 
   ```c
   /*
+   * 降序排序
    * 输入: 整型数组 最小下标 最大下标
-   * 输出: 降序排序后的数组
+   * 输出: 空
   */
-  int * quickSortAC(int * nums, int low, int high)
+  void quickSortDC(int a[],int left,int right)
   {
-      int left = low;
-      int right = high;
-      int key = nums[left];   //从 low 开始
-  
-      if(low >= high)
+      int i,j,key;
+      i = left;
+      j = right;
+      key = a[left];
+      if(left>right)
           return;
   
-      //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
-      //左侧寻找一个小于 key 的数, 两者交换
-      //最后使得 最终位置 左侧都小于 key,右侧都大于 key ,也即key
+      //每次排序都以 key 为基准, 右侧寻找一个小于 key 的数
+      //左侧寻找一个大于 key 的数, 两者交换
+      //最后使得 最终位置 左侧都大于 key,右侧都小于 key ,也即key
       //来到了它的最终位置 FinalPosition
-      while(left < right){
-          while(left < right && nums[right] < key)    right--;    //从右向左查找第一个小于K的数
-          nums[left] = nums[right];
-  
-          while(left < right && nums[left] > key)    left++;    //从左向右查找第一个小于K的数
-          nums[right] = nums[left];
-      }
-  
-      nums[left] = key;
-      // 递归调用
-      quickSortAC(nums, low, left - 1);     // 排序k左边
-      quickSortAC(nums, left + 1, high);    // 排序k右边
+      while(i != j)
+      {
+          while(a[j] < key && j>i)    j--;    //从右向左查找第一个小于K的数
+          if(j>i)
+              a[i++] = a[j];
+          while(a[i] > key && j>i)    i++;    //从左向右查找第一个大于K的数
+          if(j>i)
+              a[j--] = a[i];
+  	}
+      a[i] = key;
+      quickSortDC(a,left,i-1);      // 排序k左边
+      quickSortDC(a,i+1,right);     // 排序k右边
   }
   ```
 
@@ -700,37 +699,38 @@ void resetArrayOfCh(char str[],int size,char value){
 
   ```c
   /*
+   * 升序排序
    * 输入: 整型数组 最小下标 最大下标
-   * 输出: 升序排序后的数组
+   * 输出: 空
   */
-  int * quickSortAC(int * nums, int low, int high)
+  void quickSortAC(int a[],int left,int right)
   {
-      int left = low;
-      int right = high;
-      int key = nums[left];   //从 low 开始
-  
-      if(low >= high)
+      int i,j,key;
+      i = left;
+      j = right;
+      key = a[left];
+      if(left>right)
           return;
   
       //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
       //左侧寻找一个小于 key 的数, 两者交换
       //最后使得 最终位置 左侧都小于 key,右侧都大于 key ,也即key
       //来到了它的最终位置 FinalPosition
-      while(left < right){
-          while(left < right && nums[right] > key)    right--;    //从右向左查找第一个小于K的数
-          nums[left] = nums[right];
-  
-          while(left < right && nums[left] < key)    left++;    //从左向右查找第一个小于K的数
-          nums[right] = nums[left];
-      }
-  
-      nums[left] = key;
-      // 递归调用
-      quickSortAC(nums, low, left - 1);     // 排序k左边
-      quickSortAC(nums, left + 1, high);    // 排序k右边
+      while(i != j)
+      {
+          while(a[j] > key && j>i)    j--;    //从右向左查找第一个小于K的数
+          if(j>i)
+              a[i++] = a[j];
+          while(a[i] < key && j>i)    i++;    //从左向右查找第一个小于K的数
+          if(j>i)
+              a[j--] = a[i];
+  	}
+      a[i] = key;
+      quickSortAC(a,left,i-1);      // 排序k左边
+      quickSortAC(a,i+1,right);     // 排序k右边
   }
   ```
-
+  
   
 
 # 3 查找
