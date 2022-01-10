@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="GB2312">
+    <title>二进制求和</title>
+    <link rel="stylesheet" href="../../../highlights/railscasts.min.css">
+</head>
+<body>
+<h3>二进制求和</h3>
+<pre class='hljs'>
+    <code class="c">
+/*
+ * 输入: 字符数组 长度
+ * 输出: 翻转后的数组
+*/
+char * reverseChar(char * str,int size){
+    int i,j;
+    for(i = 0;i < size/2;i++){
+        int temp = str[i];
+        str[i] = str[size-i-1];
+        str[size-i-1] = temp;
+    }
+    return str;
+}
+
+/**
+* 输入: 相加的二进制字符串 a b
+* 输出: 相加后的结果字符串
+* 思路: 字符串翻转后从个位考虑进位逐级相加,处理可能的最高位,再对结果进行翻转。
+*/
+char * plusBinary(char * a, char * b){
+    int sizeA = strlen(a);
+    int sizeB = strlen(b);
+    reverseChar(a,sizeA);
+    reverseChar(b,sizeB);
+    int i = 0;
+    int maxSize = fmax(sizeA,sizeB);
+    //生成结果数组
+    char * result = malloc(sizeof(char) * (maxSize+2));
+    int tag = 0;        //实际否需要进位 1 需要 0 不需要
+    for(i = 0;i < maxSize;i++){
+        int plus = 0;
+        if(sizeA > i && sizeB > i){
+            plus = a[i] - '0' + b[i] - '0' + tag;
+        } else if(sizeA <= i){
+            plus = 0 + b[i] - '0' + tag;
+        } else if(sizeB <= i){
+            plus = a[i] - '0' + 0 + tag;
+        }
+
+        //考虑进位
+        if(plus >= 2)
+            tag = 1;
+        else
+            tag = 0;
+        result[i] = plus % 2 + '0';
+    }
+    if(tag == 1){
+        result[i] = tag + '0';
+        result[i+1] = '\0';
+    } else
+        result[i] = '\0';
+    reverseChar(result,strlen(result));
+    return result;
+}
+    </code>
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="GB2312">
+    <title>字符串分割</title>
+    <link rel="stylesheet" href="../../../highlights/railscasts.min.css">
+</head>
+<body>
+<h3>字符串分割</h3>
+<pre class='hljs'>
+    <code class="c">
+/*
+ * 输入: 将字符串根据字符 ch 进行划分
+ * 输出: 划分后的二维数组
+ * 可接受: ss1bb1  以1位分割符
+*/
+char ** splitAsChar(char * str,char ch,int * returnsize){
+    //首先记录字符长度
+    int length = 1,i;
+    char * head = str;
+    while(*head){
+        if(*head == ch)
+            length++;
+        head++;
+    }
+
+    //生成二维数组
+    int ** result = malloc(sizeof(char*) * length);
+    for(i = 0;i < length;i++)
+        result[i] = malloc(sizeof(char) * 20);
+
+    //开始分割
+    head = str;
+    char temp[10];
+    int tag = 0,cur = 0;
+    while(*head){
+        if(*head != ch){
+            temp[tag++] = *head;
+            temp[tag] = '\0';
+        } else{
+            strcpy(result[cur++],temp);
+            temp[tag] = '\0';
+            tag = 0;
+        }
+        head++;
+    }
+    //末尾没有进行赋值
+    strcpy(result[cur],temp);
+
+    *returnsize = length;
+    return result;
+}
+    </code>
+</pre>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="GB2312">
+    <title>十进制转N进制</title>
+    <link rel="stylesheet" href="../../../highlights/railscasts.min.css">
+</head>
+<body>
+<h3>十进制转N进制</h3>
+<pre class='hljs'>
+    <code class="c">
+/*
+ * 输入: 整数 num 可返回的长度 size 待转换的进制数 N
+ * 输出: 转换后的二进制的数组  数组长度参数
+ * 说明: 该数组返回的数组结果从小端的 从个位开始, 并且正负值转换后都得到的是正值
+ * 		如: -1/1 -> 1    -2/2 -> 10   -3/3 -> 11
+*/
+int * tenToNArray(int num,int * size,int n){
+    //边界条件 - 0
+    if(!num){
+        *size = 1;
+        int * nums= malloc(sizeof(int) * *size);
+        nums[0] = 0;
+        return nums;
+    }
+
+    //计算长度 - 无关正负, 取绝对值
+    int temp = abs(num);
+    int len = 0;
+    while(temp){
+        temp /= n;
+        len++;
+    }
+
+    //转换为2进制, 保存到数组
+    int * nums= malloc(sizeof(int) * len);
+    int tag = 0,i;  //tag用于移动nums数组下标
+
+    temp = abs(num);
+    while(temp){
+        nums[tag++] = temp % n;
+        temp /= n;
+    }
+    *size = len;
+    return nums;
+}
+    </code>
+</pre>
+
+</body>
+</html>
