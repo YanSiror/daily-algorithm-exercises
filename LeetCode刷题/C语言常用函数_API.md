@@ -212,7 +212,7 @@ int * getSubArr(int * nums,int numsSize,int start,int end,int * returnSize){
 
 
 
-## 整型数组合并(正负均可)
+### 整型数组合并(正负均可)
 
 ```c
 /*
