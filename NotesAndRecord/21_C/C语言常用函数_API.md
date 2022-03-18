@@ -812,12 +812,13 @@ void resetArrayOfCh(char str[],int size,char value){
   */
   void quickSortAC(int a[],int left,int right)
   {
+      if(left>right)
+          return;
       int i,j,key;
       i = left;
       j = right;
       key = a[left];
-      if(left>right)
-          return;
+  
   
       //每次排序都以 key 为基准, 右侧寻找一个大于 key 的数
       //左侧寻找一个小于 key 的数, 两者交换
