@@ -349,5 +349,61 @@ class Solution {
 
 
 
-7、
+## 7 颜色分类 LC-75
 
+难度中等1193收藏分享切换为英文接收动态反馈
+
+给定一个包含红色、白色和蓝色、共 `n` 个元素的数组 `nums` ，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+
+我们使用整数 `0`、 `1` 和 `2` 分别表示红色、白色和蓝色。
+
+必须在不使用库的sort函数的情况下解决这个问题。
+
+**示例 1：**
+
+```
+输入：nums = [2,0,2,1,1,0]
+输出：[0,0,1,1,2,2]
+```
+
+**示例 2：**
+
+```
+输入：nums = [2,0,1]
+输出：[0,1,2]
+```
+
+**解答**
+
+`与 6 题相似`
+
+```java
+class Solution {
+    public void sortColors(int[] nums) {
+        //相对排列取 O(3n)
+        int [] res = new int[nums.length];
+        int index = 0;
+        int end = nums.length - 1;
+        for(int i = 0;i < nums.length; i++){
+            if(0 == nums[i])
+                res[index++] = 0;
+            else if(2 == nums[i])
+                res[end--] = 2;
+        }
+        //补全 1
+        for(int i = index;i <= end; i++)
+            res[index++] = 1;
+        //赋值
+        for(int i = 0;i < nums.length; i++)
+            nums[i] = res[i];
+    }
+}
+```
+
+
+
+
+
+
+
+# 动态规划部分
