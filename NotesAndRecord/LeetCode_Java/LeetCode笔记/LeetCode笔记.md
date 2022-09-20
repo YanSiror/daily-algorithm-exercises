@@ -784,6 +784,57 @@ public int firstUniqChar(String s) {
 
 
 
+## 4、有效的字母异位词
+
+给定两个字符串 s 和 t ，编写一个函数来判断 t 是否是 s 的字母异位词。
+
+注意：若 s 和 t 中每个字符出现的次数都相同，则称 s 和 t 互为字母异位词。
+
+**示例 1:**
+
+```
+输入: s = "anagram", t = "nagaram"
+输出: true
+```
+
+**示例 2:**
+
+```
+输入: s = "rat", t = "car"
+输出: false
+```
+
+**代码**
+
+```java
+    public boolean isAnagram(String s, String t) {
+        if(s.length() != t.length())
+            return false;
+        //哈希表解法
+        int []a = new int[26];
+        int []b = new int[26];
+        Arrays.fill(a, 0);
+        Arrays.fill(b, 0);
+        for(int i = 0; i < s.length(); i++)
+            a[s.charAt(i) - 'a']++;
+        for(int i = 0; i < t.length(); i++)
+            b[t.charAt(i) - 'a']++;
+
+        for(int i = 0; i < 26; i++)
+            if(a[i] != b[i])
+                return false;
+        return true;
+    }
+```
+
+
+
+
+
+
+
+
+
 # 链表
 
 ## 1、删除链表的倒数第N个节点
@@ -1067,7 +1118,48 @@ public void merge(int[] nums1, int m, int[] nums2, int n) {
 
 
 
-## 2、
+## 2、第一个错误的版本
+
+你是产品经理，目前正在带领一个团队开发新的产品。不幸的是，你的产品的最新版本没有通过质量检测。由于每个版本都是基于之前的版本开发的，所以错误的版本之后的所有版本都是错的。
+
+假设你有 n 个版本 [1, 2, ..., n]，你想找出导致之后所有版本出错的第一个错误的版本。
+
+你可以通过调用 bool isBadVersion(version) 接口来判断版本号 version 是否在单元测试中出错。实现一个函数来查找第一个错误的版本。你应该尽量减少对调用 API 的次数。
+
+**示例 1：**
+
+```
+输入：n = 5, bad = 4
+输出：4
+解释：
+调用 isBadVersion(3) -> false 
+调用 isBadVersion(5) -> true 
+调用 isBadVersion(4) -> true
+所以，4 是第一个错误的版本。
+```
+
+**示例 2：**
+
+```
+输入：n = 1, bad = 1
+输出：1
+```
+
+**代码**
+
+```java
+public int firstBadVersion(int n) {
+    int start = 1, end = n;
+    while (start < end) {
+        int mid = start + (end - start) / 2;
+        if (!isBadVersion(mid))
+            start = mid + 1;
+        else
+            end = mid;
+    }
+    return start;
+}
+```
 
 
 
@@ -1077,3 +1169,120 @@ public void merge(int[] nums1, int m, int[] nums2, int n) {
 
 ## 1、爬楼梯
 
+假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+
+每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+
+**示例 1：**
+
+```
+输入：n = 2
+输出：2
+解释：有两种方法可以爬到楼顶。
+
+1. 1 阶 + 1 阶
+2. 2 阶
+```
+
+**示例 2：**
+
+```
+输入：n = 3
+输出：3
+解释：
+有三种方法可以爬到楼顶。
+1. 1 阶 + 1 阶 + 1 阶
+2. 1 阶 + 2 阶
+3. 2 阶 + 1 阶
+```
+
+**代码**
+
+非递归算法, 需要记住每一层楼梯能够爬到的方法数。
+
+$dp[i] = dp[i-1] + dp[i-2]$
+
+```java
+    public int climbStairs(int n) {
+        if(n <= 1)
+            return 1;
+        int []dp = new int[n];
+        dp[0] = 1;
+        dp[1] = 2;
+
+        int res = 0;
+        for(int i = 2;i < n;i++){
+            dp[i] = dp[i-1] + dp[i-2];
+        }
+        return dp[n-1];
+    }
+```
+
+
+
+## 2、买卖股票的最佳时机
+
+给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
+
+你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
+
+返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
+
+**示例 1：**
+
+```
+输入：[7,1,5,3,6,4]
+输出：5
+解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+```
+
+**示例 2：**
+
+```
+输入：prices = [7,6,4,3,1]
+输出：0
+解释：在这种情况下, 没有交易完成, 所以最大利润为 0。
+```
+
+**代码**
+
+暴力法
+
+```java
+    public int maxProfit(int[] prices) {
+        //暴力
+        int [] ans = new int[prices.length];
+        for(int i = 0; i < prices.length; i++){
+            ans[i] = 0;
+            for(int j = i; j < prices.length; j++){
+                if(prices[j] - prices[i] > 0){
+                    ans[i] = Math.max(ans[i], prices[j] - prices[i]);
+                }
+            }
+        }
+        Arrays.sort(ans);
+        return ans[prices.length - 1];
+    }
+```
+
+双指针
+
+```java
+    public int maxProfit(int[] prices) {
+        int pre, maxProfit;
+        pre = maxProfit = 0;
+        pre = prices[0];
+        for(int i = 0; i < prices.length; i++){
+            pre = Math.min(pre, prices[i]);
+            maxProfit = Math.max(maxProfit, prices[i] - pre);
+        }
+        return  maxProfit;
+    }
+```
+
+
+
+
+
+# 
