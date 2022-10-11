@@ -829,7 +829,372 @@ public int firstUniqChar(String s) {
 
 
 
+## 5、验证回文串
 
+如果在将所有大写字符转换为小写字符、并移除所有非字母数字字符之后，短语正着读和反着读都一样。则可以认为该短语是一个 回文串 。
+
+字母和数字都属于字母数字字符。
+
+给你一个字符串 s，如果它是 回文串 ，返回 true ；否则，返回 false 。
+
+ 
+
+**示例 1：**
+
+```
+输入: s = "A man, a plan, a canal: Panama"
+输出：true
+解释："amanaplanacanalpanama" 是回文串。
+```
+
+**示例 2：**
+
+```
+输入：s = "race a car"
+输出：false
+解释："raceacar" 不是回文串。
+```
+
+**示例 3：**
+
+```
+输入：s = " "
+输出：true
+解释：在移除非字母数字字符之后，s 是一个空字符串 "" 。
+由于空字符串正着反着读都一样，所以是回文串。
+```
+
+**提示：**
+
+> 1 <= s.length <= 2 * 105
+> s 仅由可打印的 ASCII 字符组成
+
+
+
+**代码**
+
+```java
+class Solution {
+    public boolean isPalindrome(String s) {
+        StringBuilder strBuilder = new StringBuilder(s);
+        for(int i = 0; i <strBuilder.length(); i++){
+            if(strBuilder.charAt(i) >= 'A' && strBuilder.charAt(i) <= 'Z')
+                continue;
+            if(strBuilder.charAt(i) >= 'a' && strBuilder.charAt(i) <= 'z')
+                continue;
+            if(strBuilder.charAt(i) >= '0' && strBuilder.charAt(i) <= '9')
+                continue;
+            strBuilder.setCharAt(i,' ');
+        }
+        s = strBuilder.toString();
+        s = s.toLowerCase();
+        s = s.replaceAll(" ","");
+
+        System.out.println(s);
+        for(int i = 0;i < s.length()/2;i++){
+            if(s.charAt(i) != s.charAt(s.length()-i-1))
+                return false;
+        }
+        return true;
+    }
+}
+```
+
+
+
+## 6、字符串转整数
+
+请你来实现一个 myAtoi(string s) 函数，使其能将字符串转换成一个 32 位有符号整数（类似 C/C++ 中的 atoi 函数）。
+
+函数 myAtoi(string s) 的算法如下：
+
+读入字符串并丢弃无用的前导空格
+检查下一个字符（假设还未到字符末尾）为正还是负号，读取该字符（如果有）。 确定最终结果是负数还是正数。 如果两者都不存在，则假定结果为正。
+读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。字符串的其余部分将被忽略。
+将前面步骤读入的这些数字转换为整数（即，"123" -> 123， "0032" -> 32）。如果没有读入数字，则整数为 0 。必要时更改符号（从步骤 2 开始）。
+如果整数数超过 32 位有符号整数范围 [−231,  231 − 1] ，需要截断这个整数，使其保持在这个范围内。具体来说，小于 −231 的整数应该被固定为 −231 ，大于 231 − 1 的整数应该被固定为 231 − 1 。
+返回整数作为最终结果。
+**注意：**
+
+>本题中的空白字符只包括空格字符 ' ' 。
+>除前导空格或数字后的其余字符串外，请勿忽略 任何其他字符。
+
+**示例 1：**
+
+```
+输入：s = "42"
+输出：42
+解释：加粗的字符串为已经读入的字符，插入符号是当前读取的字符。
+第 1 步："42"（当前没有读入字符，因为没有前导空格）
+         ^
+第 2 步："42"（当前没有读入字符，因为这里不存在 '-' 或者 '+'）
+         ^
+第 3 步："42"（读入 "42"）
+           ^
+解析得到整数 42 。
+由于 "42" 在范围 [-231, 231 - 1] 内，最终结果为 42 。
+```
+
+**示例 2：**
+
+```
+输入：s = "   -42"
+输出：-42
+解释：
+第 1 步："   -42"（读入前导空格，但忽视掉）
+            ^
+第 2 步："   -42"（读入 '-' 字符，所以结果应该是负数）
+             ^
+第 3 步："   -42"（读入 "42"）
+               ^
+解析得到整数 -42 。
+由于 "-42" 在范围 [-231, 231 - 1] 内，最终结果为 -42 。
+```
+
+**示例 3：**
+
+```
+输入：s = "4193 with words"
+输出：4193
+解释：
+第 1 步："4193 with words"（当前没有读入字符，因为没有前导空格）
+         ^
+第 2 步："4193 with words"（当前没有读入字符，因为这里不存在 '-' 或者 '+'）
+         ^
+第 3 步："4193 with words"（读入 "4193"；由于下一个字符不是一个数字，所以读入停止）
+             ^
+解析得到整数 4193 。
+由于 "4193" 在范围 [-231, 231 - 1] 内，最终结果为 4193 。
+```
+
+**提示：**
+
+>0 <= s.length <= 200
+>s 由英文字母（大写和小写）、数字（0-9）、' '、'+'、'-' 和 '.' 组成
+
+**代码**
+
+```java
+class Solution {
+        public int myAtoi(String str) {
+        str = str.trim();//去掉前后的空格
+        //如果为空，直接返回0
+        if (str.length() == 0)
+            return 0;
+        int index = 0;//遍历字符串中字符的位置
+        int res = 0;//最终结果
+        int sign = 1;//符号，1是正数，-1是负数，默认为正数
+        int length = str.length();
+        //判断符号
+        if (str.charAt(index) == '-' || str.charAt(index) == '+')
+            sign = str.charAt(index++) == '+' ? 1 : -1;
+        for (; index < length; ++index) {
+            //取出字符串中字符，然后转化为数字
+            int digit = str.charAt(index) - '0';
+            //按照题中的要求，读入下一个字符，直到到达下一个非数字字符或到达输入的结尾。
+            //字符串的其余部分将被忽略。如果读取了非数字，后面的都要忽略
+            if (digit < 0 || digit > 9)
+                break;
+            //越界处理
+            if (res > Integer.MAX_VALUE / 10 || (res == Integer.MAX_VALUE / 10 && digit > Integer.MAX_VALUE % 10))
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            else
+                res = res * 10 + digit;
+        }
+        return sign * res;
+    }
+}
+```
+
+
+
+## 7、实现 strStr()
+
+给你两个字符串 haystack 和 needle ，请你在 haystack 字符串中找出 needle 字符串的第一个匹配项的下标（下标从 0 开始）。如果 needle 不是 haystack 的一部分，则返回  -1 。
+
+**示例**
+
+```
+示例 1：
+    输入：haystack = "sadbutsad", needle = "sad"
+    输出：0
+    解释："sad" 在下标 0 和 6 处匹配。
+    第一个匹配项的下标是 0 ，所以返回 0 。
+示例 2：
+    输入：haystack = "leetcode", needle = "leeto"
+    输出：-1
+    解释："leeto" 没有在 "leetcode" 中出现，所以返回 -1 。
+```
+
+**提示：**
+
+>1 <= haystack.length, needle.length <= 104
+>haystack 和 needle 仅由小写英文字符组成
+
+**代码**
+
+```java
+class Solution {
+    public int strStr(String haystack, String needle) {
+ //字符串匹配算法
+        if(needle.length() > haystack.length())
+            return -1;
+        int j = 0;
+        int i = 0;
+        int tag = i;
+        while(i < haystack.length()){
+            tag = i;
+            while(j < needle.length() && i < haystack.length() &&  needle.charAt(j) == haystack.charAt(i)){
+                i++;
+                j++;
+            }
+            if(j == needle.length())
+                return tag;
+            else {
+                j = 0;
+                i = tag + 1;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+
+
+## 8、外观数列
+
+给定一个正整数 n ，输出外观数列的第 n 项。
+
+「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。
+
+你可以将其视作是由递归公式定义的数字字符串序列：
+
+- countAndSay(1) = "1"
+- countAndSay(n) 是对 countAndSay(n-1) 的描述，然后转换成另一个数字字符串。
+
+前五项如下：
+
+```
+1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+       第一项是数字 1 
+       描述前一项，这个数是 1 即 “ 一 个 1 ”，记作 "11"
+       描述前一项，这个数是 11 即 “ 二 个 1 ” ，记作 "21"
+       描述前一项，这个数是 21 即 “ 一 个 2 + 一 个 1 ” ，记作 "1211"
+       描述前一项，这个数是 1211 即 “ 一 个 1 + 一 个 2 + 二 个 1 ” ，记作 "111221"
+```
+
+
+
+**示例**
+
+```
+示例 1：
+    输入：n = 1
+    输出："1"
+    解释：这是一个基本样例。
+示例 2：
+    输入：n = 4
+    输出："1211"
+    解释：
+    countAndSay(1) = "1"
+    countAndSay(2) = 读 "1" = 一 个 1 = "11"
+    countAndSay(3) = 读 "11" = 二 个 1 = "21"
+    countAndSay(4) = 读 "21" = 一 个 2 + 一 个 1 = "12" + "11" = "1211"
+```
+
+
+
+**提示：**
+
+>1 <= n <= 30
+
+
+
+**代码**
+
+```java
+class Solution {
+    public String countAndSay(int n) {
+        String s = "1 ";
+        for(int i = 1; i < n; i++) {
+            Map<Integer, Character> map = new HashMap<>();
+            String result = "";
+            for (int j = 1; j < s.length();j++) {
+                int count = 1;
+                while(j < s.length() && s.charAt(j-1) == s.charAt(j)){
+                    count++;
+                    j++;
+                }
+                map.put(count, s.charAt(j-1));
+                result = result.concat(Integer.toString(count));
+                result = result.concat(Character.toString(s.charAt(j-1)));
+            }
+            s = result.concat(" ");
+        }
+        return s.replaceAll(" ","");
+    }
+}
+```
+
+
+
+## 9、最长公共前缀
+
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+**示例**
+
+```
+示例 1：
+    输入：strs = ["flower","flow","flight"]
+    输出："fl"
+示例 2：
+    输入：strs = ["dog","racecar","car"]
+    输出：""
+    解释：输入不存在公共前缀。
+```
+
+**提示：**
+
+>1 <= strs.length <= 200
+>0 <= strs[i].length <= 200
+>strs[i] 仅由小写英文字母组成
+
+
+
+**代码**
+
+```java
+    public String longestCommonPrefix(String[] strs) {
+        //暴力
+        String result = "";
+        //拿到长度最短的字符串
+        int min = Integer.MAX_VALUE;
+        int index = 0;
+        for (int i = 0; i < strs.length; i++) {
+            if(min > strs[i].length()){
+                min = strs[i].length();
+                index = i;
+            }
+        }
+
+        for(int i = 0; i < strs[index].length(); i++){
+            for (int j = 0; j < strs.length; j++) {
+                if(strs[index].charAt(i) != strs[j].charAt(i))
+                    return result;
+            }
+            result = result.concat(Character.toString(strs[index].charAt(i)));
+        }
+        return result;
+    }
+```
 
 
 
@@ -1024,6 +1389,62 @@ public int firstUniqChar(String s) {
 
 
 
+## 5、环形链表
+
+给你一个链表的头节点 head ，判断链表中是否有环。
+
+如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况。
+
+如果链表中存在环 ，则返回 true 。 否则，返回 false 。
+
+ **示例**
+
+```
+示例 1：
+    输入：head = [3,2,0,-4], pos = 1
+    输出：true
+    解释：链表中有一个环，其尾部连接到第二个节点。
+示例 2：
+    输入：head = [1,2], pos = 0
+    输出：true
+    解释：链表中有一个环，其尾部连接到第一个节点。
+示例 3：
+    输入：head = [1], pos = -1
+    输出：false
+    解释：链表中没有环。
+```
+
+
+
+
+
+
+
+
+
+**代码**
+
+```java
+    public boolean hasCycle(ListNode head) {
+        //双指针法, pre + 1, tail + 2, 如果没有环不会相遇
+        if (head == null)
+            return false;
+        ListNode pre = head;
+        ListNode tail = head;
+        while (tail != null && tail.next != null) {
+            pre = pre.next;
+            tail = tail.next.next;
+            if(pre == tail)
+                return true;
+        }
+        return false;
+    }
+```
+
+
+
+
+
 
 
 # 树
@@ -1056,13 +1477,136 @@ public int maxDepth(TreeNode root) {
 
 
 
-## 2、
+## 2、验证二叉搜索树
+
+给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。
+
+有效 二叉搜索树定义如下：
+
+节点的左子树只包含 小于 当前节点的数。
+节点的右子树只包含 大于 当前节点的数。
+所有左子树和右子树自身必须也是二叉搜索树。
+
+**示例**
+
+```
+示例 1：
+输入：root = [2,1,3]
+输出：true
+示例 2：
+输入：root = [5,1,4,null,null,3,6]
+输出：false
+解释：根节点的值是 5 ，但是右子节点的值是 4 。
+```
+
+
+**提示：**
+
+>树中节点数目范围在[1, 104] 内
+>-231 <= Node.val <= 231 - 1
+
+**代码**
+
+```java
+    TreeNode pre;
+    //考虑 [2,1,3]
+    // isValidBST(root.left) - pre!=null && 1 < 2, 返回 true => isValidBST(1) - pre为null,pre.val = 1  => isValidBST(null) - 返回 true
+    // isValidBST(root.right)  => isValidBST(3) => isValidBST(null), 与上相同
+    public boolean isValidBST(TreeNode root) {
+        if(root == null)
+            return true;
+        if(!isValidBST(root.left))
+            return false;
+        //pre为空代表, 当前没有
+        if(pre != null && pre.val >= root.val)
+            return false;
+        pre = root;
+        if(!isValidBST(root.right))
+            return false;
+        return true;
+    }
+```
 
 
 
+## 3、对称二叉树
+
+给你一个二叉树的根节点 root ， 检查它是否轴对称。
+
+**示例**
+
+>示例 1：
+>
+>​	输入：root = [1,2,2,3,4,4,3]
+>​	输出：true
+>示例 2：
+>
+>​	输入：root = [1,2,2,null,3,null,3]
+>​	输出：false
+
+**提示：**
+
+>树中节点数目在范围 [1, 1000] 内
+>-100 <= Node.val <= 100
+
+**代码**
+
+![image.png](D:\GitRepository\daily-algorithm-exercises\NotesAndRecord\LeetCode_Java\Java 刷题记录\imgs\7e869a67d741d9ef4d5e51f18a5571f2a537f4393a65f2e205888f783074660a-image.png)
+
+```java
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null)
+            return true;
+        //从两个子节点开始判断
+        return isSymmetricHelper(root.left, root.right);
+    }
+
+    public boolean isSymmetricHelper(TreeNode left, TreeNode right) {
+        //如果左右子节点都为空，说明当前节点是叶子节点，返回true
+        if (left == null && right == null)
+            return true;
+        //如果当前节点只有一个子节点或者有两个子节点，但两个子节点的值不相同，直接返回false
+        if (left == null || right == null || left.val != right.val)
+            return false;
+        //然后左子节点的左子节点和右子节点的右子节点比较，左子节点的右子节点和右子节点的左子节点比较
+        return isSymmetricHelper(left.left, right.right) && isSymmetricHelper(left.right, right.left);
+    }
+}
+```
 
 
 
+`结果: 如果出现值相同的结点, 会出现错误。 `
+
+`思路: 中序遍历得到的数组顺序一定是一个回文串, 但是限定条件是 左右子树结点val值不能相同 `
+
+```java
+class Solution {
+    public void inOrderRecur(TreeNode root,List<Integer> list) {
+        if (root == null) {
+            return;
+        }
+        inOrderRecur(root.left,list);
+        list.add(root.val);
+        inOrderRecur(root.right,list);
+    }
+
+
+    public boolean isSymmetric(TreeNode root) {
+        List<Integer> list = new ArrayList<Integer>();
+        inOrderRecur(root,list);
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println(list.get(i));
+        }
+        for (int i = 0; i < list.size() / 2; i++) {
+            if(list.get(i) != list.get(list.size()-i-1))
+                return false;
+        }
+        return true;
+    }
+}
+```
 
 
 
@@ -1285,4 +1829,99 @@ $dp[i] = dp[i-1] + dp[i-2]$
 
 
 
-# 
+## 3、打家劫舍
+
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+
+给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+
+**示例**
+
+```
+示例 1：
+    输入：[1,2,3,1]
+    输出：4
+    解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+         偷窃到的最高金额 = 1 + 3 = 4 。
+示例 2：
+    输入：[2,7,9,3,1]
+    输出：12
+    解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
+         偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+```
+
+
+
+**提示：**
+
+>1 <= nums.length <= 100
+>0 <= nums[i] <= 400
+
+
+
+
+
+**代码**
+
+```java
+public int rob(int[] nums) {
+    int dp[] = new int[nums.length];
+    int max = 0;
+    for(int i = 0; i < nums.length; i++){
+        if(i < 2){
+            //获取当前最大值保存到 dp 数组中
+            max = Math.max(max,nums[i]);
+            dp[i] = max;
+        } else{
+            //获取当前 + 相隔1个元素的值
+            max = Math.max(max, dp[i-2] + nums[i]);
+            dp[i] = max;
+        }
+    }
+    return dp[nums.length - 1];
+}
+```
+
+
+
+## 4、最大子序和
+
+给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+子数组 是数组中的一个连续部分。
+
+**示例**
+
+```
+示例 1：
+    输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+    输出：6
+    解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+示例 2：
+    输入：nums = [1]
+    输出：1
+示例 3：
+    输入：nums = [5,4,-1,7,8]
+    输出：23
+```
+
+**提示：**
+
+>1 <= nums.length <= 105
+>-104 <= nums[i] <= 104
+
+**代码**
+
+```
+    public int maxSubArray(int[] nums) {
+        int []dp = new int[nums.length];
+        dp[0] = nums[0];
+        //dp 记录了到当前结点的所拥有的最大值, 如果前一个结点的最大值 < 0,就舍去之前的结点重新计算
+        for(int i = 1; i < nums.length; i++){
+            dp[i] = Math.max(dp[i-1], 0) + nums[i];
+        }
+        Arrays.sort(dp);
+        return dp[nums.length - 1];
+    }
+```
+
