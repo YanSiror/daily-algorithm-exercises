@@ -416,3 +416,293 @@ class Solution {
 }
 ```
 
+
+
+### 9 [压缩字符串](https://leetcode.cn/problems/string-compression/)
+
+> 给你一个字符数组 chars ，请使用下述算法压缩：
+>
+> 从一个空字符串 s 开始。对于 chars 中的每组 连续重复字符 ：
+>
+> 如果这一组长度为 1 ，则将字符追加到 s 中。
+> 否则，需要向 s 追加字符，后跟这一组的长度。
+> 压缩后得到的字符串 s 不应该直接返回 ，需要转储到字符数组 chars 中。需要注意的是，如果组长度为 10 或 10 以上，则在 chars 数组中会被拆分为多个字符。 请在修改完输入数组后 ，返回该数组的新长度。
+>
+> 你必须设计并实现一个只使用常量额外空间的算法来解决此问题。
+
+ ```java
+ 示例 1：
+ 输入：chars = ["a","a","b","b","c","c","c"]
+ 输出：返回 6 ，输入数组的前 6 个字符应该是：["a","2","b","2","c","3"]
+ 解释："aa" 被 "a2" 替代。"bb" 被 "b2" 替代。"ccc" 被 "c3" 替代。
+ 示例 2：
+ 输入：chars = ["a"]
+ 输出：返回 1 ，输入数组的前 1 个字符应该是：["a"]
+ 解释：唯一的组是“a”，它保持未压缩，因为它是一个字符。
+ 示例 3：
+ 输入：chars = ["a","b","b","b","b","b","b","b","b","b","b","b","b"]
+ 输出：返回 4 ，输入数组的前 4 个字符应该是：["a","b","1","2"]。
+ 解释：由于字符 "a" 不重复，所以不会被压缩。"bbbbbbbbbbbb" 被 “b12” 替代。
+ ```
+
+
+
+**题解**
+
+```java
+    public static int compress(char[] chars) {
+        if(chars.length == 1){
+            return 1;
+        }
+        int []returned;
+        int index = 0;
+        for (int i = 0; i < chars.length; ) {
+            returned = checkCount(chars, i);
+            chars[index++] = chars[i];
+            if(returned[0] > 1){
+                char []charTemp = intToChar(returned[0]);
+                for(int j = 0; j < charTemp.length; j++){
+                    chars[index++] = charTemp[j];
+                }
+            }
+            i += returned[0];
+        }
+        return index;
+    }
+
+    public static char[] intToChar(int num){
+        ArrayList<Character> chars = new ArrayList<Character>();
+        while(num >= 1){
+            chars.add((char) ((char)num % 10 + '0'));
+            num /= 10;
+        }
+        //翻转字符串
+        char[] charTemp = new char[chars.size()];
+        for (int i = 0; i < chars.size(); i++) {
+            charTemp[i] = chars.get(chars.size() - i - 1);
+        }
+        System.out.println(charTemp);
+        return charTemp;
+    }
+
+
+
+    public static int[] checkCount(char[] chars, int pre){
+        int tail = pre + 1;
+        int []returned = {1,0};
+        for (int i = pre; i < chars.length; i++) {
+            if(tail >= chars.length){
+                break;
+            }
+            if(chars[pre] == chars[tail]){
+                returned[0]++;
+                tail++;
+            } else{
+                returned[1] = tail;
+                break;
+            }
+        }
+        System.out.println(returned[0] + " " + returned[1]);
+        return returned;
+    }
+```
+
+
+
+### 10 [移动零](https://leetcode.cn/problems/move-zeroes/)
+
+> 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
+>
+> 请注意 ，必须在不复制数组的情况下原地对数组进行操作。
+
+```
+示例 1:
+输入: nums = [0,1,0,3,12]
+输出: [1,3,12,0,0]
+示例 2:
+输入: nums = [0]
+输出: [0]
+```
+
+**题解**
+
+```java
+class Solution {
+    public void moveZeroes(int[] nums) {
+        //移动零 - 双指针
+        //定义 pre tail
+        int pre = 0, tail = nums.length - 1;
+        while(pre < tail){
+            while(pre < nums.length && nums[pre] != 0){
+                pre++;
+            }
+            while(tail > 0 && nums[tail] == 0){
+                tail--;
+            }
+            //整体前移
+            for(int i = pre; i < tail; i++){
+                nums[i] = nums[i+1];
+            }
+            if(pre < tail){
+                nums[tail--] = 0;
+            }
+        }
+    }
+}
+```
+
+
+
+### 11 [判断子序列](https://leetcode.cn/problems/is-subsequence/)
+
+> 给定字符串 s 和 t ，判断 s 是否为 t 的子序列。
+>
+> 字符串的一个子序列是原始字符串删除一些（也可以不删除）字符而不改变剩余字符相对位置形成的新字符串。（例如，"ace"是"abcde"的一个子序列，而"aec"不是）。
+>
+> 进阶：
+>
+> 如果有大量输入的 S，称作 S1, S2, ... , Sk 其中 k >= 10亿，你需要依次检查它们是否为 T 的子序列。在这种情况下，你会怎样改变代码？
+>
+
+```
+示例 1：
+输入：s = "abc", t = "ahbgdc"
+输出：true
+示例 2：
+输入：s = "axc", t = "ahbgdc"
+输出：false
+```
+
+**题解**
+
+```java
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        //双指针
+        if(s.length()==0){
+            return true;
+        } else if(s.length()==1 && t.length()==1){
+            return s.equals(t);
+        } else if(s.length()==1){
+            return t.contains(s);
+        }
+        char[] sc = s.toCharArray();
+        char[] tc = t.toCharArray();
+        char pre = sc[0], next = sc[1];
+        int tag = 2;
+        for(int i = 0; i < tc.length; i++){
+            if(tc[i] == pre){
+                pre = next;
+                if(tag < sc.length){
+                    next = sc[tag++];
+                } else{
+                    next = 'E';
+                }
+            }
+        }
+        if(pre == next && next == 'E' && pre == 'E'){
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+
+
+### 12 [盛最多水的容器](https://leetcode.cn/problems/container-with-most-water/)
+
+> 给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+>
+> 找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+>
+> 返回容器可以储存的最大水量。
+>
+> 说明：你不能倾斜容器。
+
+```
+示例 1：
+输入：[1,8,6,2,5,4,8,3,7]
+输出：49 
+解释：图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。
+示例 2：
+输入：height = [1,1]
+输出：1
+```
+
+**解答**
+
+```java
+class Solution {
+    public int maxArea(int[] height) {
+        //对撞指针: 维护最大值
+        int max = Integer.MIN_VALUE;
+        int pre = 0, tail = height.length - 1;
+        System.out.println(tail);
+        while(pre < tail){
+            System.out.println(height[pre] + " " + height[tail]);
+            if(height[pre] < height[tail]){
+                max = Math.max(max, height[pre] * (tail - pre));
+                pre++;
+            } else if(height[pre] > height[tail]){
+                max = Math.max(max, height[tail] * (tail - pre));
+                tail--;
+            } else{
+                max = Math.max(max, height[tail] * (tail - pre));
+                tail--;
+            }
+        }
+        return max;
+    }
+}
+```
+
+
+
+### 13 [找出两数组的不同](https://leetcode.cn/problems/find-the-difference-of-two-arrays/)
+
+> 给你两个下标从 0 开始的整数数组 nums1 和 nums2 ，请你返回一个长度为 2 的列表 answer ，其中：
+>
+> answer[0] 是 nums1 中所有 不 存在于 nums2 中的 不同 整数组成的列表。
+> answer[1] 是 nums2 中所有 不 存在于 nums1 中的 不同 整数组成的列表。
+> 注意：列表中的整数可以按 任意 顺序返回。
+
+```
+示例 1：
+输入：nums1 = [1,2,3], nums2 = [2,4,6]
+输出：[[1,3],[4,6]]
+解释：
+对于 nums1 ，nums1[1] = 2 出现在 nums2 中下标 0 处，然而 nums1[0] = 1 和 nums1[2] = 3 没有出现在 nums2 中。因此，answer[0] = [1,3]。
+对于 nums2 ，nums2[0] = 2 出现在 nums1 中下标 1 处，然而 nums2[1] = 4 和 nums2[2] = 6 没有出现在 nums2 中。因此，answer[1] = [4,6]。
+示例 2：
+输入：nums1 = [1,2,3,3], nums2 = [1,1,2,2]
+输出：[[3],[]]
+解释：
+对于 nums1 ，nums1[2] 和 nums1[3] 没有出现在 nums2 中。由于 nums1[2] == nums1[3] ，二者的值只需要在 answer[0] 中出现一次，故 answer[0] = [3]。
+nums2 中的每个整数都在 nums1 中出现，因此，answer[1] = [] 。 
+```
+
+
+
+**题解**
+
+```java
+class Solution {
+    public List<List<Integer>> findDifference(int[] nums1, int[] nums2) {
+        HashSet<Integer> set1 = new HashSet<Integer>();
+        HashSet<Integer> set2 = new HashSet<Integer>();
+        Arrays.stream(nums1).forEach(set1::add);
+        Arrays.stream(nums2).forEach(set2::add);
+        Arrays.stream(nums1).forEach(set2::remove);
+        Arrays.stream(nums2).forEach(set1::remove);
+        List<Integer> difference1 = new ArrayList<>(set1);
+        List<Integer> difference2 = new ArrayList<>(set2);
+
+        List<List<Integer>> result = new ArrayList<>();
+        result.add(difference1);
+        result.add(difference2);
+        return result;
+    }
+}
+```
+
