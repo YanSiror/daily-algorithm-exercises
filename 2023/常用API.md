@@ -64,3 +64,44 @@ Arrays.stream(flowerbed).forEach(num ->{
 
 
 
+
+
+## 哈希表
+
+### 遍历
+
+- Entry
+
+  ```java
+  HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+  Iterator<Map.Entry<Integer, Integer>> it = map.entrySet().iterator();
+  while (it.hasNext()) {
+      Map.Entry<Integer, Integer> entry = it.next();
+      System.out.println(entry.getKey());
+      System.out.println(entry.getValue());
+  }
+  ```
+
+- EntrySet
+
+  ```java
+  //Hash 表
+  HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+  for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+      System.out.println(entry.getKey());
+      System.out.println(entry.getValue());
+  }
+  ```
+
+- KeySet
+
+  ```java
+  //Hash 表
+  HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+  for(Integer key: map.keySet()){
+      System.out.println(key);
+      System.out.println(map.get(key));
+  }
+  ```
+
+  

@@ -659,6 +659,10 @@ class Solution {
 
 
 
+
+
+## 哈希表
+
 ### 13 [找出两数组的不同](https://leetcode.cn/problems/find-the-difference-of-two-arrays/)
 
 > 给你两个下标从 0 开始的整数数组 nums1 和 nums2 ，请你返回一个长度为 2 的列表 answer ，其中：
@@ -705,4 +709,268 @@ class Solution {
     }
 }
 ```
+
+
+
+### 14 [独一无二的出现次数](https://leetcode.cn/problems/unique-number-of-occurrences/)
+
+> 给你一个整数数组 arr，请你帮忙统计数组中每个数的出现次数。
+>
+> 如果每个数的出现次数都是独一无二的，就返回 true；否则返回 false。
+>
+
+```
+示例 1：
+输入：arr = [1,2,2,1,1,3]
+输出：true
+解释：在该数组中，1 出现了 3 次，2 出现了 2 次，3 只出现了 1 次。没有两个数的出现次数相同。
+示例 2：
+输入：arr = [1,2]
+输出：false
+示例 3：
+输入：arr = [-3,0,1,-3,1,1,1,-3,10,0]
+输出：true
+```
+
+
+
+**题解**
+
+```java
+public boolean uniqueOccurrences(int[] arr) {
+    //Hash 表
+    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    for(int i = 0; i < arr.length; i++){
+        //存放key, 存在则+1; 不存在默认为0
+        map.put(arr[i], map.getOrDefault(arr[i], 0)+1);
+    }
+    //开辟set, 利用set的去重特性, 对次数进行去重
+    HashSet<Integer> set = new HashSet<>();
+    for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+        set.add(entry.getValue());
+    }
+    return set.size() == map.size();
+}
+```
+
+
+
+
+
+## 链表
+
+### 15 [删除链表的中间节点](https://leetcode.cn/problems/delete-the-middle-node-of-a-linked-list/)
+
+> 给你一个链表的头节点 head 。删除 链表的 中间节点 ，并返回修改后的链表的头节点 head 。
+>
+> 长度为 n 链表的中间节点是从头数起第 ⌊n / 2⌋ 个节点（下标从 0 开始），其中 ⌊x⌋ 表示小于或等于 x 的最大整数。
+>
+> 对于 n = 1、2、3、4 和 5 的情况，中间节点的下标分别是 0、1、1、2 和 2 (向下取整)。
+
+```
+输入：head = [1,3,4,7,1,2,6]
+输出：[1,3,4,1,2,6]
+解释：
+上图表示给出的链表。节点的下标分别标注在每个节点的下方。
+由于 n = 7 ，值为 7 的节点 3 是中间节点，用红色标注。
+返回结果为移除节点后的新链表。 
+
+输入：head = [1,2,3,4]
+输出：[1,2,4]
+解释：
+上图表示给出的链表。
+对于 n = 4 ，值为 3 的节点 2 是中间节点，用红色标注。
+输入：head = [2,1]
+输出：[2]
+解释：
+上图表示给出的链表。
+对于 n = 2 ，值为 1 的节点 1 是中间节点，用红色标注。
+值为 2 的节点 0 是移除节点 1 后剩下的唯一一个节点。
+```
+
+
+
+**题解**
+
+```java
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        //首先获取整个链表的长度
+        ListNode temp = head;
+        int size = 0;
+        while(temp != null){
+            size++;
+            temp = temp.next;
+        }
+        if(size == 1){
+            return null;
+        }
+        //准备删除
+        int index = size/2;
+        System.out.println(index);
+        System.out.println(size);
+        temp = head;
+        while(temp != null){
+            if(index == 1){
+                temp.next = temp.next.next;
+            }
+            index--;
+            temp = temp.next;
+        }
+        return head;
+    }
+}
+```
+
+
+
+### 16 [ 奇偶链表](https://leetcode.cn/problems/odd-even-linked-list/)
+
+> 给定单链表的头节点 head ，将所有索引为奇数的节点和索引为偶数的节点分别组合在一起，然后返回重新排序的列表。
+>
+> 第一个节点的索引被认为是 奇数 ， 第二个节点的索引为 偶数 ，以此类推。
+>
+> 请注意，偶数组和奇数组内部的相对顺序应该与输入时保持一致。
+>
+> 你必须在 O(1) 的额外空间复杂度和 O(n) 的时间复杂度下解决这个问题。
+>
+
+```
+示例 1:
+输入: head = [1,2,3,4,5]
+输出: [1,3,5,2,4]
+示例 2:
+输入: head = [2,1,3,5,6,4,7]
+输出: [2,3,6,7,1,5,4]
+```
+
+**题解**
+
+```java
+class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        //声明2个链表, 1存放奇数, 2存放偶数 - 带头结点方式
+        ListNode node1 = new ListNode();
+        ListNode node2 = new ListNode();
+
+        ListNode node1_head = node1;
+        ListNode node2_head = node2;
+        int tag = 1;
+        while(head != null){
+            ListNode temp = new ListNode();
+            temp = head;
+            if(tag % 2 == 1){
+                node1.next = temp;
+                node1 = node1.next;
+            } else if(tag % 2 == 0){
+                node2.next = temp;
+                node2 = node2.next;
+            }
+            head = head.next;
+            tag++;
+        }
+        //拼接链表
+        node2.next = null;
+        node1.next = node2_head.next;
+        return node1_head.next;        
+    }
+}
+```
+
+
+
+### 17 [反转链表](https://leetcode.cn/problems/reverse-linked-list/)
+
+> 给你单链表的头节点 `head` ，请你反转链表，并返回反转后的链表。
+
+```
+输入：head = [1,2,3,4,5]
+输出：[5,4,3,2,1]
+
+输入：head = [1,2]
+输出：[2,1]
+
+输入：head = []
+输出：[]
+```
+
+**题解**
+
+```java
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        //直接开辟空间, 用数组来处理
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        ListNode temp = head;
+        while(temp != null){
+            arrayList.add(temp.val);
+            temp = temp.next;
+        }
+        temp = head;
+        for (int i = 0; i < arrayList.size(); i++) {
+            temp.val = arrayList.get(arrayList.size() - i - 1);
+            temp = temp.next;
+        }
+        return head;
+    }
+}
+```
+
+
+
+## 二分查找
+
+> 猜数字游戏的规则如下：
+>
+> 每轮游戏，我都会从 1 到 n 随机选择一个数字。 请你猜选出的是哪个数字。
+> 如果你猜错了，我会告诉你，你猜测的数字比我选出的数字是大了还是小了。
+> 你可以通过调用一个预先定义好的接口 int guess(int num) 来获取猜测结果，返回值一共有 3 种可能的情况（-1，1 或 0）：
+>
+> -1：我选出的数字比你猜的数字小 pick < num
+> 1：我选出的数字比你猜的数字大 pick > num
+> 0：我选出的数字和你猜的数字一样。恭喜！你猜对了！pick == num
+> 返回我选出的数字。
+
+ ```
+ 示例 1：
+ 输入：n = 10, pick = 6
+ 输出：6
+ 示例 2：
+ 输入：n = 1, pick = 1
+ 输出：1
+ 示例 3：
+ 输入：n = 2, pick = 1
+ 输出：1
+ 示例 4：
+ 输入：n = 2, pick = 2
+ 输出：2
+ ```
+
+
+
+**题解**
+
+```java
+public class Solution extends GuessGame {
+    public int guessNumber(int n) {
+        int pre = 1, tail = n, mid = -1;
+        while(pre <= tail){
+            mid = pre +(tail - pre)/2; ;
+            if(guess(mid) == 0){
+                return mid;
+            } else if(guess(mid) == -1){
+                tail = mid - 1;
+            } else if(guess(mid) == 1){
+                pre = mid + 1;
+            }
+        }
+        return mid;
+    }
+}
+```
+
+
 
