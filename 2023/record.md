@@ -923,6 +923,8 @@ class Solution {
 
 ## 二分查找
 
+### 18 猜数字
+
 > 猜数字游戏的规则如下：
 >
 > 每轮游戏，我都会从 1 到 n 随机选择一个数字。 请你猜选出的是哪个数字。
@@ -973,4 +975,137 @@ public class Solution extends GuessGame {
 ```
 
 
+
+## 滑动窗口
+
+### 19 [子数组最大平均数 I](https://leetcode.cn/problems/maximum-average-subarray-i/)
+
+> 给你一个由 `n` 个元素组成的整数数组 `nums` 和一个整数 `k` 。
+>
+> 请你找出平均数最大且 **长度为 `k`** 的连续子数组，并输出该最大平均数。
+>
+> 任何误差小于 `10-5` 的答案都将被视为正确答案。
+
+**示例 1：**
+
+```
+输入：nums = [1,12,-5,-6,50,3], k = 4
+输出：12.75
+解释：最大平均数 (12-5-6+50)/4 = 51/4 = 12.75
+```
+
+**示例 2：**
+
+```
+输入：nums = [5], k = 1
+输出：5.00000
+```
+
+**题解**
+
+```java
+class Solution {
+    public static double findMaxAverage(int[] nums, int k) {
+        int temp = 0;
+        if(nums.length < 4){
+            for (int i = 0; i < nums.length; i++) {
+                temp += nums[i];
+            }
+            return (double)temp/k;
+        }
+
+        //滑动窗口: 定义窗口 windows = k
+        //初始化窗口
+        int max = 0;
+        for(int i = 0; i < k; i++){
+            max += nums[i];
+        }
+        //间接变量, 用于判定是否交换窗口值
+        temp = max;
+        for(int i = 1; i < nums.length - k + 1; i++){
+            temp -= nums[i-1];
+            temp += nums[k+i-1];
+            if(temp > max){
+                max = temp;
+            }
+        }
+        return (double)max/k;
+    }
+}
+```
+
+
+
+### 20 [最大连续1的个数 III](https://leetcode.cn/problems/max-consecutive-ones-iii/)
+
+> 给定一个二进制数组 `nums` 和一个整数 `k`，如果可以翻转最多 `k` 个 `0` ，则返回 *数组中连续 `1` 的最大个数* 。
+>
+> notes:
+>
+> ​	维护了左右指针以及限定条件, 通过左右指针边界的移动以及区间内条件满足情况缩小左边界|右边界, 同时维护最优值来求解。
+
+**示例 1：**
+
+```
+输入：nums = [1,1,1,0,0,0,1,1,1,1,0], K = 2
+输出：6
+解释：[1,1,1,0,0,1,1,1,1,1,1]
+粗体数字从 0 翻转到 1，最长的子数组长度为 6。
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,0,1,1,0,0,1,1,1,0,1,1,0,0,0,1,1,1,1], K = 3
+输出：10
+解释：[0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1]
+粗体数字从 0 翻转到 1，最长的子数组长度为 10。
+```
+
+**题解**
+
+```java
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        //滑动窗口 + 双指针
+        int left = 0, right = 0;
+        int zeros = 0;
+        int max = 0;
+        while(right < nums.length){
+            if(nums[right] == 0){
+                zeros++;
+            }
+
+            while(zeros > k){
+                if(nums[left] == 0){
+                    zeros--;
+                }
+                left++;
+            }
+            max = Math.max(right-left+1, max);
+            right++;
+        }
+        return max;
+    }
+}
+```
+
+**模板**
+
+```python
+def findSubArray(nums):
+    N = len(nums) # 数组/字符串长度
+    left, right = 0, 0 # 双指针，表示当前遍历的区间[left, right]，闭区间
+    sums = 0 # 用于统计 子数组/子区间 是否有效，根据题目可能会改成求和/计数
+    res = 0 # 保存最大的满足题目要求的 子数组/子串 长度
+    while right < N: # 当右边的指针没有搜索到 数组/字符串 的结尾
+        sums += nums[right] # 增加当前右边指针的数字/字符的求和/计数
+        while 区间[left, right]不符合题意: # 此时需要一直移动左指针，直至找到一个符合题意的区间
+            sums -= nums[left] # 移动左指针前需要从counter中减少left位置字符的求和/计数
+            left += 1 # 真正的移动左指针，注意不能跟上面一行代码写反
+        # 到 while 结束时，我们找到了一个符合题意要求的 子数组/子串
+        res = max(res, right - left + 1) # 需要更新结果
+        right += 1 # 移动右指针，去探索新的区间
+    return res
+```
 

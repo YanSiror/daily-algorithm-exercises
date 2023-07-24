@@ -70,7 +70,7 @@ Arrays.stream(flowerbed).forEach(num ->{
 
 ### 遍历
 
-- Entry
+- **Entry**
 
   ```java
   HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
@@ -82,7 +82,7 @@ Arrays.stream(flowerbed).forEach(num ->{
   }
   ```
 
-- EntrySet
+- **EntrySet**
 
   ```java
   //Hash 表
@@ -93,7 +93,7 @@ Arrays.stream(flowerbed).forEach(num ->{
   }
   ```
 
-- KeySet
+- **KeySet**
 
   ```java
   //Hash 表
@@ -104,4 +104,17 @@ Arrays.stream(flowerbed).forEach(num ->{
   }
   ```
 
-  
+
+
+### 取值或设为默认
+
+```java
+ map.getOrDefault('key', 0)		//存在key则返回值, 不存在key则设为0
+```
+
+
+
+
+
+
+
