@@ -116,5 +116,24 @@ Arrays.stream(flowerbed).forEach(num ->{
 
 
 
+## 队列
+
+Java 的 ArrayQueue 类（也称为数组队列）实现了 Queue 接口，提供了以下方法：
+
+```java
+
+add(E e)：在队列的尾部添加指定元素，如果队列已满则抛出 IllegalStateException 异常。
+offer(E e)：在队列的尾部添加指定元素，如果队列已满则返回 false。
+remove()：移除并返回队列头部的元素，如果队列为空则抛出 NoSuchElementException 异常。
+poll()：移除并返回队列头部的元素，如果队列为空则返回 null。
+element()：返回队列头部的元素，但不会移除该元素，如果队列为空则抛出 NoSuchElementException 异常。
+peek()：返回队列头部的元素，但不会移除该元素，如果队列为空则返回 null。
+size()：返回队列中元素的数量。
+isEmpty()：检查队列是否为空。
+contains(Object o)：检查队列中是否包含指定元素。
+toArray()：将队列中的元素以数组形式返回。
+clear()：移除队列中的所有元素。
+```
+
 
 

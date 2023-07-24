@@ -757,6 +757,63 @@ public boolean uniqueOccurrences(int[] arr) {
 
 
 
+## 队列
+
+### 23 [最近的请求次数](https://leetcode.cn/problems/number-of-recent-calls/)
+
+> 写一个 `RecentCounter` 类来计算特定时间范围内最近的请求。
+>
+> 请你实现 `RecentCounter` 类：
+>
+> - `RecentCounter()` 初始化计数器，请求数为 0 。
+> - `int ping(int t)` 在时间 `t` 添加一个新请求，其中 `t` 表示以毫秒为单位的某个时间，并返回过去 `3000` 毫秒内发生的所有请求数（包括新请求）。确切地说，返回在 `[t-3000, t]` 内发生的请求数。
+>
+> **保证** 每次对 `ping` 的调用都使用比之前更大的 `t` 值。
+
+**示例 1：**
+
+```
+输入：
+["RecentCounter", "ping", "ping", "ping", "ping"]
+[[], [1], [100], [3001], [3002]]
+输出：
+[null, 1, 2, 3, 3]
+
+解释：
+RecentCounter recentCounter = new RecentCounter();
+recentCounter.ping(1);     // requests = [1]，范围是 [-2999,1]，返回 1
+recentCounter.ping(100);   // requests = [1, 100]，范围是 [-2900,100]，返回 2
+recentCounter.ping(3001);  // requests = [1, 100, 3001]，范围是 [1,3001]，返回 3
+recentCounter.ping(3002);  // requests = [1, 100, 3001, 3002]，范围是 [2,3002]，返回 3
+```
+
+**题解**
+
+> 实质上就是维护队列, 将队列头部`请求时间`不符合约束范围的数据`poll`出即可。
+
+```java
+class RecentCounter {
+    Queue<Integer> queue;
+
+    public RecentCounter() {
+        queue = new ArrayDeque<Integer>();
+    }
+
+    public int ping(int t) {
+        queue.add(t);
+        // 时间 t 一定是递增的, 因此只需要判断队头是否超过了 [t-3000, t]
+        while(queue.peek() < t - 3000){
+            queue.poll();
+        }
+        return queue.size();
+    }
+}
+```
+
+
+
+
+
 ## 链表
 
 ### 15 [删除链表的中间节点](https://leetcode.cn/problems/delete-the-middle-node-of-a-linked-list/)
@@ -1107,5 +1164,119 @@ def findSubArray(nums):
         res = max(res, right - left + 1) # 需要更新结果
         right += 1 # 移动右指针，去探索新的区间
     return res
+```
+
+
+
+
+
+## 前缀和
+
+### 21 [找到最高海拔](https://leetcode.cn/problems/find-the-highest-altitude/)
+
+> 有一个自行车手打算进行一场公路骑行，这条路线总共由 `n + 1` 个不同海拔的点组成。自行车手从海拔为 `0` 的点 `0` 开始骑行。
+>
+> 给你一个长度为 `n` 的整数数组 `gain` ，其中 `gain[i]` 是点 `i` 和点 `i + 1` 的 **净海拔高度差**（`0 <= i < n`）。请你返回 **最高点的海拔** 。
+
+**示例 1：**
+
+```
+输入：gain = [-5,1,5,0,-7]
+输出：1
+解释：海拔高度依次为 [0,-5,-4,1,1,-6] 。最高海拔为 1 。
+```
+
+**示例 2：**
+
+```
+输入：gain = [-4,-3,-2,-1,4,3,2]
+输出：0
+解释：海拔高度依次为 [0,-4,-7,-9,-10,-6,-3,-1] 。最高海拔为 0 。
+```
+
+**题解**
+
+```java
+class Solution {
+    public int largestAltitude(int[] gain) {
+        int max = Integer.MIN_VALUE;
+        int temp = 0;
+        for (int i = 0; i < gain.length; i++) {
+            temp += gain[i];
+            max = Math.max(max, temp);
+        }
+        return Math.max(max, 0);
+    }
+}
+```
+
+
+
+### 22 [寻找数组的中心下标](https://leetcode.cn/problems/find-pivot-index/)
+
+> 给你一个整数数组 `nums` ，请计算数组的 **中心下标** 。
+>
+> 数组 **中心下标** 是数组的一个下标，其左侧所有元素相加的和等于右侧所有元素相加的和。
+>
+> 如果中心下标位于数组最左端，那么左侧数之和视为 `0` ，因为在下标的左侧不存在元素。这一点对于中心下标位于数组最右端同样适用。
+>
+> 如果数组有多个中心下标，应该返回 **最靠近左边** 的那一个。如果数组不存在中心下标，返回 `-1` 。
+
+**示例 1：**
+
+```
+输入：nums = [1, 7, 3, 6, 5, 6]
+输出：3
+解释：
+中心下标是 3 。
+左侧数之和 sum = nums[0] + nums[1] + nums[2] = 1 + 7 + 3 = 11 ，
+右侧数之和 sum = nums[4] + nums[5] = 5 + 6 = 11 ，二者相等。
+```
+
+**示例 2：**
+
+```
+输入：nums = [1, 2, 3]
+输出：-1
+解释：
+数组中不存在满足此条件的中心下标。
+```
+
+**示例 3：**
+
+```
+输入：nums = [2, 1, -1]
+输出：0
+解释：
+中心下标是 0 。
+左侧数之和 sum = 0 ，（下标 0 左侧不存在元素），
+右侧数之和 sum = nums[1] + nums[2] = 1 + -1 = 0 。
+```
+
+**题解**
+
+```java
+class Solution {
+    public int pivotIndex(int[] nums) {
+        //利用滑动窗口的思想
+        //定义双指针
+        int left = nums[0], right = 0;
+        for(int i = 1; i < nums.length; i++){
+            right += nums[i];
+        }
+        if(right == 0){
+            return 0;
+        }
+        //开始滑动判断
+        for(int i = 1; i < nums.length; i++){
+            right -= nums[i];
+            if(right == left){
+                return i;
+            }
+            left += nums[i];
+        }
+        return -1;
+    }
+}
 ```
 
