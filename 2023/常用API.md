@@ -19,7 +19,7 @@ Arrays.fill(arr, 0);
 ### 切割
 
 ```java
-Arrays.copyOfRange(nums,stratIndex,endIndex)
+Arrays.copyOfRange(nums, stratIndex, endIndex)
 ```
 
 
@@ -136,4 +136,26 @@ clear()：移除队列中的所有元素。
 ```
 
 
+
+## 栈
+
+```java
+push() - 添加元素到栈顶
+pop() - 删除栈顶元素
+peek() - 查看栈顶元素
+size() - 查看栈的大小
+empty() - 检查栈是否为空
+search() - 查找栈中一个元素
+```
+
+
+
+## 位运算
+
+```java
+i & 1    //检测 i 的最低位是多少(0 或 1), 可以用于对2取模
+i | 1    //将 i 的最低位强行设为 1
+i >> 1   //右移一位,相当于除以 2
+i << 1   //左移一位,相当于乘以 2
+```
 

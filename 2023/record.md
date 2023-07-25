@@ -814,6 +814,151 @@ class RecentCounter {
 
 
 
+## 栈
+
+### 24 [从字符串中移除星号](https://leetcode.cn/problems/removing-stars-from-a-string/)
+
+> 给你一个包含若干星号 `*` 的字符串 `s` 。
+>
+> 在一步操作中，你可以：
+>
+> - 选中 `s` 中的一个星号。
+> - 移除星号 **左侧** 最近的那个 **非星号** 字符，并移除该星号自身。
+>
+> 返回移除 **所有** 星号之后的字符串**。**
+>
+> **注意：**
+>
+> - 生成的输入保证总是可以执行题面中描述的操作。
+> - 可以证明结果字符串是唯一的。
+
+**示例 1：**
+
+```
+输入：s = "leet**cod*e"
+输出："lecoe"
+解释：从左到右执行移除操作：
+- 距离第 1 个星号最近的字符是 "leet**cod*e" 中的 't' ，s 变为 "lee*cod*e" 。
+- 距离第 2 个星号最近的字符是 "lee*cod*e" 中的 'e' ，s 变为 "lecod*e" 。
+- 距离第 3 个星号最近的字符是 "lecod*e" 中的 'd' ，s 变为 "lecoe" 。
+不存在其他星号，返回 "lecoe" 。
+```
+
+**示例 2：**
+
+```
+输入：s = "erase*****"
+输出：""
+解释：整个字符串都会被移除，所以返回空字符串。
+```
+
+**题解**
+
+```java
+class Solution {
+    public String removeStars(String s) {
+        Stack stack = new Stack();
+        for (int i = 0; i < s.length(); i++) {
+            stack.push(s.charAt(i));
+            //如果出现 '*' 字符, 则pop两个元素
+            if((char)stack.peek() == '*'){
+                stack.pop();
+                stack.pop();
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!stack.empty()){
+            //直接拼接字符串
+            sb.append(stack.pop());
+        }
+        //需要翻转, pop 出来的是逆序的
+        return sb.reverse().toString();
+    }
+}
+```
+
+
+
+### 25 [行星碰撞](https://leetcode.cn/problems/asteroid-collision/)
+
+> 给定一个整数数组 `asteroids`，表示在同一行的行星。
+>
+> 对于数组中的每一个元素，其绝对值表示行星的大小，正负表示行星的移动方向（正表示向右移动，负表示向左移动）。每一颗行星以相同的速度移动。
+>
+> 找出碰撞后剩下的所有行星。碰撞规则：两个行星相互碰撞，较小的行星会爆炸。如果两颗行星大小相同，则两颗行星都会爆炸。两颗移动方向相同的行星，永远不会发生碰撞。
+
+**示例 1：**
+
+```
+输入：asteroids = [5,10,-5]
+输出：[5,10]
+解释：10 和 -5 碰撞后只剩下 10 。 5 和 10 永远不会发生碰撞。
+```
+
+**示例 2：**
+
+```
+输入：asteroids = [8,-8]
+输出：[]
+解释：8 和 -8 碰撞后，两者都发生爆炸。
+```
+
+**示例 3：**
+
+```
+输入：asteroids = [10,2,-5]
+输出：[10]
+解释：2 和 -5 发生碰撞后剩下 -5 。10 和 -5 发生碰撞后剩下 10 。
+```
+
+**题解**
+
+```java
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        Stack<Integer> stack = new Stack<Integer>();
+        for (int i = 0; i < asteroids.length; i++) {
+            boolean live = true;
+            //只有当右侧的行星值 < 0 才会发生碰撞
+            if(asteroids[i] < 0){
+                //可能发生循环相撞
+               while(live && !stack.empty() && stack.peek() > 0){
+                   //判定相撞的情形, 都损毁还是栈顶的行星被撞毁 live = true(只撞毁掉左侧行星)
+                    live = stack.peek() < Math.abs(asteroids[i]);
+                    if (stack.peek() <= Math.abs(asteroids[i])) {
+                        stack.pop();
+                    }
+               }
+               //live = false(都被撞毁)
+                if(live){
+                    stack.push(asteroids[i]);
+                }
+            } 
+            // > 0 时则会直接飞出 | 平行飞行, 因此push进栈
+            else {
+                stack.push(asteroids[i]);
+            }
+        }
+
+        int []arrs = new int[stack.size()];
+        int i = 0;
+        while(!stack.isEmpty()){
+            arrs[arrs.length - i - 1] = (int)stack.pop();
+            i++;
+        }
+        return arrs;
+    }
+}
+```
+
+
+
+
+
+
+
+
+
 ## 链表
 
 ### 15 [删除链表的中间节点](https://leetcode.cn/problems/delete-the-middle-node-of-a-linked-list/)
@@ -1276,6 +1421,112 @@ class Solution {
             left += nums[i];
         }
         return -1;
+    }
+}
+```
+
+
+
+## 位运算
+
+### 26 [比特位计数](https://leetcode.cn/problems/counting-bits/)
+
+> 给你一个整数 `n` ，对于 `0 <= i <= n` 中的每个 `i` ，计算其二进制表示中 **`1` 的个数** ，返回一个长度为 `n + 1` 的数组 `ans` 作为答案。
+
+**示例 1：**
+
+```
+输入：n = 2
+输出：[0,1,1]
+解释：
+0 --> 0
+1 --> 1
+2 --> 10
+```
+
+**示例 2：**
+
+```
+输入：n = 5
+输出：[0,1,1,2,1,2]
+解释：
+0 --> 0
+1 --> 1
+2 --> 10
+3 --> 11
+4 --> 100
+5 --> 101
+```
+
+**题解**
+
+```java
+class Solution {
+    public int[] countBits(int n) {
+        int []arrs = new int[n+1];
+        arrs[0] = 0;
+        for(int i = 1; i <= n; i++){
+            if((i & 1) == 1){
+                arrs[i] = arrs[i-1] + 1;
+            } else {
+                arrs[i] = arrs[i >> 1];
+            }
+        }
+        return arrs;
+    }
+}
+```
+
+
+
+### 27 [只出现一次的数字](https://leetcode.cn/problems/single-number/)
+
+给你一个 **非空** 整数数组 `nums` ，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+
+你必须设计并实现线性时间复杂度的算法来解决此问题，且该算法只使用常量额外空间。
+
+**示例 1 ：**
+
+```
+输入：nums = [2,2,1]
+输出：1
+```
+
+**示例 2 ：**
+
+```
+输入：nums = [4,1,2,1,2]
+输出：4
+```
+
+**示例 3 ：**
+
+```
+输入：nums = [1]
+输出：1
+```
+
+**题解**
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        //排序
+        Arrays.sort(nums);
+        //Arrays.stream(nums).forEach(System.out::println);
+        //双指针遍历
+        int pre = 0, next = 1;
+        while(next < nums.length){
+            if(nums[next] != nums[pre]){
+                return nums[pre];
+            }
+            pre+=2;
+            next+=2;
+            if(next >= nums.length){
+                break;
+            }
+        }
+        return nums[pre];
     }
 }
 ```
