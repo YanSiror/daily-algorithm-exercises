@@ -509,6 +509,8 @@ class Solution {
 
 
 
+## 双指针
+
 ### 10 [移动零](https://leetcode.cn/problems/move-zeroes/)
 
 > 给定一个数组 nums，编写一个函数将所有 0 移动到数组的末尾，同时保持非零元素的相对顺序。
@@ -659,6 +661,66 @@ class Solution {
 
 
 
+### 28 [K 和数对的最大数目](https://leetcode.cn/problems/max-number-of-k-sum-pairs/)
+
+> 给你一个整数数组 `nums` 和一个整数 `k` 。
+>
+> 每一步操作中，你需要从数组中选出和为 `k` 的两个整数，并将它们移出数组。
+>
+> 返回你可以对数组执行的最大操作数。
+
+**示例 1：**
+
+```
+输入：nums = [1,2,3,4], k = 5
+输出：2
+解释：开始时 nums = [1,2,3,4]：
+- 移出 1 和 4 ，之后 nums = [2,3]
+- 移出 2 和 3 ，之后 nums = []
+不再有和为 5 的数对，因此最多执行 2 次操作。
+```
+
+**示例 2：**
+
+```
+输入：nums = [3,1,3,4,3], k = 6
+输出：1
+解释：开始时 nums = [3,1,3,4,3]：
+- 移出前两个 3 ，之后nums = [1,4,3]
+不再有和为 6 的数对，因此最多执行 1 次操作。
+```
+
+**题解**
+
+```java
+class Solution {
+    public static int maxOperations(int[] nums, int k) {
+        //双指针
+        int left = 0, right = nums.length-1;
+        int count = 0;
+        //排序
+        Arrays.sort(nums);
+        while(left < right){
+            int val = nums[left] + nums[right];
+            if(val < k){
+                left++;
+            } else if(val > k){
+                right--;
+            } else{
+                count++;
+                right--;
+                left++;
+            }
+        }
+        return count;
+    }
+}
+```
+
+
+
+
+
 
 
 ## 哈希表
@@ -752,6 +814,168 @@ public boolean uniqueOccurrences(int[] arr) {
     return set.size() == map.size();
 }
 ```
+
+
+
+### 29 [确定两个字符串是否接近](https://leetcode.cn/problems/determine-if-two-strings-are-close/)
+
+> 如果可以使用以下操作从一个字符串得到另一个字符串，则认为两个字符串 **接近** ：
+>
+> - 操作 1：交换任意两个现有字符。
+>   - 例如，`a**b**cd**e** -> a**e**cd**b**`
+> - 操作 2：将一个现有字符的每次出现转换为另一个现有字符，并对另一个字符执行相同的操作。
+>   - 例如，`**aa**c**abb** -> **bb**c**baa**`（所有 `a` 转化为 `b` ，而所有的 `b` 转换为 `a` ）
+>
+> 你可以根据需要对任意一个字符串多次使用这两种操作。
+>
+> 给你两个字符串，`word1` 和 `word2` 。如果 `word1` 和 `word2` **接近** ，就返回 `true` ；否则，返回 `false` 。
+
+**示例 1：**
+
+```
+输入：word1 = "abc", word2 = "bca"
+输出：true
+解释：2 次操作从 word1 获得 word2 。
+执行操作 1："abc" -> "acb"
+执行操作 1："acb" -> "bca"
+```
+
+**示例 2：**
+
+```
+输入：word1 = "a", word2 = "aa"
+输出：false
+解释：不管执行多少次操作，都无法从 word1 得到 word2 ，反之亦然。
+```
+
+**示例 3：**
+
+```
+输入：word1 = "cabbba", word2 = "abbccc"
+输出：true
+解释：3 次操作从 word1 获得 word2 。
+执行操作 1："cabbba" -> "caabbb"
+执行操作 2："caabbb" -> "baaccc"
+执行操作 2："baaccc" -> "abbccc"
+```
+
+**示例 4：**
+
+```
+输入：word1 = "cabbba", word2 = "aabbss"
+输出：false
+解释：不管执行多少次操作，都无法从 word1 得到 word2 ，反之亦然。
+```
+
+**题解**
+
+```java
+class Solution {
+    public static boolean closeStrings(String word1, String word2) {
+        //成立条件: word1.length = word2.length && 两个字符串内字符出现次数一致
+        if(word1.length() != word2.length()){
+            return false;
+        }
+        HashMap<Character, Integer> word1Table = new HashMap<>();
+        HashMap<Character, Integer> word2Table = new HashMap<>();
+        for(int i = 0; i < word1.length(); i++){
+            word1Table.put(word1.charAt(i), word1Table.getOrDefault(word1.charAt(i),0)+1);
+        }
+        for(int i = 0; i < word1.length(); i++){
+            word2Table.put(word2.charAt(i), word2Table.getOrDefault(word2.charAt(i),0)+1);
+        }
+        //验证是否存在该字符
+        for(Map.Entry<Character, Integer> entry : word1Table.entrySet()){
+            if(!word2Table.containsKey(entry.getKey())) {
+                return false;
+            }
+        }
+        //验证出现的频次
+        List<Integer> count1 = word1Table.values().stream().sorted().collect(Collectors.toList());
+        List<Integer> count2 = word2Table.values().stream().sorted().collect(Collectors.toList());
+        for (int i = 0; i < count2.size(); i++) {
+            // 3. 验证字符频次相同
+            if (!count1.get(i).equals(count2.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+
+
+### 30  [相等行列对](https://leetcode.cn/problems/equal-row-and-column-pairs/)
+
+> 给你一个下标从 **0** 开始、大小为 `n x n` 的整数矩阵 `grid` ，返回满足 `Ri` 行和 `Cj` 列相等的行列对 `(Ri, Cj)` 的数目*。*
+>
+> 如果行和列以相同的顺序包含相同的元素（即相等的数组），则认为二者是相等的。
+
+**示例 1：**
+
+<img src="imgs/ex1.jpg" alt="img" style="zoom:33%;" />
+
+```
+输入：grid = [[3,2,1],[1,7,6],[2,7,7]]
+输出：1
+解释：存在一对相等行列对：
+- (第 2 行，第 1 列)：[2,7,7]
+```
+
+**示例 2：**
+
+<img src="imgs/ex2.jpg" alt="img" style="zoom:33%;" />
+
+```
+输入：grid = [[3,1,2,2],[1,4,4,5],[2,4,2,2],[2,4,2,2]]
+输出：3
+解释：存在三对相等行列对：
+- (第 0 行，第 0 列)：[3,1,2,2]
+- (第 2 行, 第 2 列)：[2,4,2,2]
+- (第 3 行, 第 2 列)：[2,4,2,2]
+```
+
+
+
+**题解**
+
+`复杂度有些高, 可以使用中间结果做优化`
+
+```java
+class Solution {
+    public int equalPairs(int[][] grid) {
+        //行与列比较, 因此转置即可
+        int [][]newGrid = new int[grid.length][grid.length];
+        for (int i = 0; i < grid.length; i++){
+            for (int j = 0; j < grid.length; j++){
+                newGrid[i][j] = grid[j][i];
+            }
+        }
+        //转置后直接行列比较
+        int j = 0,ans=0;
+        for (int i = 0; i < grid.length; i++) {
+            for (j = 0; j < grid.length; j++){
+                if(checkEqueal(grid[i], newGrid[j])){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+    
+    public Boolean checkEqueal(int[] arr1, int []arr2){
+        for(int i = 0; i < arr1.length; i++){
+            if (!(arr1[i] == arr2[i])){
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+
 
 
 
@@ -1178,6 +1402,55 @@ public class Solution extends GuessGame {
 
 
 
+### 33 [寻找峰值](https://leetcode.cn/problems/find-peak-element/)
+
+> 峰值元素是指其值严格大于左右相邻值的元素。
+>
+> 给你一个整数数组 `nums`，找到峰值元素并返回其索引。数组可能包含多个峰值，在这种情况下，返回 **任何一个峰值** 所在位置即可。
+>
+> 你可以假设 `nums[-1] = nums[n] = -∞` 。
+>
+> 你必须实现时间复杂度为 `O(log n)` 的算法来解决此问题。
+
+**示例 1：**
+
+```
+输入：nums = [1,2,3,1]
+输出：2
+解释：3 是峰值元素，你的函数应该返回其索引 2。
+```
+
+**示例 2：**
+
+```
+输入：nums = [1,2,1,3,5,6,4]
+输出：1 或 5 
+解释：你的函数可以返回索引 1，其峰值元素为 2；
+     或者返回索引 5， 其峰值元素为 6。
+```
+
+**题解**
+
+`遍历法最简单, 二分法也可以, 实质上考的是数学思路`
+
+```java
+class Solution {
+    public int findPeakElement(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int mid = l + r >> 1;
+            if (nums[mid] < nums[mid + 1]) l = mid + 1;
+            else r = mid;
+        }
+        return l;
+    }
+}
+```
+
+
+
+
+
 ## 滑动窗口
 
 ### 19 [子数组最大平均数 I](https://leetcode.cn/problems/maximum-average-subarray-i/)
@@ -1527,6 +1800,115 @@ class Solution {
             }
         }
         return nums[pre];
+    }
+}
+```
+
+
+
+
+
+## 动态规划
+
+### 31 [第 N 个泰波那契数](https://leetcode.cn/problems/n-th-tribonacci-number/)
+
+> 泰波那契序列 Tn 定义如下： 
+>
+> T0 = 0, T1 = 1, T2 = 1, 且在 n >= 0 的条件下 Tn+3 = Tn + Tn+1 + Tn+2
+>
+> 给你整数 `n`，请返回第 n 个泰波那契数 Tn 的值。
+
+**示例 1：**
+
+```
+输入：n = 4
+输出：4
+解释：
+T_3 = 0 + 1 + 1 = 2
+T_4 = 1 + 1 + 2 = 4
+```
+
+**示例 2：**
+
+```
+输入：n = 25
+输出：1389537
+```
+
+**题解**
+
+```java
+class Solution {
+    public int tribonacci(int n) {
+        if(n == 0){
+            return 0;
+        }
+        if(n == 1 || n == 2){
+            return 1;
+        }
+        int pre = 0, next = 1, index = 3, ans = 1;
+        while(index <= n){
+            ans = ans + pre + next;
+            int temp = ans - pre - next;
+            pre = next;
+            next = temp;
+            index++;
+        }
+        return ans;
+    }
+}
+```
+
+
+
+### 32 [使用最小花费爬楼梯](https://leetcode.cn/problems/min-cost-climbing-stairs/)
+
+> 给你一个整数数组 `cost` ，其中 `cost[i]` 是从楼梯第 `i` 个台阶向上爬需要支付的费用。一旦你支付此费用，即可选择向上爬一个或者两个台阶。
+>
+> 你可以选择从下标为 `0` 或下标为 `1` 的台阶开始爬楼梯。
+>
+> 请你计算并返回达到楼梯顶部的最低花费。
+
+**示例 1：**
+
+```
+输入：cost = [10,15,20]
+输出：15
+解释：你将从下标为 1 的台阶开始。
+- 支付 15 ，向上爬两个台阶，到达楼梯顶部。
+总花费为 15 。
+```
+
+**示例 2：**
+
+```
+输入：cost = [1,100,1,1,1,100,1,1,100,1]
+输出：6
+解释：你将从下标为 0 的台阶开始。
+- 支付 1 ，向上爬两个台阶，到达下标为 2 的台阶。
+- 支付 1 ，向上爬两个台阶，到达下标为 4 的台阶。
+- 支付 1 ，向上爬两个台阶，到达下标为 6 的台阶。
+- 支付 1 ，向上爬一个台阶，到达下标为 7 的台阶。
+- 支付 1 ，向上爬两个台阶，到达下标为 9 的台阶。
+- 支付 1 ，向上爬一个台阶，到达楼梯顶部。
+总花费为 6 。
+```
+
+**题解**
+
+```java
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        //使用数组记录踏上每层楼梯所需要的最小代价
+        int []dp = new int[cost.length];
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+        for(int i = 2; i < cost.length; i++){
+            //状态转移方程: 在 0 阶层只需支付第0阶层+2层金额即可踏上第2层; 在1阶层则需支付1阶层+2阶层的金额综合, 取最小即为当前所需的最小支付金额。
+            dp[i] = Math.min(dp[i-2], dp[i-1]) + cost[i];
+        }
+        //最后返回踏上最后一层的最小值情况: i-2 踏上 | i-1层踏上
+        return Math.min(dp[cost.length-2], dp[cost.length-1]);
     }
 }
 ```
