@@ -1913,3 +1913,416 @@ class Solution {
 }
 ```
 
+
+
+## 数据库
+
+### 简单查询
+
+#### 1 [可回收且低脂的产品](https://leetcode.cn/problems/recyclable-and-low-fat-products/)
+
+表：`Products`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| product_id  | int     |
+| low_fats    | enum    |
+| recyclable  | enum    |
++-------------+---------+
+在 SQL 中，product_id 是这个表的主键。
+low_fats 是枚举类型，取值为以下两种 ('Y', 'N')，其中 'Y' 表示该产品是低脂产品，'N' 表示不是低脂产品。
+recyclable 是枚举类型，取值为以下两种 ('Y', 'N')，其中 'Y' 表示该产品可回收，而 'N' 表示不可回收。
+```
+
+查找既是低脂又是可回收的产品编号。
+
+返回结果 **无顺序要求** 。
+
+查询结果格式如下例所示：
+
+**示例 1：**
+
+```
+输入：
+Products 表：
++-------------+----------+------------+
+| product_id  | low_fats | recyclable |
++-------------+----------+------------+
+| 0           | Y        | N          |
+| 1           | Y        | Y          |
+| 2           | N        | Y          |
+| 3           | Y        | Y          |
+| 4           | N        | N          |
++-------------+----------+------------+
+输出：
++-------------+
+| product_id  |
++-------------+
+| 1           |
+| 3           |
++-------------+
+解释：
+只有产品 id 为 1 和 3 的产品，既是低脂又是可回收的产品。
+```
+
+**题解**
+
+```sql
+select product_id
+from Products
+where low_fats = 'Y' and recyclable = 'Y';
+```
+
+
+
+#### 2 [寻找用户推荐人](https://leetcode.cn/problems/find-customer-referee/)
+
+给定表 `customer` ，里面保存了所有客户信息和他们的推荐人。
+
+```
++------+------+-----------+
+| id   | name | referee_id|
++------+------+-----------+
+|    1 | Will |      NULL |
+|    2 | Jane |      NULL |
+|    3 | Alex |         2 |
+|    4 | Bill |      NULL |
+|    5 | Zack |         1 |
+|    6 | Mark |         2 |
++------+------+-----------+
+```
+
+写一个查询语句，返回一个客户列表，列表中客户的推荐人的编号都 **不是** 2。
+
+对于上面的示例数据，结果为：
+
+```
++------+
+| name |
++------+
+| Will |
+| Jane |
+| Bill |
+| Zack |
++------+
+```
+
+**题解**
+
+`使用 is 关键字判断值是否为 MULL`
+
+```sql
+select name
+from customer
+where referee_id != 2 or referee_id is null;
+```
+
+
+
+### 连接
+
+#### 3 [使用唯一标识码替换员工ID](https://leetcode.cn/problems/replace-employee-id-with-the-unique-identifier/)
+
+`Employees` 表：
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| name          | varchar |
++---------------+---------+
+在 SQL 中，id 是这张表的主键。
+这张表的每一行分别代表了某公司其中一位员工的名字和 ID 。
+```
+
+ 
+
+`EmployeeUNI` 表：
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| unique_id     | int     |
++---------------+---------+
+在 SQL 中，(id, unique_id) 是这张表的主键。
+这张表的每一行包含了该公司某位员工的 ID 和他的唯一标识码（unique ID）。
+```
+
+ 
+
+展示每位用户的 **唯一标识码（unique ID ）**；如果某位员工没有唯一标识码，使用 null 填充即可。
+
+你可以以 **任意** 顺序返回结果表。
+
+返回结果的格式如下例所示。
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Employees 表:
++----+----------+
+| id | name     |
++----+----------+
+| 1  | Alice    |
+| 7  | Bob      |
+| 11 | Meir     |
+| 90 | Winston  |
+| 3  | Jonathan |
++----+----------+
+EmployeeUNI 表:
++----+-----------+
+| id | unique_id |
++----+-----------+
+| 3  | 1         |
+| 11 | 2         |
+| 90 | 3         |
++----+-----------+
+输出：
++-----------+----------+
+| unique_id | name     |
++-----------+----------+
+| null      | Alice    |
+| null      | Bob      |
+| 2         | Meir     |
+| 3         | Winston  |
+| 1         | Jonathan |
++-----------+----------+
+解释：
+Alice and Bob 没有唯一标识码, 因此我们使用 null 替代。
+Meir 的唯一标识码是 2 。
+Winston 的唯一标识码是 3 。
+Jonathan 唯一标识码是 1 。
+```
+
+**题解**
+
+```sql
+select unique_id, name
+from Employees e left join EmployeeUNI ei
+on e.id = ei.id;
+```
+
+
+
+#### 4 [产品销售分析 I](https://leetcode.cn/problems/product-sales-analysis-i/)
+
+销售表 `Sales`：
+
+```
++-------------+-------+
+| Column Name | Type  |
++-------------+-------+
+| sale_id     | int   |
+| product_id  | int   |
+| year        | int   |
+| quantity    | int   |
+| price       | int   |
++-------------+-------+
+(sale_id, year) 是销售表 Sales 的主键.
+product_id 是关联到产品表 Product 的外键.
+注意: price 表示每单位价格
+```
+
+产品表 `Product`：
+
+```
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| product_id   | int     |
+| product_name | varchar |
++--------------+---------+
+product_id 是表的主键.
+```
+
+ 
+
+写一条SQL 查询语句获取 `Sales` 表中所有产品对应的 **产品名称 product_name** 以及该产品的所有 **售卖年份 year** 和 **价格 price** 。
+
+查询结果中的顺序无特定要求。
+
+查询结果格式示例如下：
+
+ 
+
+```
+Sales 表：
++---------+------------+------+----------+-------+
+| sale_id | product_id | year | quantity | price |
++---------+------------+------+----------+-------+ 
+| 1       | 100        | 2008 | 10       | 5000  |
+| 2       | 100        | 2009 | 12       | 5000  |
+| 7       | 200        | 2011 | 15       | 9000  |
++---------+------------+------+----------+-------+
+
+Product 表：
++------------+--------------+
+| product_id | product_name |
++------------+--------------+
+| 100        | Nokia        |
+| 200        | Apple        |
+| 300        | Samsung      |
++------------+--------------+
+
+Result 表：
++--------------+-------+-------+
+| product_name | year  | price |
++--------------+-------+-------+
+| Nokia        | 2008  | 5000  |
+| Nokia        | 2009  | 5000  |
+| Apple        | 2011  | 9000  |
++--------------+-------+-------+
+```
+
+**题解**
+
+```sql
+select product_name, year, price
+from Sales s left join product p
+on s.product_id = p.product_id;
+```
+
+
+
+
+
+### 聚合函数
+
+#### 5 [有趣的电影](https://leetcode.cn/problems/not-boring-movies/)
+
+某城市开了一家新的电影院，吸引了很多人过来看电影。该电影院特别注意用户体验，专门有个 LED显示板做电影推荐，上面公布着影评和相关电影描述。
+
+作为该电影院的信息部主管，您需要编写一个 SQL查询，找出所有影片描述为**非** `boring` (不无聊) 的并且 **id 为奇数** 的影片，结果请按等级 `rating` 排列。
+
+ 
+
+例如，下表 `cinema`:
+
+```
++---------+-----------+--------------+-----------+
+|   id    | movie     |  description |  rating   |
++---------+-----------+--------------+-----------+
+|   1     | War       |   great 3D   |   8.9     |
+|   2     | Science   |   fiction    |   8.5     |
+|   3     | irish     |   boring     |   6.2     |
+|   4     | Ice song  |   Fantacy    |   8.6     |
+|   5     | House card|   Interesting|   9.1     |
++---------+-----------+--------------+-----------+
+```
+
+对于上面的例子，则正确的输出是为：
+
+```
++---------+-----------+--------------+-----------+
+|   id    | movie     |  description |  rating   |
++---------+-----------+--------------+-----------+
+|   5     | House card|   Interesting|   9.1     |
+|   1     | War       |   great 3D   |   8.9     |
++---------+-----------+--------------+-----------+
+```
+
+
+
+**题解**
+
+```sql
+select *
+from cinema
+where id % 2 = 1 and description != 'boring'
+order by rating desc;
+```
+
+
+
+#### [平均售价](https://leetcode.cn/problems/average-selling-price/)
+
+Table: `Prices`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| product_id    | int     |
+| start_date    | date    |
+| end_date      | date    |
+| price         | int     |
++---------------+---------+
+(product_id，start_date，end_date) 是 Prices 表的主键。
+Prices 表的每一行表示的是某个产品在一段时期内的价格。
+每个产品的对应时间段是不会重叠的，这也意味着同一个产品的价格时段不会出现交叉。
+```
+
+ 
+
+Table: `UnitsSold`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| product_id    | int     |
+| purchase_date | date    |
+| units         | int     |
++---------------+---------+
+UnitsSold 表没有主键，它可能包含重复项。
+UnitsSold 表的每一行表示的是每种产品的出售日期，单位和产品 id。
+```
+
+ 
+
+编写SQL查询以查找每种产品的平均售价。
+`average_price` 应该四舍五入到小数点后两位。
+查询结果格式如下例所示：
+
+```
+Prices table:
++------------+------------+------------+--------+
+| product_id | start_date | end_date   | price  |
++------------+------------+------------+--------+
+| 1          | 2019-02-17 | 2019-02-28 | 5      |
+| 1          | 2019-03-01 | 2019-03-22 | 20     |
+| 2          | 2019-02-01 | 2019-02-20 | 15     |
+| 2          | 2019-02-21 | 2019-03-31 | 30     |
++------------+------------+------------+--------+
+ 
+UnitsSold table:
++------------+---------------+-------+
+| product_id | purchase_date | units |
++------------+---------------+-------+
+| 1          | 2019-02-25    | 100   |
+| 1          | 2019-03-01    | 15    |
+| 2          | 2019-02-10    | 200   |
+| 2          | 2019-03-22    | 30    |
++------------+---------------+-------+
+
+Result table:
++------------+---------------+
+| product_id | average_price |
++------------+---------------+
+| 1          | 6.96          |
+| 2          | 16.96         |
++------------+---------------+
+平均售价 = 产品总价 / 销售的产品数量。
+产品 1 的平均售价 = ((100 * 5)+(15 * 20) )/ 115 = 6.96
+产品 2 的平均售价 = ((200 * 15)+(30 * 30) )/ 230 = 16.96
+```
+
+**题解**
+
+```sql
+select p.product_id,
+    round(sum(price*units)/sum(units), 2) average_price
+from Prices p, UnitsSold u
+where p.product_id = u.product_id
+    and u.purchase_date between p.start_date and end_date
+group by p.product_id;
+```
+
