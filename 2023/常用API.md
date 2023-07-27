@@ -28,6 +28,13 @@ Arrays.copyOfRange(nums, stratIndex, endIndex)
 
 ```java
 Math.max(a,b);
+
+//比较两个数组对应值是否相等
+List<Integer> arr1 = new ArrayList<Integer>();
+List<Integer> arr2 = new ArrayList<Integer>();
+//true or false
+arr1.equals(arr2);	
+
 ```
 
 
@@ -63,6 +70,28 @@ Arrays.stream(flowerbed).forEach(num ->{
 ```
 
 
+
+## 优先队列
+
+> PriorityQueue 是 Java 中的一个优先队列实现类，它可以用于实现基于优先级的队列，即队列中的元素会按照优先级被排序，优先级高的元素先出队列。
+>
+> PriorityQueue 中的元素必须实现 Comparable 接口，或者在创建 PriorityQueue 对象时传入一个 Comparator 对象以指定元素的比较方式。使用 PriorityQueue 可以实现以下常用功能：
+>
+> 1. 添加元素：使用 `add()` 或 `offer()` 函数向队列中添加元素，添加的元素会根据其优先级被放置在队列中的合适位置。
+> 2. 获取队首元素：使用 `peek()` 函数获取队列中优先级最高的元素，但不会将其从队列中移除。
+> 3. 获取并移除队首元素：使用 `poll()` 函数获取队列中优先级最高的元素，并将其从队列中移除。
+> 4. 判断队列是否为空：使用 `isEmpty()` 函数判断队列是否为空。
+>
+> 以下是 PriorityQueue 类中常用的一些函数：
+>
+> 1. `add(E element)`：将元素添加到队列中，如果队列已满则会抛出异常。
+> 2. `offer(E element)`：将元素添加到队列中，如果队列已满则会返回 false。
+> 3. `peek()`：获取队列中优先级最高的元素，但不会将其从队列中移除。
+> 4. `poll()`：获取队列中优先级最高的元素，并将其从队列中移除。
+> 5. `remove(Object o)`：从队列中移除指定的元素，如果队列中不存在该元素则会返回 false。
+> 6. `size()`：返回队列中元素的数量。
+> 7. `isEmpty()`：判断队列是否为空。
+> 8. `clear()`：清空队列中的所有元素。
 
 
 
@@ -158,6 +187,54 @@ i | 1    //将 i 的最低位强行设为 1
 i >> 1   //右移一位,相当于除以 2
 i << 1   //左移一位,相当于乘以 2
 ```
+
+
+
+## 树
+
+### 深度优先遍历(DFS)
+
+```java
+List<TreeNode> treeNodeList = new ArrayList<>();
+public List<TreeNode> dfsRec(TreeNode root) {
+
+    if (root == null) {
+        return null;
+    }
+    treeNodeList.add(root);
+    //System.out.print(root.value+" ");
+    dfsRec(root.left);
+    dfsRec(root.right);
+    return treeNodeList;
+}
+```
+
+
+
+### 广度优先遍历(BFS)
+
+```java
+public static <V> void bfs(List<TreeNode<V>> children, int depth) {
+    List<TreeNode<V>> thisChildren, allChildren = new ArrayList<>();
+    for (TreeNode<V> child: children) {
+        //打印节点值以及深度
+        System.out.println(child.getValue().toString() + ",   " + depth);
+        thisChildren = child.getChildList();
+        if (thisChildren != null && thisChildren.size() > 0) {
+            allChildren.addAll(thisChildren);
+        }
+    }
+    if (allChildren.size() > 0)  {
+        bfs(allChildren, depth + 1);
+    }
+}
+```
+
+
+
+
+
+
 
 
 
@@ -378,6 +455,42 @@ GROUP BY 子句用于按照指定的列对查询结果进行分组。在 GROUP B
 SELECT customer_name, ROUND(SUM(order_total), 2)
 FROM orders
 GROUP BY customer_name;
+```
+
+
+
+#### DiSTINCT
+
+在 SQL 中，`DISTINCT` 是用于去重的关键字，它可以用于查询操作中，返回一组不重复的结果集。
+
+具体来说，`DISTINCT` 关键字可以用于以下两种情况：
+
+1. 在 `SELECT` 语句中，用于去除查询结果中的重复行。
+
+例如，下面的 SQL 语句查询 `employee` 表中的所有不重复的部门名称：
+
+```
+SELECT DISTINCT department FROM employee;
+```
+
+2. 在聚合函数中，用于对指定列进行去重并进行聚合计算。
+
+例如，下面的 SQL 语句计算 `employee` 表中不同部门的平均薪资：
+
+```
+SELECT department, AVG(DISTINCT salary) FROM employee GROUP BY department;
+```
+
+需要注意的是，`DISTINCT` 关键字会对查询的性能产生影响，因为它需要在内存中对查询结果进行去重。在处理大数据量时，使用 `DISTINCT` 可能会导致查询变慢，因此需要根据具体情况进行优化。
+
+
+
+#### datediff
+
+计算日期相差的天数
+
+```sql
+datediff(w2.recordDate,w1.recordDate)
 ```
 
 

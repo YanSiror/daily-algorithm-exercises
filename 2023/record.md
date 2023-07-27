@@ -1586,6 +1586,345 @@ def findSubArray(nums):
 
 
 
+### 33 [定长子串中元音的最大数目](https://leetcode.cn/problems/maximum-number-of-vowels-in-a-substring-of-given-length/)
+
+给你字符串 `s` 和整数 `k` 。
+
+请返回字符串 `s` 中长度为 `k` 的单个子字符串中可能包含的最大元音字母数。
+
+英文中的 **元音字母** 为（`a`, `e`, `i`, `o`, `u`）。
+
+ 
+
+**示例 1：**
+
+```
+输入：s = "abciiidef", k = 3
+输出：3
+解释：子字符串 "iii" 包含 3 个元音字母。
+```
+
+**示例 2：**
+
+```
+输入：s = "aeiou", k = 2
+输出：2
+解释：任意长度为 2 的子字符串都包含 2 个元音字母。
+```
+
+**示例 3：**
+
+```
+输入：s = "leetcode", k = 3
+输出：2
+解释："lee"、"eet" 和 "ode" 都包含 2 个元音字母。
+```
+
+**示例 4：**
+
+```
+输入：s = "rhythms", k = 4
+输出：0
+解释：字符串 s 中不含任何元音字母。
+```
+
+**示例 5：**
+
+```
+输入：s = "tryhard", k = 4
+输出：1
+```
+
+**题解**
+
+`超时但有效`
+
+```java
+class Solution {
+    public int maxVowels(String s, int k) {
+        //滑动窗口 + 双指针
+        int left = 0, right = 0;
+        int isYuan = 0;
+        int max = 0;        //元音字母个数
+        while(right < s.length()){
+            if(checkYuan(s.charAt(right)) && (right-left) < k){
+                isYuan++;
+                right++;
+            }  else if(!checkYuan(s.charAt(right)) && (right-left) < k){
+                right++;
+            } else{
+                isYuan = 0;
+                left++;
+                right = left;
+            }
+            max = Math.max(isYuan, max);
+        }
+        return Math.min(max, k);
+    }
+
+    public Boolean checkYuan(char c){
+        if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'){
+            return true;
+        }
+        return false;
+    }
+}
+```
+
+`滑动窗口思路`
+
+维护 k 大小的窗口, 从初始值出发每一次滑动1格, 只需要对窗口的前端和末端的字母进行判断, 对应元音字母的数值相加减。
+
+```java
+class Solution {
+    public int maxVowels(String s, int k) {
+        //滑动窗口 + 双指针
+        int max = 0;
+        //最后的返回结果, 取max的最大值
+        int ans = 0;    
+        for(int i = 0; i < k; i++){
+            max += checkYuan(s.charAt(i));
+        }
+        //维护窗口
+        ans = max;
+        for (int i = k; i < s.length(); i++) {
+            //判断窗口的前后字符, 前面+ 后面-
+            max += checkYuan(s.charAt(i)) - checkYuan(s.charAt(i-k));
+            ans = Math.max(ans, max);
+        }
+        return ans;
+    }
+
+    public int checkYuan(char c){
+        if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u'){
+            return 1;
+        }
+        return 0;
+    }
+}
+```
+
+
+
+### 34 [删掉一个元素以后全为 1 的最长子数组](https://leetcode.cn/problems/longest-subarray-of-1s-after-deleting-one-element/)
+
+给你一个二进制数组 `nums` ，你需要从中删掉一个元素。
+
+请你在删掉元素的结果数组中，返回最长的且只包含 1 的非空子数组的长度。
+
+如果不存在这样的子数组，请返回 0 。
+
+ 
+
+**提示 1：**
+
+```
+输入：nums = [1,1,0,1]
+输出：3
+解释：删掉位置 2 的数后，[1,1,1] 包含 3 个 1 。
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,1,1,1,0,1,1,0,1]
+输出：5
+解释：删掉位置 4 的数字后，[0,1,1,1,1,1,0,1] 的最长全 1 子数组为 [1,1,1,1,1] 。
+```
+
+**示例 3：**
+
+```
+输入：nums = [1,1,1]
+输出：2
+解释：你必须要删除一个元素。
+```
+
+**题解**
+
+`与 20 题相像, 通过控制窗口内0的个数来筛选最长的全1数组长度`
+
+```java
+class Solution {
+    public int longestSubarray(int[] nums) {
+        //双指针 + 滑动窗口
+        int left = 0, right = 0;
+        int zeros = 0;
+        int max = 0;
+        while(right < nums.length){
+            if(nums[right] == 0){
+                zeros++;
+            }
+
+            if (zeros > 1) {
+                if(nums[left] == 0){
+                    zeros--;
+                }
+                left++;
+            }
+            right++;
+            max = Math.max(max, right-left-1);
+        }
+        return max;
+    }
+}
+```
+
+
+
+## 二叉树
+
+### 35 [二叉树的最大深度](https://leetcode.cn/problems/maximum-depth-of-binary-tree/)
+
+> 给定一个二叉树，找出其最大深度。
+>
+> 二叉树的深度为根节点到最远叶子节点的最长路径上的节点数。
+>
+> **说明:** 叶子节点是指没有子节点的节点。
+
+**示例：**
+给定二叉树 `[3,9,20,null,null,15,7]`，
+
+```
+    3
+   / \
+  9  20
+    /  \
+   15   7
+```
+
+返回它的最大深度 3 。
+
+**题解**
+
+```java
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if(root == null){
+            return 0;
+        }
+        return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
+    }
+}
+```
+
+
+
+### 35 [叶子相似的树](https://leetcode.cn/problems/leaf-similar-trees/)
+
+请考虑一棵二叉树上所有的叶子，这些叶子的值按从左到右的顺序排列形成一个 **叶值序列** 。
+
+<img src="imgs/tree.png" alt="img" style="zoom:50%;" />
+
+举个例子，如上图所示，给定一棵叶值序列为 `(6, 7, 4, 9, 8)` 的树。
+
+如果有两棵二叉树的叶值序列是相同，那么我们就认为它们是 *叶相似* 的。
+
+如果给定的两个根结点分别为 `root1` 和 `root2` 的树是叶相似的，则返回 `true`；否则返回 `false` 。
+
+ 
+
+**示例 1：**
+
+<img src="imgs/leaf-similar-1.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：root1 = [3,5,1,6,2,9,8,null,null,7,4], root2 = [3,5,1,6,7,4,2,null,null,null,null,null,null,9,8]
+输出：true
+```
+
+**示例 2：**
+
+<img src="imgs/leaf-similar-2.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：root1 = [1,2,3], root2 = [1,3,2]
+输出：false
+```
+
+**题解**
+
+`使用 DFS 遍历了所有的叶子结点`
+
+```java
+class Solution {
+    public boolean leafSimilar(TreeNode root1, TreeNode root2) {
+        List<Integer> arr1 = new ArrayList<Integer>();
+        if (root1 != null) {
+            dfs(root1, arr1);
+        }
+
+        List<Integer> arr2 = new ArrayList<Integer>();
+        if (root2 != null) {
+            dfs(root2, arr2);
+        }
+        return arr1.equals(arr2);
+    }
+
+    public void dfs(TreeNode node, List<Integer> arr){
+        if(node.left == null && node.right == null){
+            arr.add(node.val);
+        } else{
+            if(node.left != null){
+                dfs(node.left, arr);
+            } 
+            if(node.right != null){
+                dfs(node.right, arr);
+            }
+        }
+    }
+}
+```
+
+
+
+## 堆|优先队列
+
+### 37 [数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
+
+给定整数数组 `nums` 和整数 `k`，请返回数组中第 `**k**` 个最大的元素。
+
+请注意，你需要找的是数组排序后的第 `k` 个最大的元素，而不是第 `k` 个不同的元素。
+
+你必须设计并实现时间复杂度为 `O(n)` 的算法解决此问题。
+
+ 
+
+**示例 1:**
+
+```
+输入: [3,2,1,5,6,4], k = 2
+输出: 5
+```
+
+**示例 2:**
+
+```
+输入: [3,2,3,1,2,4,5,5,6], k = 4
+输出: 4
+```
+
+**题解**
+
+`优先队列`
+
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> heap = new PriorityQueue<>();
+        for (int num : nums) {
+            heap.add(num);
+            if (heap.size() > k) {
+                heap.poll();
+            }
+        }
+        return heap.peek();
+    }
+} 
+```
+
+
+
 
 
 ## 前缀和
@@ -2021,6 +2360,112 @@ where referee_id != 2 or referee_id is null;
 
 
 
+#### 7 [大的国家](https://leetcode.cn/problems/big-countries/)
+
+`World` 表：
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| name        | varchar |
+| continent   | varchar |
+| area        | int     |
+| population  | int     |
+| gdp         | bigint  |
++-------------+---------+
+在 SQL 中，name 是这张表的主键。
+这张表的每一行提供：国家名称、所属大陆、面积、人口和 GDP 值。
+```
+
+ 
+
+如果一个国家满足下述两个条件之一，则认为该国是 **大国** ：
+
+- 面积至少为 300 万平方公里（即，`3000000 km2`），或者
+- 人口至少为 2500 万（即 `25000000`）
+
+查询并报告 **大国** 的国家名称、人口和面积。
+
+按 **任意顺序** 返回结果表。
+
+**题解**
+
+```sql
+select name, population, area
+from world
+where area >= 3000000 or population >= 25000000;
+```
+
+
+
+#### 8 [文章浏览 I](https://leetcode.cn/problems/article-views-i/)
+
+`Views` 表：
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| article_id    | int     |
+| author_id     | int     |
+| viewer_id     | int     |
+| view_date     | date    |
++---------------+---------+
+此表可能会存在重复行。（换句话说，在 SQL 中这个表没有主键）
+此表的每一行都表示某人在某天浏览了某位作者的某篇文章。
+请注意，同一人的 author_id 和 viewer_id 是相同的。
+```
+
+ 
+
+请查询出所有浏览过自己文章的作者
+
+结果按照 `id` 升序排列。
+
+查询结果的格式如下所示：
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Views 表：
++------------+-----------+-----------+------------+
+| article_id | author_id | viewer_id | view_date  |
++------------+-----------+-----------+------------+
+| 1          | 3         | 5         | 2019-08-01 |
+| 1          | 3         | 6         | 2019-08-02 |
+| 2          | 7         | 7         | 2019-08-01 |
+| 2          | 7         | 6         | 2019-08-02 |
+| 4          | 7         | 1         | 2019-07-22 |
+| 3          | 4         | 4         | 2019-07-21 |
+| 3          | 4         | 4         | 2019-07-21 |
++------------+-----------+-----------+------------+
+
+输出：
++------+
+| id   |
++------+
+| 4    |
+| 7    |
++------+
+```
+
+**题解**
+
+```java
+select distinct author_id id
+from views
+where author_id = viewer_id
+order by id asc;
+```
+
+
+
+
+
 ### 连接
 
 #### 3 [使用唯一标识码替换员工ID](https://leetcode.cn/problems/replace-employee-id-with-the-unique-identifier/)
@@ -2192,6 +2637,165 @@ on s.product_id = p.product_id;
 
 
 
+#### 9 [进店却未进行过交易的顾客](https://leetcode.cn/problems/customer-who-visited-but-did-not-make-any-transactions/)
+
+表：`Visits`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| visit_id    | int     |
+| customer_id | int     |
++-------------+---------+
+visit_id 是该表的主键。
+该表包含有关光临过购物中心的顾客的信息。
+```
+
+ 
+
+表：`Transactions`
+
+```
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| transaction_id | int     |
+| visit_id       | int     |
+| amount         | int     |
++----------------+---------+
+transaction_id 是此表的主键。
+此表包含 visit_id 期间进行的交易的信息。
+```
+
+ 
+
+有一些顾客可能光顾了购物中心但没有进行交易。请你编写一个 SQL 查询，来查找这些顾客的 ID ，以及他们只光顾不交易的次数。
+
+返回以 **任何顺序** 排序的结果表。
+
+查询结果格式如下例所示。
+
+ 
+
+**示例 1：**
+
+```
+输入:
+Visits
++----------+-------------+
+| visit_id | customer_id |
++----------+-------------+
+| 1        | 23          |
+| 2        | 9           |
+| 4        | 30          |
+| 5        | 54          |
+| 6        | 96          |
+| 7        | 54          |
+| 8        | 54          |
++----------+-------------+
+Transactions
++----------------+----------+--------+
+| transaction_id | visit_id | amount |
++----------------+----------+--------+
+| 2              | 5        | 310    |
+| 3              | 5        | 300    |
+| 9              | 5        | 200    |
+| 12             | 1        | 910    |
+| 13             | 2        | 970    |
++----------------+----------+--------+
+输出:
++-------------+----------------+
+| customer_id | count_no_trans |
++-------------+----------------+
+| 54          | 2              |
+| 30          | 1              |
+| 96          | 1              |
++-------------+----------------+
+解释:
+ID = 23 的顾客曾经逛过一次购物中心，并在 ID = 12 的访问期间进行了一笔交易。
+ID = 9 的顾客曾经逛过一次购物中心，并在 ID = 13 的访问期间进行了一笔交易。
+ID = 30 的顾客曾经去过购物中心，并且没有进行任何交易。
+ID = 54 的顾客三度造访了购物中心。在 2 次访问中，他们没有进行任何交易，在 1 次访问中，他们进行了 3 次交易。
+ID = 96 的顾客曾经去过购物中心，并且没有进行任何交易。
+如我们所见，ID 为 30 和 96 的顾客一次没有进行任何交易就去了购物中心。顾客 54 也两次访问了购物中心并且没有进行任何交易。
+```
+
+**题解**
+
+```sql
+select customer_id, COUNT(visit_id ) as count_no_trans
+from Visits v
+WHERE v.visit_id NOT IN (
+    SELECT t.visit_id FROM Transactions t
+)
+GROUP BY v.customer_id;
+```
+
+
+
+#### 10 [上升的温度](https://leetcode.cn/problems/rising-temperature/)
+
+表： `Weather`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| recordDate    | date    |
+| temperature   | int     |
++---------------+---------+
+id 是这个表的主键
+该表包含特定日期的温度信息
+```
+
+ 
+
+编写一个 SQL 查询，来查找与之前（昨天的）日期相比温度更高的所有日期的 `id` 。
+
+返回结果 **不要求顺序** 。
+
+查询结果格式如下例。
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Weather 表：
++----+------------+-------------+
+| id | recordDate | Temperature |
++----+------------+-------------+
+| 1  | 2015-01-01 | 10          |
+| 2  | 2015-01-02 | 25          |
+| 3  | 2015-01-03 | 20          |
+| 4  | 2015-01-04 | 30          |
++----+------------+-------------+
+输出：
++----+
+| id |
++----+
+| 2  |
+| 4  |
++----+
+解释：
+2015-01-02 的温度比前一天高（10 -> 25）
+2015-01-04 的温度比前一天高（20 -> 30）
+```
+
+**题解**
+
+```sql
+select w2.id
+from weather w1, weather w2
+where datediff(w2.recordDate,w1.recordDate)=1 
+and w2.temperature > w1.temperature;
+```
+
+
+
 
 
 ### 聚合函数
@@ -2242,7 +2846,7 @@ order by rating desc;
 
 
 
-#### [平均售价](https://leetcode.cn/problems/average-selling-price/)
+#### 6 [平均售价](https://leetcode.cn/problems/average-selling-price/)
 
 Table: `Prices`
 
@@ -2324,5 +2928,82 @@ from Prices p, UnitsSold u
 where p.product_id = u.product_id
     and u.purchase_date between p.start_date and end_date
 group by p.product_id;
+```
+
+
+
+#### 11 [项目员工 I](https://leetcode.cn/problems/project-employees-i/)
+
+项目表 `Project`： 
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| project_id  | int     |
+| employee_id | int     |
++-------------+---------+
+主键为 (project_id, employee_id)。
+employee_id 是员工表 Employee 表的外键。
+```
+
+员工表 `Employee`：
+
+```
++------------------+---------+
+| Column Name      | Type    |
++------------------+---------+
+| employee_id      | int     |
+| name             | varchar |
+| experience_years | int     |
++------------------+---------+
+主键是 employee_id。
+```
+
+ 
+
+请写一个 SQL 语句，查询每一个项目中员工的 **平均** 工作年限，**精确到小数点后两位**。
+
+查询结果的格式如下：
+
+```
+Project 表：
++-------------+-------------+
+| project_id  | employee_id |
++-------------+-------------+
+| 1           | 1           |
+| 1           | 2           |
+| 1           | 3           |
+| 2           | 1           |
+| 2           | 4           |
++-------------+-------------+
+
+Employee 表：
++-------------+--------+------------------+
+| employee_id | name   | experience_years |
++-------------+--------+------------------+
+| 1           | Khaled | 3                |
+| 2           | Ali    | 2                |
+| 3           | John   | 1                |
+| 4           | Doe    | 2                |
++-------------+--------+------------------+
+
+Result 表：
++-------------+---------------+
+| project_id  | average_years |
++-------------+---------------+
+| 1           | 2.00          |
+| 2           | 2.50          |
++-------------+---------------+
+第一个项目中，员工的平均工作年限是 (3 + 2 + 1) / 3 = 2.00；第二个项目中，员工的平均工作年限是 (3 + 2) / 2 = 2.50
+```
+
+**题解**
+
+```sql
+select project_id, round(sum(experience_years)/count(project_id), 2) average_years
+from Project p, Employee e
+where p.employee_id = e.employee_id
+group by project_id;
 ```
 
