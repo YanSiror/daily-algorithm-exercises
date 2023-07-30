@@ -487,11 +487,89 @@ SELECT department, AVG(DISTINCT salary) FROM employee GROUP BY department;
 
 #### datediff
 
-计算日期相差的天数
+DATEDIFF() 函数返回两个日期之间的天数。
+
+### 语法
+
+```
+DATEDIFF(date1,date2)
+```
+
+*date1* 和 *date2* 参数是合法的日期或日期/时间表达式。
+
+**注释：**只有值的日期部分参与计算。
+
+**实例**
+
+**例子 1**
+
+使用如下 SELECT 语句：
+
+```
+SELECT DATEDIFF('2008-12-30','2008-12-29') AS DiffDate
+```
+
+结果：
+
+| DiffDate |
+| :------- |
+| 1        |
+
+**例子 2**
+
+使用如下 SELECT 语句：
+
+```
+SELECT DATEDIFF('2008-12-29','2008-12-30') AS DiffDate
+```
+
+结果：
+
+| DiffDate |
+| :------- |
+| -1       |
+
+
+
+
+
+#### length
+
+判断字符串的长度
 
 ```sql
-datediff(w2.recordDate,w1.recordDate)
+length(str)
 ```
+
+
+
+
+
+#### avg
+
+计算平均值
+
+```sql
+select round(avg(b.timestamp -a.timestamp), 3) as processing_time 
+from activity a , activity b
+where a.machine_id = b.machine_id;
+```
+
+
+
+#### order by
+
+> 升序: asc
+>
+> 降序: desc
+>
+> 多组排序: 按书写的前后为优先级一次进行排序
+
+```sql
+order by percentage desc, r.contest_id asc; 	//返回的结果表按 percentage 的 降序 排序，若相同则按 contest_id 的 升序 排序。
+```
+
+
 
 
 

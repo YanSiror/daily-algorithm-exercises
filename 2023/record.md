@@ -2464,6 +2464,64 @@ order by id asc;
 
 
 
+#### 12 [无效的推文](https://leetcode.cn/problems/invalid-tweets/)
+
+表：`Tweets`
+
+```
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| tweet_id       | int     |
+| content        | varchar |
++----------------+---------+
+在 SQL 中，tweet_id 是这个表的主键。
+这个表包含某社交媒体 App 中所有的推文。
+```
+
+ 
+
+查询所有无效推文的编号（ID）。当推文内容中的字符数**严格大于** `15` 时，该推文是无效的。
+
+以**任意顺序**返回结果表。
+
+查询结果格式如下所示：
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Tweets 表：
++----------+----------------------------------+
+| tweet_id | content                          |
++----------+----------------------------------+
+| 1        | Vote for Biden                   |
+| 2        | Let us make America great again! |
++----------+----------------------------------+
+
+输出：
++----------+
+| tweet_id |
++----------+
+| 2        |
++----------+
+解释：
+推文 1 的长度 length = 14。该推文是有效的。
+推文 2 的长度 length = 32。该推文是无效的。
+```
+
+**题解**
+
+```sql
+select tweet_id 
+from tweets
+where length(content) > 15;
+```
+
+
+
 
 
 ### 连接
@@ -2796,6 +2854,145 @@ and w2.temperature > w1.temperature;
 
 
 
+#### 13 [每台机器的进程平均运行时间](https://leetcode.cn/problems/average-time-of-process-per-machine/)
+
+表: `Activity`
+
+```
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| machine_id     | int     |
+| process_id     | int     |
+| activity_type  | enum    |
+| timestamp      | float   |
++----------------+---------+
+该表展示了一家工厂网站的用户活动.
+(machine_id, process_id, activity_type) 是当前表的主键.
+machine_id 是一台机器的ID号.
+process_id 是运行在各机器上的进程ID号.
+activity_type 是枚举类型 ('start', 'end').
+timestamp 是浮点类型,代表当前时间(以秒为单位).
+'start' 代表该进程在这台机器上的开始运行时间戳 , 'end' 代表该进程在这台机器上的终止运行时间戳.
+同一台机器，同一个进程都有一对开始时间戳和结束时间戳，而且开始时间戳永远在结束时间戳前面.
+```
+
+现在有一个工厂网站由几台机器运行，每台机器上运行着相同数量的进程. 请写出一条SQL计算每台机器各自完成一个进程任务的平均耗时.
+
+完成一个进程任务的时间指进程的`'end' 时间戳` 减去 `'start' 时间戳`. 平均耗时通过计算每台机器上所有进程任务的总耗费时间除以机器上的总进程数量获得.
+
+结果表必须包含`machine_id（机器ID）` 和对应的 **average time（平均耗时）** 别名 `processing_time`, 且**四舍五入保留3位小数.**
+
+以 **任意顺序** 返回表。
+
+具体参考例子如下。
+
+**示例 1:**
+
+```
+输入：
+Activity table:
++------------+------------+---------------+-----------+
+| machine_id | process_id | activity_type | timestamp |
++------------+------------+---------------+-----------+
+| 0          | 0          | start         | 0.712     |
+| 0          | 0          | end           | 1.520     |
+| 0          | 1          | start         | 3.140     |
+| 0          | 1          | end           | 4.120     |
+| 1          | 0          | start         | 0.550     |
+| 1          | 0          | end           | 1.550     |
+| 1          | 1          | start         | 0.430     |
+| 1          | 1          | end           | 1.420     |
+| 2          | 0          | start         | 4.100     |
+| 2          | 0          | end           | 4.512     |
+| 2          | 1          | start         | 2.500     |
+| 2          | 1          | end           | 5.000     |
++------------+------------+---------------+-----------+
+输出：
++------------+-----------------+
+| machine_id | processing_time |
++------------+-----------------+
+| 0          | 0.894           |
+| 1          | 0.995           |
+| 2          | 1.456           |
++------------+-----------------+
+解释：
+一共有3台机器,每台机器运行着两个进程.
+机器 0 的平均耗时: ((1.520 - 0.712) + (4.120 - 3.140)) / 2 = 0.894
+机器 1 的平均耗时: ((1.550 - 0.550) + (1.420 - 0.430)) / 2 = 0.995
+机器 2 的平均耗时: ((4.512 - 4.100) + (5.000 - 2.500)) / 2 = 1.456
+```
+
+**题解**
+
+```sql
+select a.machine_id, round(avg(b.timestamp -a.timestamp), 3) as processing_time 
+from activity a , activity b
+where a.machine_id = b.machine_id and a.process_id = b.process_id and b.activity_type = 'end' and a.activity_type = 'start'
+group by b.machine_id;
+```
+
+
+
+#### 14 [员工奖金](https://leetcode.cn/problems/employee-bonus/)
+
+选出所有 bonus < 1000 的员工的 name 及其 bonus。
+
+`Employee` 表单
+
+```
++-------+--------+-----------+--------+
+| empId |  name  | supervisor| salary |
++-------+--------+-----------+--------+
+|   1   | John   |  3        | 1000   |
+|   2   | Dan    |  3        | 2000   |
+|   3   | Brad   |  null     | 4000   |
+|   4   | Thomas |  3        | 4000   |
++-------+--------+-----------+--------+
+empId 是这张表单的主关键字
+```
+
+`Bonus` 表单
+
+```
++-------+-------+
+| empId | bonus |
++-------+-------+
+| 2     | 500   |
+| 4     | 2000  |
++-------+-------+
+empId 是这张表单的主关键字
+```
+
+输出示例：
+
+```
++-------+-------+
+| name  | bonus |
++-------+-------+
+| John  | null  |
+| Dan   | 500   |
+| Brad  | null  |
++-------+-------+
+```
+
+**题解**
+
+> 首先需要知道每个员工的奖金数量，因此需要首先将 Employee 表与 Bonus 表连接。注意需要使用外连接，以处理员工没有出现在 Bonus 表上的情况。这里因为不存在员工只出现在 Bonus 表中的情况，所以只需要使用左外连接（left join 或 left outer join）。
+>
+> 其中 Brad 和 John 的 bonus 值为空，空值在数据库中的表示为 null。我们使用 bonus is null（而不是 bonus = null）判断奖金是否为 null。随后即可用 where 子句筛选奖金小于 1000 或者为空的员工。
+
+```sql
+select name, bonus
+from Employee left join Bonus
+on Employee.EmpId = Bonus.EmpId
+where bonus is null or bonus < 1000;
+```
+
+
+
+
+
 
 
 ### 聚合函数
@@ -3006,4 +3203,202 @@ from Project p, Employee e
 where p.employee_id = e.employee_id
 group by project_id;
 ```
+
+
+
+#### 15 [各赛事的用户注册率](https://leetcode.cn/problems/percentage-of-users-attended-a-contest/)
+
+用户表： `Users`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| user_id     | int     |
+| user_name   | varchar |
++-------------+---------+
+user_id 是该表的主键。
+该表中的每行包括用户 ID 和用户名。
+```
+
+ 
+
+注册表： `Register`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| contest_id  | int     |
+| user_id     | int     |
++-------------+---------+
+(contest_id, user_id) 是该表的主键。
+该表中的每行包含用户的 ID 和他们注册的赛事。
+```
+
+**题解**
+
+```sql
+select r.contest_id, round(count(u.user_id)/(select count(*) from users)*100, 2) as percentage 
+from users u, register r
+where u.user_id = r.user_id 
+group by r.contest_id
+order by percentage desc, r.contest_id asc; 
+```
+
+
+
+### 排序和分组
+
+#### 16 [每位教师所教授的科目种类的数量](https://leetcode.cn/problems/number-of-unique-subjects-taught-by-each-teacher/)
+
+表: `Teacher`
+
+```
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| teacher_id  | int  |
+| subject_id  | int  |
+| dept_id     | int  |
++-------------+------+
+在 SQL 中，(subject_id, dept_id) 是该表的主键。
+该表中的每一行都表示带有 teacher_id 的教师在系 dept_id 中教授科目 subject_id。
+```
+
+ 
+
+查询每位老师在大学里教授的科目种类的数量。
+
+以 **任意顺序** 返回结果表。
+
+查询结果格式示例如下。
+
+ 
+
+**示例 1:**
+
+```
+输入: 
+Teacher 表:
++------------+------------+---------+
+| teacher_id | subject_id | dept_id |
++------------+------------+---------+
+| 1          | 2          | 3       |
+| 1          | 2          | 4       |
+| 1          | 3          | 3       |
+| 2          | 1          | 1       |
+| 2          | 2          | 1       |
+| 2          | 3          | 1       |
+| 2          | 4          | 1       |
++------------+------------+---------+
+输出:  
++------------+-----+
+| teacher_id | cnt |
++------------+-----+
+| 1          | 2   |
+| 2          | 4   |
++------------+-----+
+解释: 
+教师 1:
+  - 他在 3、4 系教科目 2。
+  - 他在 3 系教科目 3。
+教师 2:
+  - 他在 1 系教科目 1。
+  - 他在 1 系教科目 2。
+  - 他在 1 系教科目 3。
+  - 他在 1 系教科目 4。
+```
+
+**题解**
+
+```sql
+select teacher_id, count(distinct subject_id) as cnt
+from teacher
+group by teacher_id;
+```
+
+
+
+#### 17 [查询近30天活跃用户数](https://leetcode.cn/problems/user-activity-for-the-past-30-days-i/)
+
+活动记录表：`Activity`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| user_id       | int     |
+| session_id    | int     |
+| activity_date | date    |
+| activity_type | enum    |
++---------------+---------+
+该表是用户在社交网站的活动记录。
+该表没有主键，可能包含重复数据。
+activity_type 字段为以下四种值 ('open_session', 'end_session', 'scroll_down', 'send_message')。
+每个 session_id 只属于一个用户。
+```
+
+请写SQL查询出截至 `2019-07-27`（包含2019-07-27），近 `30` 天的每日活跃用户数（当天只要有一条活动记录，即为活跃用户）。
+
+以 **任意顺序** 返回结果表。
+
+查询结果示例如下。
+
+**示例 1:**
+
+```
+输入：
+Activity table:
++---------+------------+---------------+---------------+
+| user_id | session_id | activity_date | activity_type |
++---------+------------+---------------+---------------+
+| 1       | 1          | 2019-07-20    | open_session  |
+| 1       | 1          | 2019-07-20    | scroll_down   |
+| 1       | 1          | 2019-07-20    | end_session   |
+| 2       | 4          | 2019-07-20    | open_session  |
+| 2       | 4          | 2019-07-21    | send_message  |
+| 2       | 4          | 2019-07-21    | end_session   |
+| 3       | 2          | 2019-07-21    | open_session  |
+| 3       | 2          | 2019-07-21    | send_message  |
+| 3       | 2          | 2019-07-21    | end_session   |
+| 4       | 3          | 2019-06-25    | open_session  |
+| 4       | 3          | 2019-06-25    | end_session   |
++---------+------------+---------------+---------------+
+输出：
++------------+--------------+ 
+| day        | active_users |
++------------+--------------+ 
+| 2019-07-20 | 2            |
+| 2019-07-21 | 2            |
++------------+--------------+ 
+解释：注意非活跃用户的记录不需要展示。
+```
+
+**题解**
+
+```sql
+SELECT activity_date day, COUNT(DISTINCT  user_id) active_users
+FROM Activity
+WHERE DATEDIFF("2019-07-27", activity_date) < 30 AND DATEDIFF("2019-07-27", activity_date) >= 0
+GROUP BY activity_date;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
