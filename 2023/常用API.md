@@ -277,6 +277,12 @@ where referee_id != 2 or referee_id is null;
 >
 > 总的来说，左链接和右链接是外链接的一种，内链接是一种常见的内部链接。左链接和右链接可以帮助我们查找数据表中存在但在另一个表格中不存在的数据，而内链接则用于查找两个表格中共同存在的数据。
 
+#### JOIN
+
+> join 会过滤掉无法匹配的行,也就是说只返回能够匹配上的行。
+
+
+
 #### 左链接
 
 **例**
@@ -433,7 +439,7 @@ round(sum(price*units)/sum(units), 2)		//保留2位小数
 
 
 
-#### Sum
+#### SUM
 
 在 SQL 中，SUM 是一个聚合函数，用于计算指定列的总和。在使用 SUM 函数时，需要指定要进行计算的列。
 
@@ -443,49 +449,21 @@ sum(price)		//计算价格总和
 
 
 
-#### GROUP BY
+#### AVG
 
-GROUP BY 子句用于按照指定的列对查询结果进行分组。在 GROUP BY 子句中，指定的列将成为分组的依据，查询结果将根据这些列的不同组合而被分为不同的组。
-
-**例**
-
-以下 SQL 查询用于计算 `orders` 表中每个客户的订单总额，并将结果按照客户名称进行分组，同时将总额舍入到小数点后两位：。这个查询将返回一个结果集，其中每行包含一个客户的名称和该客户的订单总额（经过四舍五入处理）。结果集中的行数等于 `orders` 表中不同客户的数量。
+计算平均值
 
 ```sql
-SELECT customer_name, ROUND(SUM(order_total), 2)
-FROM orders
-GROUP BY customer_name;
+select round(avg(b.timestamp -a.timestamp), 3) as processing_time 
+from activity a , activity b
+where a.machine_id = b.machine_id;
 ```
 
 
 
-#### DiSTINCT
-
-在 SQL 中，`DISTINCT` 是用于去重的关键字，它可以用于查询操作中，返回一组不重复的结果集。
-
-具体来说，`DISTINCT` 关键字可以用于以下两种情况：
-
-1. 在 `SELECT` 语句中，用于去除查询结果中的重复行。
-
-例如，下面的 SQL 语句查询 `employee` 表中的所有不重复的部门名称：
-
-```
-SELECT DISTINCT department FROM employee;
-```
-
-2. 在聚合函数中，用于对指定列进行去重并进行聚合计算。
-
-例如，下面的 SQL 语句计算 `employee` 表中不同部门的平均薪资：
-
-```
-SELECT department, AVG(DISTINCT salary) FROM employee GROUP BY department;
-```
-
-需要注意的是，`DISTINCT` 关键字会对查询的性能产生影响，因为它需要在内存中对查询结果进行去重。在处理大数据量时，使用 `DISTINCT` 可能会导致查询变慢，因此需要根据具体情况进行优化。
 
 
-
-#### datediff
+#### DATEDIFF
 
 DATEDIFF() 函数返回两个日期之间的天数。
 
@@ -531,7 +509,41 @@ SELECT DATEDIFF('2008-12-29','2008-12-30') AS DiffDate
 
 
 
+#### LEFT
 
+`取前 N 个字符:  LEFT(STR, 7)`
+
+使用 left() 函数取 trans_date 列的前7个字符,也即取月份。
+
+```sql
+left(trans_date,7)
+```
+
+
+
+#### COUNT
+
+`用于计算数目`
+
+**语法**
+
+- Simple
+
+  计算 item 出现的次数
+
+  ```sql
+  COUNT(item)
+  ```
+
+- Hard
+
+  如果 `state='approved'` 成立则赋值为1, 否则赋值为 NULL
+
+  ```sql
+  COUNT(IF(state='approved',1,NULL))
+  ```
+
+  
 
 #### length
 
@@ -543,21 +555,7 @@ length(str)
 
 
 
-
-
-#### avg
-
-计算平均值
-
-```sql
-select round(avg(b.timestamp -a.timestamp), 3) as processing_time 
-from activity a , activity b
-where a.machine_id = b.machine_id;
-```
-
-
-
-#### order by
+#### ORDER BY
 
 > 升序: asc
 >
@@ -570,6 +568,85 @@ order by percentage desc, r.contest_id asc; 	//返回的结果表按 percentage 
 ```
 
 
+
+
+
+#### GROUP BY
+
+GROUP BY 子句用于按照指定的列对查询结果进行分组。在 GROUP BY 子句中，指定的列将成为分组的依据，查询结果将根据这些列的不同组合而被分为不同的组。
+
+**例**
+
+以下 SQL 查询用于计算 `orders` 表中每个客户的订单总额，并将结果按照客户名称进行分组，同时将总额舍入到小数点后两位：。这个查询将返回一个结果集，其中每行包含一个客户的名称和该客户的订单总额（经过四舍五入处理）。结果集中的行数等于 `orders` 表中不同客户的数量。
+
+```sql
+SELECT customer_name, ROUND(SUM(order_total), 2)
+FROM orders
+GROUP BY customer_name;
+```
+
+
+
+#### DiSTINCT
+
+在 SQL 中，`DISTINCT` 是用于去重的关键字，它可以用于查询操作中，返回一组不重复的结果集。
+
+具体来说，`DISTINCT` 关键字可以用于以下两种情况：
+
+1. 在 `SELECT` 语句中，用于去除查询结果中的重复行。
+
+例如，下面的 SQL 语句查询 `employee` 表中的所有不重复的部门名称：
+
+```
+SELECT DISTINCT department FROM employee;
+```
+
+2. 在聚合函数中，用于对指定列进行去重并进行聚合计算。
+
+例如，下面的 SQL 语句计算 `employee` 表中不同部门的平均薪资：
+
+```
+SELECT department, AVG(DISTINCT salary) FROM employee GROUP BY department;
+```
+
+需要注意的是，`DISTINCT` 关键字会对查询的性能产生影响，因为它需要在内存中对查询结果进行去重。在处理大数据量时，使用 `DISTINCT` 可能会导致查询变慢，因此需要根据具体情况进行优化。
+
+
+
+
+
+#### HAVING
+
+HAVING 关键字类似 WHERE 关键字,但有两个区别:
+
+1. WHERE 关键字用于过滤行,HAVING 关键字用于过滤分组。
+2. WHERE 关键字在分组之前运行,HAVING 关键字在分组之后运行。
+
+也就是说,HAVING 关键字用于基于分组后的计算结果对分组应用过滤条件。
+
+**语法**
+
+`aggregate_function() 是聚合函数,如 count()、sum() 等, 也即只可用聚合函数做条件`
+
+```sql
+SELECT column_name, aggregate_function(column_name)
+FROM table_name
+WHERE column_name operator value
+GROUP BY column_name
+HAVING aggregate_function(column_name) operator value;
+```
+
+举个例子:
+
+> 这里我们先对 employees 表根据 department 字段分组,然后使用 HAVING 过滤只有员工人数大于 10 的部门。
+>
+> 所以简单来说, HAVING 关键字的作用是:基于分组后的计算结果对结果集应用过滤条件。
+
+```sql
+SELECT department, COUNT(*) FROM employees
+GROUP BY department
+HAVING COUNT(*) > 10;
+```
 
 
 

@@ -2991,6 +2991,199 @@ where bonus is null or bonus < 1000;
 
 
 
+#### 22 [学生们参加各科测试的次数](https://leetcode.cn/problems/students-and-examinations/)
+
+学生表: `Students`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| student_id    | int     |
+| student_name  | varchar |
++---------------+---------+
+在 SQL 中，主键为 student_id（学生ID）。
+该表内的每一行都记录有学校一名学生的信息。
+```
+
+ 
+
+科目表: `Subjects`
+
+```
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| subject_name | varchar |
++--------------+---------+
+在 SQL 中，主键为 subject_name（科目名称）。
+每一行记录学校的一门科目名称。
+```
+
+ 
+
+考试表: `Examinations`
+
+```
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| student_id   | int     |
+| subject_name | varchar |
++--------------+---------+
+这个表可能包含重复数据（换句话说，在 SQL 中，这个表没有主键）。
+学生表里的一个学生修读科目表里的每一门科目。
+这张考试表的每一行记录就表示学生表里的某个学生参加了一次科目表里某门科目的测试。
+```
+
+ 
+
+查询出每个学生参加每一门科目测试的次数，结果按 `student_id` 和 `subject_name` 排序。
+
+查询结构格式如下所示。
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Students table:
++------------+--------------+
+| student_id | student_name |
++------------+--------------+
+| 1          | Alice        |
+| 2          | Bob          |
+| 13         | John         |
+| 6          | Alex         |
++------------+--------------+
+Subjects table:
++--------------+
+| subject_name |
++--------------+
+| Math         |
+| Physics      |
+| Programming  |
++--------------+
+Examinations table:
++------------+--------------+
+| student_id | subject_name |
++------------+--------------+
+| 1          | Math         |
+| 1          | Physics      |
+| 1          | Programming  |
+| 2          | Programming  |
+| 1          | Physics      |
+| 1          | Math         |
+| 13         | Math         |
+| 13         | Programming  |
+| 13         | Physics      |
+| 2          | Math         |
+| 1          | Math         |
++------------+--------------+
+输出：
++------------+--------------+--------------+----------------+
+| student_id | student_name | subject_name | attended_exams |
++------------+--------------+--------------+----------------+
+| 1          | Alice        | Math         | 3              |
+| 1          | Alice        | Physics      | 2              |
+| 1          | Alice        | Programming  | 1              |
+| 2          | Bob          | Math         | 1              |
+| 2          | Bob          | Physics      | 0              |
+| 2          | Bob          | Programming  | 1              |
+| 6          | Alex         | Math         | 0              |
+| 6          | Alex         | Physics      | 0              |
+| 6          | Alex         | Programming  | 0              |
+| 13         | John         | Math         | 1              |
+| 13         | John         | Physics      | 1              |
+| 13         | John         | Programming  | 1              |
++------------+--------------+--------------+----------------+
+解释：
+结果表需包含所有学生和所有科目（即便测试次数为0）：
+Alice 参加了 3 次数学测试, 2 次物理测试，以及 1 次编程测试；
+Bob 参加了 1 次数学测试, 1 次编程测试，没有参加物理测试；
+Alex 啥测试都没参加；
+John  参加了数学、物理、编程测试各 1 次。
+```
+
+**题解**
+
+`多表加入: 由于要统计每个学生参加考试的次数, 没有在 Examinations 表中的也要统计。因此需要根据 subjects 表的课程信息和 students 的学生信息两两组合, 也即使用 GROUP BY 进行分组。 由于使用了3个表, 因此需要 JOIN 到一张表。由于次数是在 examinations 统计的该表位于最后, 前两个表使用 join 进行过滤。  ` 
+
+```sql
+SELECT s.student_id, s.student_name, sub.subject_name, COUNT(e.subject_name) as attended_exams
+FROM Subjects AS sub
+join Students AS s  
+left join examinations e
+on sub.subject_name = e.subject_name and e.student_id = s.student_id
+GROUP BY s.student_id, sub.subject_name
+ORDER BY s.student_id, sub.subject_name;
+```
+
+
+
+#### 23 [至少有5名直接下属的经理](https://leetcode.cn/problems/managers-with-at-least-5-direct-reports/)
+
+表: `Employee`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
+| department  | varchar |
+| managerId   | int     |
++-------------+---------+
+在 SQL 中，id 是该表的主键列。
+该表的每一行都表示雇员的名字、他们的部门和他们的经理的id。
+如果managerId为空，则该员工没有经理。
+没有员工会成为自己的管理者。
+```
+
+ 
+
+查询**至少有5名直接下属**的经理 。
+
+以 **任意顺序** 返回结果表。
+
+查询结果格式如下所示。
+
+ 
+
+**示例 1:**
+
+```
+输入: 
+Employee 表:
++-----+-------+------------+-----------+
+| id  | name  | department | managerId |
++-----+-------+------------+-----------+
+| 101 | John  | A          | None      |
+| 102 | Dan   | A          | 101       |
+| 103 | James | A          | 101       |
+| 104 | Amy   | A          | 101       |
+| 105 | Anne  | A          | 101       |
+| 106 | Ron   | B          | 101       |
++-----+-------+------------+-----------+
+输出: 
++------+
+| name |
++------+
+| John |
++------+
+```
+
+**题解**
+
+```sql
+SELECT e1.name
+FROM Employee e1 left join Employee e2
+ON e1.id = e2.managerId
+GROUP BY e1.id
+HAVING COUNT(e2.managerId) >= 5;
+```
+
 
 
 
@@ -3248,6 +3441,143 @@ order by percentage desc, r.contest_id asc;
 
 
 
+#### 24 [查询结果的质量和占比](https://leetcode.cn/problems/queries-quality-and-percentage/)
+
+`查询表 Queries： `
+
+```sql
+
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| query_name  | varchar |
+| result      | varchar |
+| position    | int     |
+| rating      | int     |
++-------------+---------+
+此表没有主键，并可能有重复的行。
+此表包含了一些从数据库中收集的查询信息。
+“位置”（position）列的值为 1 到 500 。
+“评分”（rating）列的值为 1 到 5 。评分小于 3 的查询被定义为质量很差的查询。
+ 
+将查询结果的质量 quality 定义为：
+各查询结果的评分与其位置之间比率的平均值。
+将劣质查询百分比 poor_query_percentage 为：
+评分小于 3 的查询结果占全部查询结果的百分比。
+编写一组 SQL 来查找每次查询的名称(query_name)、质量(quality) 和 劣质查询百分比(poor_query_percentage)。
+质量(quality) 和劣质查询百分比(poor_query_percentage) 都应四舍五入到小数点后两位。
+查询结果格式如下所示：
+
+Queries table:
++------------+-------------------+----------+--------+
+| query_name | result            | position | rating |
++------------+-------------------+----------+--------+
+| Dog        | Golden Retriever  | 1        | 5      |
+| Dog        | German Shepherd   | 2        | 5      |
+| Dog        | Mule              | 200      | 1      |
+| Cat        | Shirazi           | 5        | 2      |
+| Cat        | Siamese           | 3        | 3      |
+| Cat        | Sphynx            | 7        | 4      |
++------------+-------------------+----------+--------+
+
+Result table:
++------------+---------+-----------------------+
+| query_name | quality | poor_query_percentage |
++------------+---------+-----------------------+
+| Dog        | 2.50    | 33.33                 |
+| Cat        | 0.66    | 33.33                 |
++------------+---------+-----------------------+
+
+Dog 查询结果的质量为 ((5 / 1) + (5 / 2) + (1 / 200)) / 3 = 2.50
+Dog 查询结果的劣质查询百分比为 (1 / 3) * 100 = 33.33
+
+Cat 查询结果的质量为 ((2 / 5) + (3 / 3) + (4 / 7)) / 3 = 0.66
+Cat 查询结果的劣质查询百分比为 (1 / 3) * 100 = 33.33
+```
+
+**题解**
+
+```sql
+SELECT query_name, ROUND(AVG(rating/position),2) quality, ROUND(AVG(rating < 3)*100, 2) poor_query_percentage
+FROM queries
+GROUP BY query_name;
+```
+
+
+
+#### 25 [每月交易 I](https://leetcode.cn/problems/monthly-transactions-i/)
+
+Table: `Transactions`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| country       | varchar |
+| state         | enum    |
+| amount        | int     |
+| trans_date    | date    |
++---------------+---------+
+id 是这个表的主键。
+该表包含有关传入事务的信息。
+state 列类型为 “[”批准“，”拒绝“] 之一。
+```
+
+ 
+
+编写一个 sql 查询来查找每个月和每个国家/地区的事务数及其总金额、已批准的事务数及其总金额。
+
+以 **任意顺序** 返回结果表。
+
+查询结果格式如下所示。
+
+ 
+
+**示例 1:**
+
+```
+输入：
+Transactions table:
++------+---------+----------+--------+------------+
+| id   | country | state    | amount | trans_date |
++------+---------+----------+--------+------------+
+| 121  | US      | approved | 1000   | 2018-12-18 |
+| 122  | US      | declined | 2000   | 2018-12-19 |
+| 123  | US      | approved | 2000   | 2019-01-01 |
+| 124  | DE      | approved | 2000   | 2019-01-07 |
++------+---------+----------+--------+------------+
+输出：
++----------+---------+-------------+----------------+--------------------+-----------------------+
+| month    | country | trans_count | approved_count | trans_total_amount | approved_total_amount |
++----------+---------+-------------+----------------+--------------------+-----------------------+
+| 2018-12  | US      | 2           | 1              | 3000               | 1000                  |
+| 2019-01  | US      | 1           | 1              | 2000               | 2000                  |
+| 2019-01  | DE      | 1           | 1              | 2000               | 2000                  |
++----------+---------+-------------+----------------+--------------------+-----------------------+
+```
+
+**题解**
+
+```sql
+select
+    left(trans_date,7) month,
+    country,
+    count(state) trans_count,
+    count(if(state='approved',1,null)) approved_count,
+    sum(amount) trans_total_amount,
+    sum(if(state='approved',amount,0)) approved_total_amount
+from transactions
+group by month,country
+```
+
+
+
+
+
+
+
 ### 排序和分组
 
 #### 16 [每位教师所教授的科目种类的数量](https://leetcode.cn/problems/number-of-unique-subjects-taught-by-each-teacher/)
@@ -3386,19 +3716,292 @@ GROUP BY activity_date;
 
 
 
+#### 18 [销售分析III](https://leetcode.cn/problems/sales-analysis-iii/)
+
+Table: `Product`
+
+```
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| product_id   | int     |
+| product_name | varchar |
+| unit_price   | int     |
++--------------+---------+
+Product_id是该表的主键。
+该表的每一行显示每个产品的名称和价格。
+```
+
+Table: `Sales`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| seller_id   | int     |
+| product_id  | int     |
+| buyer_id    | int     |
+| sale_date   | date    |
+| quantity    | int     |
+| price       | int     |
++------ ------+---------+
+这个表没有主键，它可以有重复的行。
+product_id 是 Product 表的外键。
+该表的每一行包含关于一个销售的一些信息。
+```
+
+编写一个SQL查询，报告`2019年春季`才售出的产品。即**仅**在`**2019-01-01**`至`**2019-03-31**`（含）之间出售的商品。
+
+以 **任意顺序** 返回结果表。
+
+查询结果格式如下所示。
+
+**示例 1:**
+
+```
+输入：
+Product table:
++------------+--------------+------------+
+| product_id | product_name | unit_price |
++------------+--------------+------------+
+| 1          | S8           | 1000       |
+| 2          | G4           | 800        |
+| 3          | iPhone       | 1400       |
++------------+--------------+------------+
+Sales table:
++-----------+------------+----------+------------+----------+-------+
+| seller_id | product_id | buyer_id | sale_date  | quantity | price |
++-----------+------------+----------+------------+----------+-------+
+| 1         | 1          | 1        | 2019-01-21 | 2        | 2000  |
+| 1         | 2          | 2        | 2019-02-17 | 1        | 800   |
+| 2         | 2          | 3        | 2019-06-02 | 1        | 800   |
+| 3         | 3          | 4        | 2019-05-13 | 2        | 2800  |
++-----------+------------+----------+------------+----------+-------+
+输出：
++-------------+--------------+
+| product_id  | product_name |
++-------------+--------------+
+| 1           | S8           |
++-------------+--------------+
+解释:
+id为1的产品仅在2019年春季销售。
+id为2的产品在2019年春季销售，但也在2019年春季之后销售。
+id 3的产品在2019年春季之后销售。
+我们只退回产品1，因为它是2019年春季才销售的产品。
+```
+
+**题解**
+
+```sql
+select s.product_id,product_name
+from Sales s inner join Product p on s.product_id=p.product_id
+group by s.product_id
+having min(sale_date)>='2019-01-01' and max(sale_date)<='2019-03-31'
+```
 
 
 
+#### 19 [超过5名学生的课](https://leetcode.cn/problems/classes-more-than-5-students/)
+
+表: `Courses`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| student     | varchar |
+| class       | varchar |
++-------------+---------+
+在 SQL 中，(student, class)是该表的主键列。
+该表的每一行表示学生的名字和他们注册的班级。
+```
+
+查询 **至少有5个学生** 的所有班级。
+
+以 **任意顺序** 返回结果表。
+
+查询结果格式如下所示。
+
+**示例 1:**
+
+```
+输入: 
+Courses table:
++---------+----------+
+| student | class    |
++---------+----------+
+| A       | Math     |
+| B       | English  |
+| C       | Math     |
+| D       | Biology  |
+| E       | Math     |
+| F       | Computer |
+| G       | Math     |
+| H       | Math     |
+| I       | Math     |
++---------+----------+
+输出: 
++---------+ 
+| class   | 
++---------+ 
+| Math    | 
++---------+
+解释: 
+-数学课有6个学生，所以我们包括它。
+-英语课有1名学生，所以我们不包括它。
+-生物课有1名学生，所以我们不包括它。
+-计算机课有1个学生，所以我们不包括它。
+```
+
+**题解**
+
+```sql
+SELECT class
+FROM courses
+GROUP BY class
+HAVING COUNT(*) >= 5;
+```
 
 
 
+### 高级查询和连接
+
+#### 20 [每位经理的下属员工数量](https://leetcode.cn/problems/the-number-of-employees-which-report-to-each-employee/)
+
+Table: `Employees`
+
+```
++-------------+----------+
+| Column Name | Type     |
++-------------+----------+
+| employee_id | int      |
+| name        | varchar  |
+| reports_to  | int      |
+| age         | int      |
++-------------+----------+
+employee_id 是这个表的主键.
+该表包含员工以及需要听取他们汇报的上级经理的ID的信息。 有些员工不需要向任何人汇报（reports_to 为空）。
+```
+
+ 
+
+对于此问题，我们将至少有一个其他员工需要向他汇报的员工，视为一个经理。
+
+编写SQL查询需要听取汇报的所有经理的ID、名称、直接向该经理汇报的员工人数，以及这些员工的平均年龄，其中该平均年龄需要四舍五入到最接近的整数。
+
+返回的结果集需要按照 `employee_id `进行排序。
+
+查询结果的格式如下：
+
+ 
+
+```
+Employees table:
++-------------+---------+------------+-----+
+| employee_id | name    | reports_to | age |
++-------------+---------+------------+-----+
+| 9           | Hercy   | null       | 43  |
+| 6           | Alice   | 9          | 41  |
+| 4           | Bob     | 9          | 36  |
+| 2           | Winston | null       | 37  |
++-------------+---------+------------+-----+
+
+Result table:
++-------------+-------+---------------+-------------+
+| employee_id | name  | reports_count | average_age |
++-------------+-------+---------------+-------------+
+| 9           | Hercy | 2             | 39          |
++-------------+-------+---------------+-------------+
+Hercy 有两个需要向他汇报的员工, 他们是 Alice and Bob. 他们的平均年龄是 (41+36)/2 = 38.5, 四舍五入的结果是 39.
+```
+
+**题解**
+
+`使用两个表, 按照 a.employee_id 分组(也即以经理的id作为查询的参照) `
+
+```sql
+SELECT a.employee_id, a.name, COUNT(b.reports_to) as reports_count, ROUND(AVG(b.age),0) as average_age
+FROM employees a, employees b
+WHERE a.employee_id = b.reports_to
+GROUP BY a.employee_id
+ORDER BY employee_id;
+```
 
 
 
+#### 21 [员工的直属部门](https://leetcode.cn/problems/primary-department-for-each-employee/)
 
+Table: `Employee`
 
+```
++---------------+---------+
+| Column Name   |  Type   |
++---------------+---------+
+| employee_id   | int     |
+| department_id | int     |
+| primary_flag  | varchar |
++---------------+---------+
+这张表的主键为 employee_id, department_id
+employee_id 是员工的ID
+department_id 是部门的ID，表示员工与该部门有关系
+primary_flag 是一个枚举类型，值分别为('Y', 'N'). 如果值为'Y',表示该部门是员工的直属部门。 如果值是'N',则否
+```
 
+一个员工可以属于多个部门。
 
+当一个员工加入**超过一个部门**的时候，他需要决定哪个部门是他的直属部门。
+
+请注意，当员工只加入一个部门的时候，那这个部门将默认为他的直属部门，虽然表记录的值为`'N'`.
+
+请编写一段SQL，查出员工所属的直属部门。
+
+返回结果没有顺序要求。
+
+示例：
+
+```
+Employee table:
++-------------+---------------+--------------+
+| employee_id | department_id | primary_flag |
++-------------+---------------+--------------+
+| 1           | 1             | N            |
+| 2           | 1             | Y            |
+| 2           | 2             | N            |
+| 3           | 3             | N            |
+| 4           | 2             | N            |
+| 4           | 3             | Y            |
+| 4           | 4             | N            |
++-------------+---------------+--------------+
+
+Result table:
++-------------+---------------+
+| employee_id | department_id |
++-------------+---------------+
+| 1           | 1             |
+| 2           | 1             |
+| 3           | 3             |
+| 4           | 3             |
++-------------+---------------+
+- 员工1的直属部门是1
+- 员工2的直属部门是1
+- 员工3的直属部门是3
+- 员工4的直属部门是3
+```
+
+**题解**
+
+`其实就是2个条件相并`
+
+```sql
+SELECT employee_id, department_id
+FROM employee
+WHERE primary_flag = 'Y' OR employee_id in (
+  SELECT employee_id
+  FROM employee
+  GROUP BY employee_id
+  HAVING COUNT(department_id) = 1
+);
+```
 
 
 
