@@ -650,3 +650,38 @@ HAVING COUNT(*) > 10;
 
 
 
+#### CASE ... WHEN
+
+`使用 CASE 来锁定需要使用条件语句判断输出结果的信息`
+
+写一个SQL查询，每三个线段报告它们是否可以形成一个三角形。
+
+```sql
+SELECT *,
+    CASE
+        WHEN x + y > z AND x + z > y AND y + z > x THEN 'Yes'
+        ELSE 'No'
+    END AS 'triangle'
+FROM
+    triangle;
+```
+
+
+
+#### IF
+
+`使用 IF 来锁定需要使用条件语句判断输出结果的信息`
+
+写一个SQL查询，每三个线段报告它们是否可以形成一个三角形。
+
+```sql
+Select *,IF(x+y>z and x+z>y and y+z>x, "Yes", "No") AS triangle
+FROM triangle
+```
+
+
+
+
+
+
+

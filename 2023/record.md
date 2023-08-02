@@ -3186,6 +3186,107 @@ HAVING COUNT(e2.managerId) >= 5;
 
 
 
+#### 30 确认率
+
+表: `Signups`
+
+```
++----------------+----------+
+| Column Name    | Type     |
++----------------+----------+
+| user_id        | int      |
+| time_stamp     | datetime |
++----------------+----------+
+User_id是该表的主键。
+每一行都包含ID为user_id的用户的注册时间信息。
+```
+
+ 
+
+表: `Confirmations`
+
+```
++----------------+----------+
+| Column Name    | Type     |
++----------------+----------+
+| user_id        | int      |
+| time_stamp     | datetime |
+| action         | ENUM     |
++----------------+----------+
+(user_id, time_stamp)是该表的主键。
+user_id是一个引用到注册表的外键。
+action是类型为('confirmed'， 'timeout')的ENUM
+该表的每一行都表示ID为user_id的用户在time_stamp请求了一条确认消息，该确认消息要么被确认('confirmed')，要么被过期('timeout')。
+```
+
+ 
+
+用户的 **确认率** 是 `'confirmed'` 消息的数量除以请求的确认消息的总数。没有请求任何确认消息的用户的确认率为 `0` 。确认率四舍五入到 **小数点后两位** 。
+
+编写一个SQL查询来查找每个用户的 确认率 。
+
+以 任意顺序 返回结果表。
+
+查询结果格式如下所示。
+
+**示例1:**
+
+```
+输入：
+Signups 表:
++---------+---------------------+
+| user_id | time_stamp          |
++---------+---------------------+
+| 3       | 2020-03-21 10:16:13 |
+| 7       | 2020-01-04 13:57:59 |
+| 2       | 2020-07-29 23:09:44 |
+| 6       | 2020-12-09 10:39:37 |
++---------+---------------------+
+Confirmations 表:
++---------+---------------------+-----------+
+| user_id | time_stamp          | action    |
++---------+---------------------+-----------+
+| 3       | 2021-01-06 03:30:46 | timeout   |
+| 3       | 2021-07-14 14:00:00 | timeout   |
+| 7       | 2021-06-12 11:57:29 | confirmed |
+| 7       | 2021-06-13 12:58:28 | confirmed |
+| 7       | 2021-06-14 13:59:27 | confirmed |
+| 2       | 2021-01-22 00:00:00 | confirmed |
+| 2       | 2021-02-28 23:59:59 | timeout   |
++---------+---------------------+-----------+
+输出: 
++---------+-------------------+
+| user_id | confirmation_rate |
++---------+-------------------+
+| 6       | 0.00              |
+| 3       | 0.00              |
+| 7       | 1.00              |
+| 2       | 0.50              |
++---------+-------------------+
+解释:
+用户 6 没有请求任何确认消息。确认率为 0。
+用户 3 进行了 2 次请求，都超时了。确认率为 0。
+用户 7 提出了 3 个请求，所有请求都得到了确认。确认率为 1。
+用户 2 做了 2 个请求，其中一个被确认，另一个超时。确认率为 1 / 2 = 0.5。
+```
+
+**题解**
+
+```sql
+SELECT s.user_id, ROUND(IF(SUM(action = 'confirmed')/COUNT(*) is NULL,0,SUM(action = 'confirmed')/COUNT(*)), 2) AS confirmation_rate
+FROM Signups s left join Confirmations c
+ON s.user_id = c.user_id
+GROUP BY s.user_id;
+
+>> way 2
+select s.user_id,round(avg(if(c.action = 'confirmed',1,0)),2) confirmation_rate 
+from Signups s
+left join
+Confirmations c
+on s.user_id=c.user_id
+group by s.user_id;
+```
+
 
 
 ### 聚合函数
@@ -3574,6 +3675,76 @@ group by month,country
 
 
 
+#### 29 [即时食物配送 II](https://leetcode.cn/problems/immediate-food-delivery-ii/)
+
+配送表: `Delivery`
+
+```
++-----------------------------+---------+
+| Column Name                 | Type    |
++-----------------------------+---------+
+| delivery_id                 | int     |
+| customer_id                 | int     |
+| order_date                  | date    |
+| customer_pref_delivery_date | date    |
++-----------------------------+---------+
+delivery_id 是表的主键。
+该表保存着顾客的食物配送信息，顾客在某个日期下了订单，并指定了一个期望的配送日期（和下单日期相同或者在那之后）。
+```
+
+如果顾客期望的配送日期和下单日期相同，则该订单称为 「即时订单」，否则称为「计划订单」。
+
+「首次订单」是顾客最早创建的订单。我们保证一个顾客只会有一个「首次订单」。
+
+写一条 SQL 查询语句获取即时订单在所有用户的首次订单中的比例。**保留两位小数。**
+
+查询结果如下所示：
+
+```
+Delivery 表：
++-------------+-------------+------------+-----------------------------+
+| delivery_id | customer_id | order_date | customer_pref_delivery_date |
++-------------+-------------+------------+-----------------------------+
+| 1           | 1           | 2019-08-01 | 2019-08-02                  |
+| 2           | 2           | 2019-08-02 | 2019-08-02                  |
+| 3           | 1           | 2019-08-11 | 2019-08-12                  |
+| 4           | 3           | 2019-08-24 | 2019-08-24                  |
+| 5           | 3           | 2019-08-21 | 2019-08-22                  |
+| 6           | 2           | 2019-08-11 | 2019-08-13                  |
+| 7           | 4           | 2019-08-09 | 2019-08-09                  |
++-------------+-------------+------------+-----------------------------+
+
+Result 表：
++----------------------+
+| immediate_percentage |
++----------------------+
+| 50.00                |
++----------------------+
+1 号顾客的 1 号订单是首次订单，并且是计划订单。
+2 号顾客的 2 号订单是首次订单，并且是即时订单。
+3 号顾客的 5 号订单是首次订单，并且是计划订单。
+4 号顾客的 7 号订单是首次订单，并且是即时订单。
+因此，一半顾客的首次订单是即时的。
+```
+
+**题解**
+
+`这里使用 (customer_id, order_date)  组合的原因在于, GROUP BY 分组返回的结果 customer_id <=> order_date 对应类似于一个主键, 因此必须以此为参考。`
+
+```sql
+SELECT ROUND(SUM(order_date = customer_pref_delivery_date)/COUNT(*)*100, 2) AS immediate_percentage 
+FROM Delivery 
+WHERE (customer_id, order_date) in (
+    SELECT customer_id, MIN(order_date)
+    FROM Delivery
+    GROUP BY customer_id
+);
+```
+
+
+
+
+
 
 
 
@@ -3864,6 +4035,73 @@ HAVING COUNT(*) >= 5;
 
 
 
+#### 28 [求关注者的数量](https://leetcode.cn/problems/find-followers-count/)
+
+表： `Followers`
+
+```
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| user_id     | int  |
+| follower_id | int  |
++-------------+------+
+(user_id, follower_id) 是这个表的主键。
+该表包含一个关注关系中关注者和用户的编号，其中关注者关注用户。
+```
+
+ 
+
+写出 SQL 语句，对于每一个用户，返回该用户的关注者数量。
+
+按 `user_id` 的顺序返回结果表。
+
+查询结果的格式如下示例所示。
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Followers 表：
++---------+-------------+
+| user_id | follower_id |
++---------+-------------+
+| 0       | 1           |
+| 1       | 0           |
+| 2       | 0           |
+| 2       | 1           |
++---------+-------------+
+输出：
++---------+----------------+
+| user_id | followers_count|
++---------+----------------+
+| 0       | 1              |
+| 1       | 1              |
+| 2       | 2              |
++---------+----------------+
+解释：
+0 的关注者有 {1}
+1 的关注者有 {0}
+2 的关注者有 {0,1}
+```
+
+**题解**
+
+```sql
+SELECT user_id, COUNT(user_id) AS followers_count
+FROM followers
+GROUP BY user_id
+ORDER BY user_id;
+```
+
+
+
+
+
+
+
 ### 高级查询和连接
 
 #### 20 [每位经理的下属员工数量](https://leetcode.cn/problems/the-number-of-employees-which-report-to-each-employee/)
@@ -4001,6 +4239,116 @@ WHERE primary_flag = 'Y' OR employee_id in (
   GROUP BY employee_id
   HAVING COUNT(department_id) = 1
 );
+```
+
+
+
+#### 26 [判断三角形](https://leetcode.cn/problems/triangle-judgement/)
+
+表: `Triangle`
+
+```
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| x           | int  |
+| y           | int  |
+| z           | int  |
++-------------+------+
+(x, y, z)是该表的主键列。
+该表的每一行包含三个线段的长度。
+```
+
+写一个SQL查询，每三个线段报告它们是否可以形成一个三角形。
+
+以 **任意顺序** 返回结果表。
+
+查询结果格式如下所示。
+
+**示例 1:**
+
+```
+输入: 
+Triangle 表:
++----+----+----+
+| x  | y  | z  |
++----+----+----+
+| 13 | 15 | 30 |
+| 10 | 20 | 15 |
++----+----+----+
+输出: 
++----+----+----+----------+
+| x  | y  | z  | triangle |
++----+----+----+----------+
+| 13 | 15 | 30 | No       |
+| 10 | 20 | 15 | Yes      |
++----+----+----+----------+
+```
+
+**题解**
+
+```sql
+Select *,IF(x+y>z and x+z>y and y+z>x, "Yes", "No") AS triangle
+FROM triangle
+```
+
+
+
+#### 27 [连续出现的数字](https://leetcode.cn/problems/consecutive-numbers/)
+
+表：`Logs`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| num         | varchar |
++-------------+---------+
+id 是这个表的主键。
+```
+
+编写一个 SQL 查询，查找所有至少连续出现三次的数字。
+
+返回的结果表中的数据可以按 **任意顺序** 排列。
+
+查询结果格式如下面的例子所示：
+
+**示例 1:**
+
+```
+输入：
+Logs 表：
++----+-----+
+| Id | Num |
++----+-----+
+| 1  | 1   |
+| 2  | 1   |
+| 3  | 1   |
+| 4  | 2   |
+| 5  | 1   |
+| 6  | 2   |
+| 7  | 2   |
++----+-----+
+输出：
+Result 表：
++-----------------+
+| ConsecutiveNums |
++-----------------+
+| 1               |
++-----------------+
+解释：1 是唯一连续出现至少三次的数字。
+```
+
+**题解**
+
+`DISTINCT 的含义在于滑动窗口时会出现重复值`
+
+```sql
+SELECT DISTINCT l1.Num AS ConsecutiveNums
+FROM logs l1, logs l2, logs l3
+WHERE l1.id = l2.id-1 and l2.id = l3.id-1 and
+      l1.Num = l2.Num and l2.Num = l3.Num;
 ```
 
 
