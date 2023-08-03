@@ -3743,6 +3743,63 @@ WHERE (customer_id, order_date) in (
 
 
 
+#### 31 [游戏玩法分析 IV](https://leetcode.cn/problems/game-play-analysis-iv/)
+
+Table: `Activity`
+
+```
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| player_id    | int     |
+| device_id    | int     |
+| event_date   | date    |
+| games_played | int     |
++--------------+---------+
+（player_id，event_date）是此表的主键。
+这张表显示了某些游戏的玩家的活动情况。
+每一行是一个玩家的记录，他在某一天使用某个设备注销之前登录并玩了很多游戏（可能是 0）。
+```
+
+编写一个 SQL 查询，报告在首次登录的第二天再次登录的玩家的比率，四舍五入到小数点后两位。换句话说，您需要计算从首次登录日期开始至少连续两天登录的玩家的数量，然后除以玩家总数。
+
+查询结果格式如下所示：
+
+```
+Activity table:
++-----------+-----------+------------+--------------+
+| player_id | device_id | event_date | games_played |
++-----------+-----------+------------+--------------+
+| 1         | 2         | 2016-03-01 | 5            |
+| 1         | 2         | 2016-03-02 | 6            |
+| 2         | 3         | 2017-06-25 | 1            |
+| 3         | 1         | 2016-03-02 | 0            |
+| 3         | 4         | 2018-07-03 | 5            |
++-----------+-----------+------------+--------------+
+
+Result table:
++-----------+
+| fraction  |
++-----------+
+| 0.33      |
++-----------+
+只有 ID 为 1 的玩家在第一天登录后才重新登录，所以答案是 1/3 = 0.33
+```
+
+**题解**
+
+`思路: 筛选出每个玩家的最小登录日期+1, 如果有 (player_id, event_date) 符合该日期则为预期结果, 再通过聚合函数得到比值`
+
+```sql
+SELECT ROUND(COUNT(DISTINCT player_id)/(SELECT COUNT(DISTINCT player_id) FROM activity), 2) as fraction
+FROM activity
+WHERE (player_id, event_date) in (
+    SELECT player_id, date_add(min(event_date), INTERVAL 1 DAY)
+    FROM activity
+    GROUP BY player_Id
+);
+```
+
 
 
 
@@ -4098,6 +4155,93 @@ ORDER BY user_id;
 
 
 
+#### 32 [只出现一次的最大数字](https://leetcode.cn/problems/biggest-single-number/)
+
+`MyNumbers` 表：
+
+```
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| num         | int  |
++-------------+------+
+这张表没有主键。可能包含重复数字。
+这张表的每一行都含有一个整数。
+```
+
+**单一数字** 是在 `MyNumbers` 表中只出现一次的数字。
+
+请你编写一个 SQL 查询来报告最大的 **单一数字** 。如果不存在 **单一数字** ，查询需报告 `null` 。
+
+查询结果如下例所示。
+
+**示例 1：**
+
+```
+输入：
+MyNumbers 表：
++-----+
+| num |
++-----+
+| 8   |
+| 8   |
+| 3   |
+| 3   |
+| 1   |
+| 4   |
+| 5   |
+| 6   |
++-----+
+输出：
++-----+
+| num |
++-----+
+| 6   |
++-----+
+解释：单一数字有 1、4、5 和 6 。
+6 是最大的单一数字，返回 6 。
+```
+
+**示例 2：**
+
+```
+输入：
+MyNumbers table:
++-----+
+| num |
++-----+
+| 8   |
+| 8   |
+| 7   |
+| 7   |
+| 3   |
+| 3   |
+| 3   |
++-----+
+输出：
++------+
+| num  |
++------+
+| null |
++------+
+解释：输入的表中不存在单一数字，所以返回 null 。
+```
+
+**题解**
+
+```sql
+SELECT MAX(num) num
+FROM mynumbers
+WHERE num IN (
+  SELECT num
+  FROM mynumbers
+  GROUP BY num
+  HAVING COUNT(num) = 1
+);
+```
+
+
+
 
 
 
@@ -4349,6 +4493,339 @@ SELECT DISTINCT l1.Num AS ConsecutiveNums
 FROM logs l1, logs l2, logs l3
 WHERE l1.id = l2.id-1 and l2.id = l3.id-1 and
       l1.Num = l2.Num and l2.Num = l3.Num;
+```
+
+
+
+#### 33 [指定日期的产品价格](https://leetcode.cn/problems/product-price-at-a-given-date/)
+
+产品数据表: `Products`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| product_id    | int     |
+| new_price     | int     |
+| change_date   | date    |
++---------------+---------+
+这张表的主键是 (product_id, change_date)。
+这张表的每一行分别记录了 某产品 在某个日期 更改后 的新价格。
+```
+
+ 
+
+写一段 SQL来查找在 `2019-08-16` 时全部产品的价格，假设所有产品在修改前的价格都是 `10` **。**
+
+以 **任意顺序** 返回结果表。
+
+查询结果格式如下例所示。
+
+ 
+
+**示例 1:**
+
+```
+输入：
+Products 表:
++------------+-----------+-------------+
+| product_id | new_price | change_date |
++------------+-----------+-------------+
+| 1          | 20        | 2019-08-14  |
+| 2          | 50        | 2019-08-14  |
+| 1          | 30        | 2019-08-15  |
+| 1          | 35        | 2019-08-16  |
+| 2          | 65        | 2019-08-17  |
+| 3          | 20        | 2019-08-18  |
++------------+-----------+-------------+
+输出：
++------------+-------+
+| product_id | price |
++------------+-------+
+| 2          | 50    |
+| 1          | 35    |
+| 3          | 10    |
++------------+-------+
+```
+
+**题解**
+
+`使用了链接 - 将在指定日期前修改后的价格与未修改的商品价格进行连接`
+
+```sql
+SELECT p1.product_id, IFNULL(p2.new_price, 10) AS price
+FROM (
+    SELECT DISTINCT product_id
+    FROM products
+) AS p1 LEFT JOIN (
+    SELECT product_id, new_price
+    FROM products
+    WHERE (product_id, change_date) IN (
+        SELECT product_id, MAX(change_date)
+        FROM products
+        WHERE change_date <= '2019-08-16'
+        GROUP BY product_id
+    )
+) AS p2
+ON p1.product_id = p2.product_id;
+```
+
+
+
+### 子查询
+
+#### 34 [上级经理已离职的公司员工](https://leetcode.cn/problems/employees-whose-manager-left-the-company/)
+
+表: `Employees`
+
+```
++-------------+----------+
+| Column Name | Type     |
++-------------+----------+
+| employee_id | int      |
+| name        | varchar  |
+| manager_id  | int      |
+| salary      | int      |
++-------------+----------+
+employee_id 是这个表的主键。
+这个表包含了员工，他们的薪水和上级经理的id。
+有一些员工没有上级经理（其manager_id 是空值）。
+```
+
+ 
+
+写一个查询语句，查询出，这些员工的id，他们的薪水严格少于`$30000` 并且他们的上级经理已离职。当一个经理离开公司时，他们的信息需要从员工表中删除掉，但是表中的员工的`manager_id` 这一列还是设置的离职经理的id 。
+
+返回的结果按照`employee_id `从小到大排序。
+
+查询结果如下所示：
+
+ 
+
+**示例：**
+
+```
+输入：
+Employees table:
++-------------+-----------+------------+--------+
+| employee_id | name      | manager_id | salary |
++-------------+-----------+------------+--------+
+| 3           | Mila      | 9          | 60301  |
+| 12          | Antonella | null       | 31000  |
+| 13          | Emery     | null       | 67084  |
+| 1           | Kalel     | 11         | 21241  |
+| 9           | Mikaela   | null       | 50937  |
+| 11          | Joziah    | 6          | 28485  |
++-------------+-----------+------------+--------+
+输出：
++-------------+
+| employee_id |
++-------------+
+| 11          |
++-------------+
+
+解释：
+薪水少于30000美元的员工有1号(Kalel) and 11号 (Joziah)。
+Kalel的上级经理是11号员工，他还在公司上班(他是Joziah)。
+Joziah的上级经理是6号员工，他已经离职，因为员工表里面已经没有6号员工的信息了，它被删除了。
+```
+
+**题解**
+
+`子查询`
+
+```sql
+SELECT employee_id
+FROM employees
+WHERE salary < 30000 AND manager_id NOT IN(
+  SELECT DISTINCT employee_id
+  FROM employees
+)
+ORDER BY employee_id asc;
+```
+
+
+
+#### 35 [换座位](https://leetcode.cn/problems/exchange-seats/)
+
+表: `Seat`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
++-------------+---------+
+Id是该表的主键列。
+该表的每一行都表示学生的姓名和ID。
+Id是一个连续的增量。
+```
+
+编写SQL查询来交换每两个连续的学生的座位号。如果学生的数量是奇数，则最后一个学生的id不交换。
+
+按 `id` **升序** 返回结果表。
+
+查询结果格式如下所示。
+
+**示例 1:**
+
+```
+输入: 
+Seat 表:
++----+---------+
+| id | student |
++----+---------+
+| 1  | Abbot   |
+| 2  | Doris   |
+| 3  | Emerson |
+| 4  | Green   |
+| 5  | Jeames  |
++----+---------+
+输出: 
++----+---------+
+| id | student |
++----+---------+
+| 1  | Doris   |
+| 2  | Abbot   |
+| 3  | Green   |
+| 4  | Emerson |
+| 5  | Jeames  |
++----+---------+
+解释:
+请注意，如果学生人数为奇数，则不需要更换最后一名学生的座位。
+```
+
+**题解**
+
+`实质上没有真实的交换, 只是输出了交换的结果。 当ID%2==0交换为ID-1, 当!=0则根据是否为最后一个座位, 是则不交换, 不是则交换为ID+1`
+
+```sql
+SELECT IF(id % 2 = 0, id-1, IF(ID=(
+    SELECT COUNT(DISTINCT id) FROM seat
+), id, id+1)) AS id, student
+FROM seat
+ORDER BY id;
+```
+
+
+
+### 高级字符串函数 / 正则表达式 / 子句
+
+#### 36 [修复表中的名字](https://leetcode.cn/problems/fix-names-in-a-table/)
+
+表： `Users`
+
+```
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| user_id        | int     |
+| name           | varchar |
++----------------+---------+
+在 SQL 中，user_id 是该表的主键。
+该表包含用户的 ID 和名字。名字仅由小写和大写字符组成。
+```
+
+ 
+
+修复名字，使得只有第一个字符是大写的，其余都是小写的。
+
+返回按 `user_id` 排序的结果表。
+
+返回结果格式示例如下。
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Users table:
++---------+-------+
+| user_id | name  |
++---------+-------+
+| 1       | aLice |
+| 2       | bOB   |
++---------+-------+
+输出：
++---------+-------+
+| user_id | name  |
++---------+-------+
+| 1       | Alice |
+| 2       | Bob   |
++---------+-------+
+```
+
+**题解**
+
+```sql
+SELECT user_id, CONCAT(UPPER(LEFT(name, 1)), LOWER(RIGHT(name, length(name) - 1))) name
+FROM users
+ORDER BY user_id;
+```
+
+
+
+#### 37 [患某种疾病的患者](https://leetcode.cn/problems/patients-with-a-condition/)
+
+患者信息表： `Patients`
+
+```
++--------------+---------+
+| Column Name  | Type    |
++--------------+---------+
+| patient_id   | int     |
+| patient_name | varchar |
+| conditions   | varchar |
++--------------+---------+
+在 SQL 中，patient_id （患者 ID）是该表的主键。
+'conditions' （疾病）包含 0 个或以上的疾病代码，以空格分隔。
+这个表包含医院中患者的信息。
+```
+
+ 
+
+查询患有 I 类糖尿病的患者 ID （patient_id）、患者姓名（patient_name）以及其患有的所有疾病代码（conditions）。I 类糖尿病的代码总是包含前缀 `DIAB1` 。
+
+按 **任意顺序** 返回结果表。
+
+查询结果格式如下示例所示。
+
+ 
+
+**示例 1:**
+
+```
+输入：
+Patients表：
++------------+--------------+--------------+
+| patient_id | patient_name | conditions   |
++------------+--------------+--------------+
+| 1          | Daniel       | YFEV COUGH   |
+| 2          | Alice        |              |
+| 3          | Bob          | DIAB100 MYOP |
+| 4          | George       | ACNE DIAB100 |
+| 5          | Alain        | DIAB201      |
++------------+--------------+--------------+
+输出：
++------------+--------------+--------------+
+| patient_id | patient_name | conditions   |
++------------+--------------+--------------+
+| 3          | Bob          | DIAB100 MYOP |
+| 4          | George       | ACNE DIAB100 | 
++------------+--------------+--------------+
+解释：Bob 和 George 都患有代码以 DIAB1 开头的疾病。
+```
+
+**题解**
+
+`模糊查询`
+
+```sql
+SELECT patient_id, patient_name, conditions
+FROM patients
+HAVING conditions like '% DIAB1%' or conditions like 'DIAB1%';
 ```
 
 

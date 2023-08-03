@@ -467,8 +467,6 @@ where a.machine_id = b.machine_id;
 
 DATEDIFF() 函数返回两个日期之间的天数。
 
-### 语法
-
 ```
 DATEDIFF(date1,date2)
 ```
@@ -509,6 +507,44 @@ SELECT DATEDIFF('2008-12-29','2008-12-30') AS DiffDate
 
 
 
+#### DATE_ADD
+
+`DATE_ADD()` 是 MySQL 中的一个日期函数，用于在指定日期上添加一定的时间间隔，返回一个新的日期值
+
+**语法**
+
+```sql
+DATE_ADD(date, INTERVAL expr unit)
+```
+
+其中，`date` 是指要添加时间间隔的日期；`expr` 是要添加的时间间隔数；`unit` 是时间间隔的单位，可以是 `MICROSECOND`，`SECOND`，`MINUTE`，`HOUR`，`DAY`，`WEEK`，`MONTH`，`QUARTER`，`YEAR` 或它们的缩写形式。
+
+例如，在一个名为 `orders` 的表中，`order_date` 字段包含订单的日期，需要将订单日期加上两个月，可以使用以下语句：
+
+```sql
+SELECT DATE_ADD(order_date, INTERVAL 2 MONTH) AS new_order_date FROM orders;
+```
+
+这将返回一个包含新的订单日期的结果集，其中每个订单日期都比原来的日期晚两个月。
+
+注意，`DATE_ADD()` 还可以与 `NOW()` 函数一起使用，以便在当前日期上添加时间间隔。例如：
+
+```SQL
+SELECT DATE_ADD(NOW(), INTERVAL 1 DAY) AS tomorrow;
+```
+
+这将返回一个包含明天日期的结果集。
+
+
+
+
+
+
+
+
+
+### 语法
+
 #### LEFT
 
 `取前 N 个字符:  LEFT(STR, 7)`
@@ -516,8 +552,31 @@ SELECT DATEDIFF('2008-12-29','2008-12-30') AS DiffDate
 使用 left() 函数取 trans_date 列的前7个字符,也即取月份。
 
 ```sql
-left(trans_date,7)
+left(trans_date, 7)
 ```
+
+
+
+#### RIGHT
+
+`RIGHT()` 是一种 SQL 函数，可用于从字符串中提取指定数量的字符，从字符串的右侧开始。
+
+**语法**
+
+```sql
+RIGHT(string, length)
+```
+
+例如，假设有一个名为 `employees` 的表，其中包含 `first_name` 和 `last_name` 两个列，需要将每个员工的姓名缩写为首字母加上姓氏后两个字符，可以使用以下 SQL 查询语句：
+
+```
+SELECT CONCAT(LEFT(first_name, 1), RIGHT(last_name, 2)) AS initials
+FROM employees;
+```
+
+这将返回一个包含每个员工姓名缩写的结果集。在上面的查询中，`RIGHT(last_name, 2)` 函数将从 `last_name` 列的右侧提取两个字符，并将这两个字符与 `first_name` 列的第一个字符拼接在一起，形成员工姓名缩写。
+
+请注意，`RIGHT()` 函数在从字符串的右侧提取字符时非常有用，但在某些情况下，可能需要使用 LEFT() 函数来从字符串的左侧提取字符。
 
 
 
@@ -681,7 +740,26 @@ FROM triangle
 
 
 
+#### IFNULL
 
+`IFNULL()` 是 MySQL 中的一个函数，用于检查一个表达式是否为 `NULL`，如果是 `NULL`，则返回一个指定的替代值；如果不是 `NULL`，则返回原始的表达式值。
+
+**语法**
+
+```sql
+IFNULL(expr1, expr2)
+```
+
+其中，`expr1` 是要检查的表达式，`expr2` 是 `expr1` 为 `NULL` 时要返回的替代值。
+
+例如，如果有一个名为 `orders` 的表，其中包含 `total_price` 和 `discount` 两个列，需要计算每个订单的实际支付金额，可以使用以下 SQL 查询语句：
+
+```
+SELECT total_price - IFNULL(discount, 0) AS actual_price
+FROM orders;
+```
+
+这将返回一个包含每个订单实际支付金额的结果集。如果某个订单没有折扣，那么该订单的 `discount` 列将为 `NULL`，在计算实际支付金额时，将使用 `IFNULL(discount, 0)` 来将 `NULL` 替换为 0，以确保计算结果的正确性。
 
 
 
