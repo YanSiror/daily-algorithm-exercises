@@ -427,7 +427,7 @@ on e.id = ei.id;
 
 
 
-### 聚合函数
+### 函数
 
 #### Round
 
@@ -534,6 +534,10 @@ SELECT DATE_ADD(NOW(), INTERVAL 1 DAY) AS tomorrow;
 ```
 
 这将返回一个包含明天日期的结果集。
+
+
+
+#### GROUP_CONCAT
 
 
 
