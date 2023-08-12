@@ -1810,7 +1810,7 @@ class Solution {
 
 
 
-### 35 [叶子相似的树](https://leetcode.cn/problems/leaf-similar-trees/)
+### 36 [叶子相似的树](https://leetcode.cn/problems/leaf-similar-trees/)
 
 请考虑一棵二叉树上所有的叶子，这些叶子的值按从左到右的顺序排列形成一个 **叶值序列** 。
 
@@ -2251,6 +2251,112 @@ class Solution {
     }
 }
 ```
+
+
+
+### 38 [打家劫舍](https://leetcode.cn/problems/house-robber/)
+
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，**如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警**。
+
+给定一个代表每个房屋存放金额的非负整数数组，计算你 **不触动警报装置的情况下** ，一夜之内能够偷窃到的最高金额。
+
+**示例 1：**
+
+```
+输入：[1,2,3,1]
+输出：4
+解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+     偷窃到的最高金额 = 1 + 3 = 4 。
+```
+
+**示例 2：**
+
+```
+输入：[2,7,9,3,1]
+输出：12
+解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
+     偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+```
+
+**题解**
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+
+        int []dp = new int[nums.length+1];
+        dp[0] = 0;
+        dp[1] = nums[0];
+        for(int i = 2; i <= nums.length; i++){
+            dp[i] = Math.max(dp[i-1], nums[i-1] + dp[i-2]);
+        }
+        return dp[nums.length];
+    }
+}
+```
+
+
+
+### 39 [多米诺和托米诺平铺](https://leetcode.cn/problems/domino-and-tromino-tiling/)
+
+有两种形状的瓷砖：一种是 `2 x 1` 的多米诺形，另一种是形如 "L" 的托米诺形。两种形状都可以旋转。
+
+<img src="imgs/lc-domino.jpg" alt="img" style="zoom:50%;" />
+
+给定整数 n ，返回可以平铺 `2 x n` 的面板的方法的数量。**返回对** `109 + 7` **取模** 的值。
+
+平铺指的是每个正方形都必须有瓷砖覆盖。两个平铺不同，当且仅当面板上有四个方向上的相邻单元中的两个，使得恰好有一个平铺有一个瓷砖占据两个正方形。
+
+ 
+
+**示例 1:**
+
+<img src="imgs/lc-domino1.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入: n = 3
+输出: 5
+解释: 五种不同的方法如上所示。
+```
+
+**示例 2:**
+
+```
+输入: n = 1
+输出: 1
+```
+
+**题解**
+
+[Link](https://leetcode.cn/problems/domino-and-tromino-tiling/solutions/1968509/by-lcbin-ep6i/?envType=study-plan-v2&envId=leetcode-75)
+
+`划分了4个子问题: 要判断的是当前层 i 的情况, 假定 i - 1 之前全部铺满, 这时该层有4个状态, 没铺;只铺上面;只铺下面;上下都铺, 如下图所示。 这时我们可以列出对应的状态转移方程如代码所示, 具体参考 Link 介绍。`
+
+<img src="imgs/image-20230812153918181.png" alt="image-20230812153918181" style="zoom:33%;" />
+
+```java
+class Solution {
+    static final int MOD = 1000000007;
+    public int numTilings(int n) {
+        //4个状态转移子问题: 没铺;只铺上面;只铺下面;上下都铺
+        int [][]dp = new int[n+1][4];
+        dp[0][3] = 1;       //当全部铺满为1, 其余初始均为0
+        for(int i = 1; i <= n; i++){
+            dp[i][0] = dp[i-1][3];
+            dp[i][1] = (dp[i-1][2] + dp[i-1][0]) % MOD;
+            dp[i][2] = (dp[i-1][1] + dp[i-1][0]) % MOD;
+            dp[i][3] = (((dp[i - 1][0] + dp[i - 1][1]) % MOD + dp[i - 1][2]) % MOD + dp[i - 1][3]) % MOD;
+
+        }
+        return dp[n][3];
+    }
+}
+```
+
+
 
 
 
@@ -4972,4 +5078,5 @@ ORDER BY sell_date;
 
 
 
-#### 
+#### 39 
+

@@ -1,3 +1,24 @@
+## 算法思维类型
+
+### 动态规划
+
+**步骤**
+
+- 定义子问题
+- 写出子问题的递推关系
+- 确定DP数组的计算顺序
+- 空间优化
+
+
+
+**例子**
+
+[LC 198: 打家劫舍](https://leetcode.cn/problems/house-robber/solutions/138131/dong-tai-gui-hua-jie-ti-si-bu-zou-xiang-jie-cjavap/?envType=study-plan-v2&envId=leetcode-75)
+
+
+
+
+
 ## 数组
 
 ### 排序
@@ -67,6 +88,8 @@ String b = new String(chars);		//转换为 String 字符串
 Arrays.stream(flowerbed).forEach(num ->{
      System.out.print(num + " ");
 });
+>>>         
+Arrays.stream(flowerbed).forEach(System.out::println);
 ```
 
 
@@ -140,8 +163,6 @@ Arrays.stream(flowerbed).forEach(num ->{
 ```java
  map.getOrDefault('key', 0)		//存在key则返回值, 不存在key则设为0
 ```
-
-
 
 
 
