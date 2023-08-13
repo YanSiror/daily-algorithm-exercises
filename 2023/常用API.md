@@ -171,7 +171,6 @@ Arrays.stream(flowerbed).forEach(System.out::println);
 Java 的 ArrayQueue 类（也称为数组队列）实现了 Queue 接口，提供了以下方法：
 
 ```java
-
 add(E e)：在队列的尾部添加指定元素，如果队列已满则抛出 IllegalStateException 异常。
 offer(E e)：在队列的尾部添加指定元素，如果队列已满则返回 false。
 remove()：移除并返回队列头部的元素，如果队列为空则抛出 NoSuchElementException 异常。
@@ -213,49 +212,122 @@ i << 1   //左移一位,相当于乘以 2
 
 ## 树
 
-### 深度优先遍历(DFS)
+### 二叉树的前 | 中 | 后 | 层序遍历
+
+`前序`
 
 ```java
-List<TreeNode> treeNodeList = new ArrayList<>();
-public List<TreeNode> dfsRec(TreeNode root) {
-
-    if (root == null) {
-        return null;
+public void preOrder(TreeNode head){
+    if(head == null){
+        return;
     }
-    treeNodeList.add(root);
-    //System.out.print(root.value+" ");
-    dfsRec(root.left);
-    dfsRec(root.right);
-    return treeNodeList;
+    System.out.println(head.val);
+    preOrder(head.left);
+    preOrder(head.right);
 }
+```
+
+`中序`
+
+```java
+    public void midOrder(TreeNode head){
+        if(head == null){
+            return;
+        }
+        midOrder(head.left);
+        System.out.println(head.val);
+        midOrder(head.right);
+    }
+```
+
+`后序`
+
+```java
+    public void afterOrder(TreeNode head){
+        if(head == null){
+            return;
+        }
+        afterOrder(head.left);
+        afterOrder(head.right);
+        System.out.println(head.val);
+    }
+```
+
+`层序`
+
+通过 BFS 改造而来, 记录每次入队的个数然后添加到二维数组的对应列
+
+```java
+ public List<List<Integer>> levelOrder(TreeNode root) {
+     List<List<Integer>> res = new ArrayList<List<Integer>>();
+     Queue<TreeNode> queue = new ArrayDeque<>();
+     if(root != null){
+         queue.add(root);
+     }
+     while(!queue.isEmpty()){
+         List<Integer> level = new ArrayList<>();
+         int n = queue.size();
+         for(int i = 0; i < n; i++){
+             //遍历每一层的所有节点, 添加到列表内
+             TreeNode node = queue.poll();
+             level.add(node.val);
+             if(node.left != null){
+                 queue.add(node.left);
+             }
+             if(node.right != null){
+                 queue.add(node.right);
+             }
+         }
+         res.add(level);
+     }
+     return res;
+ }
 ```
 
 
 
-### 广度优先遍历(BFS)
+### 二叉树深度优先遍历(DFS) | 广度优先遍历(BFS)
+
+`DFS`
 
 ```java
-public static <V> void bfs(List<TreeNode<V>> children, int depth) {
-    List<TreeNode<V>> thisChildren, allChildren = new ArrayList<>();
-    for (TreeNode<V> child: children) {
-        //打印节点值以及深度
-        System.out.println(child.getValue().toString() + ",   " + depth);
-        thisChildren = child.getChildList();
-        if (thisChildren != null && thisChildren.size() > 0) {
-            allChildren.addAll(thisChildren);
+public void DFS(TreeNode head){
+    if(head == null){
+        return;
+    }
+    //list.add(node.val)
+    DFS(head.left);
+    DFS(head.right);
+}
+```
+
+`BFS`
+
+```java
+public void BFS(TreeNode head){
+    Queue<TreeNode> queue = new ArrayDeque<>();
+    if(head != null){
+        queue.add(head);
+    }
+    while(!queue.isEmpty()){
+        System.out.println(queue.peek());
+        TreeNode node = queue.poll();
+        //list.add(node.val)
+        if(node.left != null){
+            queue.add(head.left);
+        }
+        if(node.right != null){
+            que.add(head.right);
         }
     }
-    if (allChildren.size() > 0)  {
-        bfs(allChildren, depth + 1);
-    }
 }
 ```
 
 
 
+## 图
 
-
-
+### 
 
 
 

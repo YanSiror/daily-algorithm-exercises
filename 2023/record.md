@@ -1878,6 +1878,219 @@ class Solution {
 
 
 
+### 40 [二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
+
+给你二叉树的根节点 `root` ，返回其节点值的 **层序遍历** 。 （即逐层地，从左到右访问所有节点）。
+
+**示例 1：**
+
+<img src="imgs/tree1.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [3,9,20,null,null,15,7]
+输出：[[3],[9,20],[15,7]]
+```
+
+**示例 2：**
+
+```
+输入：root = [1]
+输出：[[1]]
+```
+
+**示例 3：**
+
+```
+输入：root = []
+输出：[]
+```
+
+**题解**
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        if(root != null){
+            queue.add(root);
+        }
+        while(!queue.isEmpty()){
+            List<Integer> level = new ArrayList<>();
+            int n = queue.size();
+            for(int i = 0; i < n; i++){
+                TreeNode node = queue.poll();
+                level.add(node.val);
+                if(node.left != null){
+                    queue.add(node.left);
+                }
+                if(node.right != null){
+                    queue.add(node.right);
+                }
+            }
+            res.add(level);
+        }
+        return res;
+    }
+}
+```
+
+
+
+### 41 [路径总和](https://leetcode.cn/problems/path-sum/)
+
+给你二叉树的根节点 `root` 和一个表示目标和的整数 `targetSum` 。判断该树中是否存在 **根节点到叶子节点** 的路径，这条路径上所有节点值相加等于目标和 `targetSum` 。如果存在，返回 `true` ；否则，返回 `false` 。
+
+**叶子节点** 是指没有子节点的节点。
+
+ 
+
+**示例 1：**
+
+<img src="imgs/pathsum1.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+输出：true
+解释：等于目标和的根节点到叶节点路径如上图所示。
+```
+
+**示例 2：**
+
+<img src="imgs/pathsum2.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：root = [1,2,3], targetSum = 5
+输出：false
+解释：树中存在两条根节点到叶子节点的路径：
+(1 --> 2): 和为 3
+(1 --> 3): 和为 4
+不存在 sum = 5 的根节点到叶子节点的路径。
+```
+
+**示例 3：**
+
+```
+输入：root = [], targetSum = 0
+输出：false
+解释：由于树是空的，所以不存在根节点到叶子节点的路径。
+```
+
+**题解**
+
+```java
+public boolean hasPathSum(TreeNode root, int targetSum) {
+    return DFS(root, targetSum);
+}
+
+public Boolean DFS(TreeNode head, int targetSum){
+    if(head == null){
+        return false;
+    }
+    if(head.left == null && head.right == null){
+        return head.val == targetSum;
+    }
+    targetSum -= head.val;
+    return DFS(head.left, targetSum) || DFS(head.right, targetSum);
+}
+```
+
+
+
+### 42 [相同的树](https://leetcode.cn/problems/same-tree/)
+
+给你两棵二叉树的根节点 `p` 和 `q` ，编写一个函数来检验这两棵树是否相同。
+
+如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+
+**示例 1：**
+
+<img src="imgs/ex1-16919080186354.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：p = [1,2,3], q = [1,2,3]
+输出：true
+```
+
+**示例 2：**
+
+<img src="imgs/ex2-16919080186356.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：p = [1,2], q = [1,null,2]
+输出：false
+```
+
+**示例 3：**
+
+<img src="imgs/ex3.jpg" alt="img" style="zoom:50%;" />
+
+```
+输入：p = [1,2,1], q = [1,1,2]
+输出：false 
+```
+
+**提示：**
+
+- 两棵树上的节点数目都在范围 `[0, 100]` 内
+- `-104 <= Node.val <= 104`
+
+**题解**
+
+`使用BFS算法, 将遍历结果打印出来, 区别化左子树为null和右子树为null1的情况`
+
+```java
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {   
+            return true;
+        } else if (p == null || q == null) {
+            return false;
+        }
+        List<Integer> array1 = new ArrayList<Integer>();
+        List<Integer> array2 = new ArrayList<Integer>();
+        BFS(p, array1);
+        BFS(q, array2);
+        return array1.equals(array2);
+    }
+
+    public void BFS(TreeNode head, List<Integer> array){
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        if(head != null){
+            queue.add(head);
+        }
+        while(!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            array.add(node.val);
+            if(node.left != null){
+                if(node.right == null){
+                    array.add(-1);
+                }
+                queue.add(node.left);
+            }
+            if(node.right != null){
+                if(node.left == null){
+                    array.add(-2);
+                }
+                queue.add(node.right);
+            }
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## 堆|优先队列
 
 ### 37 [数组中的第K个最大元素](https://leetcode.cn/problems/kth-largest-element-in-an-array/)
@@ -1887,8 +2100,6 @@ class Solution {
 请注意，你需要找的是数组排序后的第 `k` 个最大的元素，而不是第 `k` 个不同的元素。
 
 你必须设计并实现时间复杂度为 `O(n)` 的算法解决此问题。
-
- 
 
 **示例 1:**
 
