@@ -775,8 +775,8 @@ SELECT department, AVG(DISTINCT salary) FROM employee GROUP BY department;
 
 HAVING 关键字类似 WHERE 关键字,但有两个区别:
 
-1. WHERE 关键字用于过滤行,HAVING 关键字用于过滤分组。
-2. WHERE 关键字在分组之前运行,HAVING 关键字在分组之后运行。
+1. WHERE 关键字用于过滤行, HAVING 关键字用于过滤分组。
+2. WHERE 关键字在分组之前运行, HAVING 关键字在分组之后运行。
 
 也就是说,HAVING 关键字用于基于分组后的计算结果对分组应用过滤条件。
 
@@ -806,6 +806,8 @@ HAVING COUNT(*) > 10;
 
 
 
+
+
 #### CASE ... WHEN
 
 `使用 CASE 来锁定需要使用条件语句判断输出结果的信息`
@@ -824,6 +826,8 @@ FROM
 
 
 
+
+
 #### IF
 
 `使用 IF 来锁定需要使用条件语句判断输出结果的信息`
@@ -834,6 +838,8 @@ FROM
 Select *,IF(x+y>z and x+z>y and y+z>x, "Yes", "No") AS triangle
 FROM triangle
 ```
+
+
 
 
 
@@ -860,5 +866,58 @@ FROM orders;
 
 
 
-#### NEW Param
 
+
+#### UNION & UNION ALL
+
+- UNION
+
+  `UNION 操作符用于合并两个或多个 SELECT 语句的结果集。 请注意，UNION 内部的每个 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每个 SELECT 语句中的列的顺序必须相同。`
+
+  **1) 语法**
+
+  ```sql
+  SELECT column_name(s) FROM table1
+  UNION
+  SELECT column_name(s) FROM table2;
+  ```
+
+  ​	**注释：**默认地，UNION 操作符选取不同的值。如果允许重复的值，请使用 UNION ALL。
+
+  **2) 实例**
+
+  下面的 SQL 语句从 "Websites" 和 "apps" 表中选取所有**不同的** country（只有不同的值）：
+
+  ```sql
+  SELECT country FROM data1
+  UNION
+  SELECT country FROM data2
+  ORDER BY country;
+  ```
+
+- UNION ALL
+
+  **1) 语法**
+
+  ​    注释：UNION 结果集中的列名总是等于 UNION 中第一个 SELECT 语句中的列名。
+
+  ```sql
+  SELECT column_name(s) FROM table1
+  UNION ALL
+  SELECT column_name(s) FROM table2;
+  ```
+
+  **2) 实例**
+
+  下面的 SQL 语句从 "Websites" 和 "apps" 表中选取所有**不同的** country（也有重复的值）：
+
+  ```sql
+  SELECT country FROM data1
+  UNION ALL
+  SELECT country FROM data2
+  ORDER BY country;
+  ```
+
+- 区别
+
+  `UNION ALL` 允许重复值, `UNION` 不允许重复值

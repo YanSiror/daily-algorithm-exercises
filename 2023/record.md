@@ -4968,6 +4968,159 @@ ON p1.product_id = p2.product_id;
 
 
 
+#### 42 [按分类统计薪水](https://leetcode.cn/problems/count-salary-categories/)
+
+表: `Accounts`
+
+```
++-------------+------+
+| 列名        | 类型  |
++-------------+------+
+| account_id  | int  |
+| income      | int  |
++-------------+------+
+在 SQL 中，account_id 是这个表的主键。
+每一行都包含一个银行帐户的月收入的信息。
+```
+
+查询每个工资类别的银行账户数量。 工资类别如下：
+
+- `"Low Salary"`：所有工资 **严格低于** `20000` 美元。
+- `"Average Salary"`： **包含** 范围内的所有工资 `[$20000, $50000]` 。
+- `"High Salary"`：所有工资 **严格大于** `50000` 美元。
+
+结果表 **必须** 包含所有三个类别。 如果某个类别中没有帐户，则报告 `0` 。
+
+按 **任意顺序** 返回结果表。
+
+查询结果格式如下示例。
+
+**示例 1：**
+
+```
+输入：
+Accounts 表:
++------------+--------+
+| account_id | income |
++------------+--------+
+| 3          | 108939 |
+| 2          | 12747  |
+| 8          | 87709  |
+| 6          | 91796  |
++------------+--------+
+输出：
++----------------+----------------+
+| category       | accounts_count |
++----------------+----------------+
+| Low Salary     | 1              |
+| Average Salary | 0              |
+| High Salary    | 3              |
++----------------+----------------+
+解释：
+低薪: 数量为 2.
+中等薪水: 没有.
+高薪: 有三个账户，他们是 3, 6和 8.
+```
+
+**题解**
+
+`使用 UNION 链接所有`
+
+```sql
+SELECT 'Low Salary' category,count(*) accounts_count     
+FROM Accounts 
+WHERE income<20000
+UNION ALL
+SELECT 'Average Salary' category,count(*) accounts_count     
+FROM Accounts 
+WHERE income between 20000 and 50000
+UNION ALL
+SELECT 'High Salary' category,count(*) accounts_count     
+FROM Accounts 
+WHERE income>50000
+```
+
+
+
+#### 43 [最后一个能进入巴士的人](https://leetcode.cn/problems/last-person-to-fit-in-the-bus/)
+
+表: `Queue`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| person_id   | int     |
+| person_name | varchar |
+| weight      | int     |
+| turn        | int     |
++-------------+---------+
+person_id 是这个表的主键。
+该表展示了所有候车乘客的信息。
+表中 person_id 和 turn 列将包含从 1 到 n 的所有数字，其中 n 是表中的行数。
+turn 决定了候车乘客上巴士的顺序，其中 turn=1 表示第一个上巴士，turn=n 表示最后一个上巴士。
+weight 表示候车乘客的体重，以千克为单位。
+```
+
+有一队乘客在等着上巴士。然而，巴士有`1000` **千克** 的重量限制，所以其中一部分乘客可能无法上巴士。
+
+写一条 SQL 查询语句找出 **最后一个** 上巴士且不超过重量限制的乘客，并报告 `person_name` 。题目测试用例确保顺位第一的人可以上巴士且不会超重。
+
+查询结果格式如下所示。
+
+**示例：**
+
+```
+输入：
+Queue 表
++-----------+-------------+--------+------+
+| person_id | person_name | weight | turn |
++-----------+-------------+--------+------+
+| 5         | Alice       | 250    | 1    |
+| 4         | Bob         | 175    | 5    |
+| 3         | Alex        | 350    | 2    |
+| 6         | John Cena   | 400    | 3    |
+| 1         | Winston     | 500    | 6    |
+| 2         | Marie       | 200    | 4    |
++-----------+-------------+--------+------+
+输出：
++-------------------+
+| person_name       |
++-------------------+
+| Thomas Jefferson  |
++-------------------+
+解释：
+为了简化，Queue 表按 turn 列由小到大排序。
++------+----+-----------+--------+--------------+
+| Turn | ID | Name      | Weight | Total Weight |
++------+----+-----------+--------+--------------+
+| 1    | 5  | Alice     | 250    | 250          |
+| 2    | 3  | Alex      | 350    | 600          |
+| 3    | 6  | John Cena | 400    | 1000         | (最后一个上巴士)
+| 4    | 2  | Marie     | 200    | 1200         | (无法上巴士)
+| 5    | 4  | Bob       | 175    | ___          |
+| 6    | 1  | Winston   | 500    | ___          |
++------+----+-----------+--------+--------------+
+```
+
+**题解**
+
+`使用两个表 q1 & q2 来表示该表, 根据q2的sum值判断是否超重, 当超重时就返回最后一个未超重的用户名`
+
+```sql
+SELECT q1.person_name 
+FROM Queue q1, Queue q2
+WHERE q1.turn >= q2.turn
+GROUP BY q1.person_id  
+HAVING SUM(q2.weight) <= 1000
+ORDER BY q1.turn DESC
+LIMIT 1
+```
+
+
+
+
+
 ### 子查询
 
 #### 34 [上级经理已离职的公司员工](https://leetcode.cn/problems/employees-whose-manager-left-the-company/)
@@ -5103,6 +5256,139 @@ SELECT IF(id % 2 = 0, id-1, IF(ID=(
 FROM seat
 ORDER BY id;
 ```
+
+
+
+#### 41 [电影评分](https://leetcode.cn/problems/movie-rating/)
+
+表：`Movies`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| movie_id      | int     |
+| title         | varchar |
++---------------+---------+
+movie_id 是这个表的主键(具有唯一值的列)。
+title 是电影的名字。
+```
+
+表：`Users`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| user_id       | int     |
+| name          | varchar |
++---------------+---------+
+user_id 是表的主键(具有唯一值的列)。
+```
+
+表：`MovieRating`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| movie_id      | int     |
+| user_id       | int     |
+| rating        | int     |
+| created_at    | date    |
++---------------+---------+
+(movie_id, user_id) 是这个表的主键(具有唯一值的列的组合)。
+这个表包含用户在其评论中对电影的评分 rating 。
+created_at 是用户的点评日期。 
+```
+
+请你编写一个解决方案：
+
+- 查找评论电影数量最多的用户名。如果出现平局，返回字典序较小的用户名。
+- 查找在 `February 2020` **平均评分最高** 的电影名称。如果出现平局，返回字典序较小的电影名称。
+
+**字典序** ，即按字母在字典中出现顺序对字符串排序，字典序较小则意味着排序靠前。
+
+返回结果格式如下例所示。
+
+**示例 1：**
+
+```
+输入：
+Movies 表：
++-------------+--------------+
+| movie_id    |  title       |
++-------------+--------------+
+| 1           | Avengers     |
+| 2           | Frozen 2     |
+| 3           | Joker        |
++-------------+--------------+
+Users 表：
++-------------+--------------+
+| user_id     |  name        |
++-------------+--------------+
+| 1           | Daniel       |
+| 2           | Monica       |
+| 3           | Maria        |
+| 4           | James        |
++-------------+--------------+
+MovieRating 表：
++-------------+--------------+--------------+-------------+
+| movie_id    | user_id      | rating       | created_at  |
++-------------+--------------+--------------+-------------+
+| 1           | 1            | 3            | 2020-01-12  |
+| 1           | 2            | 4            | 2020-02-11  |
+| 1           | 3            | 2            | 2020-02-12  |
+| 1           | 4            | 1            | 2020-01-01  |
+| 2           | 1            | 5            | 2020-02-17  | 
+| 2           | 2            | 2            | 2020-02-01  | 
+| 2           | 3            | 2            | 2020-03-01  |
+| 3           | 1            | 3            | 2020-02-22  | 
+| 3           | 2            | 4            | 2020-02-25  | 
++-------------+--------------+--------------+-------------+
+输出：
+Result 表：
++--------------+
+| results      |
++--------------+
+| Daniel       |
+| Frozen 2     |
++--------------+
+解释：
+Daniel 和 Monica 都点评了 3 部电影（"Avengers", "Frozen 2" 和 "Joker"） 但是 Daniel 字典序比较小。
+Frozen 2 和 Joker 在 2 月的评分都是 3.5，但是 Frozen 2 的字典序比较小。
+```
+
+**题解**
+
+`使用 UNION 字句链接两个不同的子句结果`
+
+```sql
+SELECT A.results FROM (
+    SELECT u.name AS results
+    FROM Users u, MovieRating mr
+    WHERE u.user_id = mr.user_id
+    GROUP BY mr.user_id, u.name
+    ORDER BY COUNT(1) DESC, u.name ASC
+    LIMIT 1
+) A
+UNION ALL
+SELECT B.results FROM (
+    SELECT m.title AS results
+    FROM Movies m, MovieRating mr
+    WHERE m.movie_id = mr.movie_id
+        AND mr.created_at LIKE '2020-02%'
+    GROUP BY mr.movie_id, m.title
+    ORDER BY AVG(mr.rating) DESC, m.title ASC
+    LIMIT 1
+) B;
+```
+
+
+
+
+
+
 
 
 
@@ -5289,5 +5575,133 @@ ORDER BY sell_date;
 
 
 
-#### 39 
+#### 39 删除重复的电子邮箱
+
+表: `Person`
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| email       | varchar |
++-------------+---------+
+id 是该表的主键列(具有唯一值的列)。
+该表的每一行包含一封电子邮件。电子邮件将不包含大写字母。
+```
+
+编写解决方案 **删除** 所有重复的电子邮件，只保留一个具有最小 `id` 的唯一电子邮件。
+
+（对于 SQL 用户，请注意你应该编写一个 `DELETE` 语句而不是 `SELECT` 语句。）
+
+（对于 Pandas 用户，请注意你应该直接修改 `Person` 表。）
+
+运行脚本后，显示的答案是 `Person` 表。驱动程序将首先编译并运行您的代码片段，然后再显示 `Person` 表。`Person` 表的最终顺序 **无关紧要** 。
+
+返回结果格式如下示例所示。
+
+**示例 1:**
+
+```
+输入: 
+Person 表:
++----+------------------+
+| id | email            |
++----+------------------+
+| 1  | john@example.com |
+| 2  | bob@example.com  |
+| 3  | john@example.com |
++----+------------------+
+输出: 
++----+------------------+
+| id | email            |
++----+------------------+
+| 1  | john@example.com |
+| 2  | bob@example.com  |
++----+------------------+
+解释: john@example.com重复两次。我们保留最小的Id = 1。
+```
+
+**题解**
+
+```sql
+DELETE p1
+FROM Person AS p1, Person AS p2
+WHERE p1.id > p2.id and p1.email = p2.email;
+```
+
+
+
+#### 40 [第二高的薪水](https://leetcode.cn/problems/second-highest-salary/)
+
+`Employee` 表：
+
+```
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| id          | int  |
+| salary      | int  |
++-------------+------+
+在 SQL 中，id 是这个表的主键。
+表的每一行包含员工的工资信息。
+```
+
+ 
+
+查询并返回 `Employee` 表中第二高的薪水 。如果不存在第二高的薪水，查询应该返回 `null(Pandas 则返回 None)` 。
+
+查询结果如下例所示。
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Employee 表：
++----+--------+
+| id | salary |
++----+--------+
+| 1  | 100    |
+| 2  | 200    |
+| 3  | 300    |
++----+--------+
+输出：
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| 200                 |
++---------------------+
+```
+
+**示例 2：**
+
+```
+输入：
+Employee 表：
++----+--------+
+| id | salary |
++----+--------+
+| 1  | 100    |
++----+--------+
+输出：
++---------------------+
+| SecondHighestSalary |
++---------------------+
+| null                |
++---------------------+
+```
+
+**题解**
+
+```sql
+SELECT MAX(salary) AS SecondHighestSalary 
+FROM Employee
+WHERE salary != (
+  SELECT MAX(salary) AS salary 
+  FROM Employee
+  WHERE id 
+)
+```
 
