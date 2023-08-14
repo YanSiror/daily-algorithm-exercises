@@ -17,6 +17,183 @@
 
 
 
+### 双指针
+
+#### 1) 对撞指针
+
+> 对撞指针是指在 `有序数组` 中，将指向最左侧的索引定义为左指针(left)，最右侧的定义为右指针(right)，然后从两头向中间进行数组遍历。对撞数组适用于有序数组，也就是说当你遇到题目给定有序数组时，应该第一时间想到用对撞指针解题。
+
+**思想**
+
+`来源于二分查找`
+
+```java
+int binarySearch(int[] nums, int target) {
+    int left = 0; 
+    int right = nums.length - 1;
+    while(left <= right) {
+        int mid = left + (right - left) / 2;
+        if(nums[mid] == target)
+            return mid; 
+        else if (nums[mid] < target)
+            left = mid + 1; 
+        else if (nums[mid] > target)
+            right = mid - 1;
+    }
+    return -1;
+}
+```
+
+**模板**
+
+```java
+public void clashPointer(int[] array) {
+    int left = 0;
+    int right = array.length-1;
+    while(left <= right){
+        if(array[left] + array[right] == target){
+            //操作
+        } else if(array[left] + array[right] < target){
+            left++;
+        } else if(array[left] + array[right] > target){
+            right--;
+        }
+    }
+}
+```
+
+**例题**
+
+`给定有序数组 nums, 求符合 nums[i] + nums[j] = target 的下标 i, j 值 `
+
+```java
+public int[] twoSum(int[] nums, int target) {
+    int left = 0;
+    int right = nums.length-1;
+    Arrays.sort(nums);  //排序
+    while(left <= right){
+        if(nums[left] + nums[right] == target){
+            return new int[] {left, right};
+        } else if(nums[left] + nums[right] < target){
+            left++;
+        } else if(nums[left] + nums[right] > target){
+            right--;
+        }
+    }
+    return new int[] {0, 1};
+}
+```
+
+
+
+#### 2) 快慢指针
+
+> 快慢指针也是双指针，但是两个指针从同一侧开始遍历数组，将这两个指针分别定义为快指针（fast）和慢指针（slow），两个指针以不同的策略移动，直到两个指针的值相等（或其他特殊条件）为止，如fast每次增长两个，slow每次增长一个。
+
+**模板**
+
+`判断环是经典问题`
+
+```java
+public boolean fsPointer(ListNode head) {
+    ListNode slow, fast;
+    slow = fast = head;
+    while(slow != null && slow.next != null){
+        slow = slow.next;
+        fast = fast.next.next;
+        if(slow == fast){
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+**例题**
+
+`LC 141: 给定一个链表, 判断是否是环形链表`
+
+```java
+public boolean hasCycle(ListNode head) {
+    ListNode slow, fast;
+    slow = fast = head;
+    while(fast != null && fast.next != null){
+        slow = slow.next;
+        fast = fast.next.next;
+        if(slow == fast){
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+
+
+
+
+### 贪心
+
+> 贪心是一种**算法思想**， 在某些问题中，当前状态对后续状态没有影响（也叫做问题**无后效性**），这样一来，当前状态的最优解最终会造成全局的最优解，此时我们每一步（每个状态）都选取当前最优解（而不考虑之后的情况），这就是贪心。
+>
+> **实质上就是取当前的最优解, 不考虑以后**
+>
+> - 贪心算法与动态规划的区别:
+>
+> ​	动态规划顾名思义会“动态”地求解问题，会将之前的结果记录下来从而找到最优解，而贪心是一直往前，会对每一个方案都做出选择
+
+
+
+**例题**
+
+`LC122: 买卖股票的最佳时机 II `
+
+给你一个整数数组 `prices` ，其中 `prices[i]` 表示某支股票第 `i` 天的价格。
+
+在每一天，你可以决定是否购买和/或出售股票。你在任何时候 **最多** 只能持有 **一股** 股票。你也可以先购买，然后在 **同一天** 出售。
+
+返回 *你能获得的 **最大** 利润* 。
+
+**示例 1：**
+
+```
+输入：prices = [7,1,5,3,6,4]
+输出：7
+解释：在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。
+     随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6 - 3 = 3 。
+     总利润为 4 + 3 = 7 。
+```
+
+**示例 2：**
+
+```
+输入：prices = [1,2,3,4,5]
+输出：4
+解释：在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。
+     总利润为 4 。
+```
+
+`实质上就是只加了利润为正的情况, 其他情况不再计算, 只要有利润就卖。`
+
+```java
+public int maxProfit(int[] prices) {
+    if(prices.length == 1){
+        return 0;
+    }
+    int max = 0;
+    for(int i = 0; i < prices.length - 1; i++){
+        if(prices[i] < prices[i+1]){
+            max += prices[i+1] - prices[i];
+        }
+    }
+    return max;
+}
+```
+
+
+
+
+
 
 
 ## 数组
@@ -630,18 +807,6 @@ SELECT DATE_ADD(NOW(), INTERVAL 1 DAY) AS tomorrow;
 
 
 
-#### GROUP_CONCAT
-
-
-
-
-
-
-
-
-
-### 语法
-
 #### LEFT
 
 `取前 N 个字符:  LEFT(STR, 7)`
@@ -710,6 +875,18 @@ length(str)
 ```
 
 
+
+#### GROUP_CONCAT
+
+
+
+
+
+
+
+
+
+### 语法
 
 #### ORDER BY
 
@@ -921,3 +1098,18 @@ FROM orders;
 - 区别
 
   `UNION ALL` 允许重复值, `UNION` 不允许重复值
+
+
+
+#### LIMIT
+
+
+
+
+
+#### REGEXP
+
+
+
+
+

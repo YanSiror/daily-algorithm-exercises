@@ -2569,6 +2569,54 @@ class Solution {
 
 
 
+## 贪心
+
+### 43 买卖股票的最佳时机 II
+
+给你一个整数数组 `prices` ，其中 `prices[i]` 表示某支股票第 `i` 天的价格。
+
+在每一天，你可以决定是否购买和/或出售股票。你在任何时候 **最多** 只能持有 **一股** 股票。你也可以先购买，然后在 **同一天** 出售。
+
+返回 *你能获得的 **最大** 利润* 。
+
+**示例 1：**
+
+```
+输入：prices = [7,1,5,3,6,4]
+输出：7
+解释：在第 2 天（股票价格 = 1）的时候买入，在第 3 天（股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。
+     随后，在第 4 天（股票价格 = 3）的时候买入，在第 5 天（股票价格 = 6）的时候卖出, 这笔交易所能获得利润 = 6 - 3 = 3 。
+     总利润为 4 + 3 = 7 。
+```
+
+**示例 2：**
+
+```
+输入：prices = [1,2,3,4,5]
+输出：4
+解释：在第 1 天（股票价格 = 1）的时候买入，在第 5 天 （股票价格 = 5）的时候卖出, 这笔交易所能获得利润 = 5 - 1 = 4 。
+     总利润为 4 。
+```
+
+`实质上就是只加了利润为正的情况, 其他情况不再计算, 只要有利润就卖。`
+
+```java
+public int maxProfit(int[] prices) {
+    if(prices.length == 1){
+        return 0;
+    }
+    int max = 0;
+    for(int i = 0; i < prices.length - 1; i++){
+        if(prices[i] < prices[i+1]){
+            max += prices[i+1] - prices[i];
+        }
+    }
+    return max;
+}
+```
+
+
+
 
 
 ## 数据库
@@ -5703,5 +5751,172 @@ WHERE salary != (
   FROM Employee
   WHERE id 
 )
+```
+
+
+
+#### 44 [查找拥有有效邮箱的用户](https://leetcode.cn/problems/find-users-with-valid-e-mails/)
+
+表: `Users`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| user_id       | int     |
+| name          | varchar |
+| mail          | varchar |
++---------------+---------+
+user_id 是该表的主键（具有唯一值的列）。
+该表包含了网站已注册用户的信息。有一些电子邮件是无效的。
+```
+
+ 
+
+编写一个解决方案，以查找具有有效电子邮件的用户。
+
+一个有效的电子邮件具有前缀名称和域，其中：
+
+1.  **前缀** 名称是一个字符串，可以包含字母（大写或小写），数字，下划线 `'_'` ，点 `'.'` 和/或破折号 `'-'` 。前缀名称 **必须** 以字母开头。
+2. **域** 为 `'@leetcode.com'` 。
+
+以任何顺序返回结果表。
+
+结果的格式如以下示例所示：
+
+ 
+
+**示例 1：**
+
+```
+输入：
+Users 表:
++---------+-----------+-------------------------+
+| user_id | name      | mail                    |
++---------+-----------+-------------------------+
+| 1       | Winston   | winston@leetcode.com    |
+| 2       | Jonathan  | jonathanisgreat         |
+| 3       | Annabelle | bella-@leetcode.com     |
+| 4       | Sally     | sally.come@leetcode.com |
+| 5       | Marwan    | quarz#2020@leetcode.com |
+| 6       | David     | david69@gmail.com       |
+| 7       | Shapiro   | .shapo@leetcode.com     |
++---------+-----------+-------------------------+
+输出：
++---------+-----------+-------------------------+
+| user_id | name      | mail                    |
++---------+-----------+-------------------------+
+| 1       | Winston   | winston@leetcode.com    |
+| 3       | Annabelle | bella-@leetcode.com     |
+| 4       | Sally     | sally.come@leetcode.com |
++---------+-----------+-------------------------+
+解释：
+用户 2 的电子邮件没有域。 
+用户 5 的电子邮件带有不允许的 '#' 符号。
+用户 6 的电子邮件没有 leetcode 域。 
+用户 7 的电子邮件以点开头。
+```
+
+**题解**
+
+```sql
+SELECT *
+FROM users 
+WHERE mail REGEXP '^[a-zA-A]+[a-zA-Z0-9_\\./\\-]*@leetcode\\.com$'
+```
+
+
+
+### 45 [列出指定时间段内所有的下单产品](https://leetcode.cn/problems/list-the-products-ordered-in-a-period/)
+
+表: `Products`
+
+```
++------------------+---------+
+| Column Name      | Type    |
++------------------+---------+
+| product_id       | int     |
+| product_name     | varchar |
+| product_category | varchar |
++------------------+---------+
+product_id 是该表主键(具有唯一值的列)。
+该表包含该公司产品的数据。
+```
+
+表: `Orders`
+
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| product_id    | int     |
+| order_date    | date    |
+| unit          | int     |
++---------------+---------+
+该表可能包含重复行。
+product_id 是表单 Products 的外键（reference 列）。
+unit 是在日期 order_date 内下单产品的数目。
+```
+
+写一个解决方案，要求获取在 2020 年 2 月份下单的数量不少于 100 的产品的名字和数目。
+
+返回结果表单的 **顺序无要求** 。
+
+查询结果的格式如下。
+
+**示例 1:**
+
+```
+输入：
+Products 表:
++-------------+-----------------------+------------------+
+| product_id  | product_name          | product_category |
++-------------+-----------------------+------------------+
+| 1           | Leetcode Solutions    | Book             |
+| 2           | Jewels of Stringology | Book             |
+| 3           | HP                    | Laptop           |
+| 4           | Lenovo                | Laptop           |
+| 5           | Leetcode Kit          | T-shirt          |
++-------------+-----------------------+------------------+
+Orders 表:
++--------------+--------------+----------+
+| product_id   | order_date   | unit     |
++--------------+--------------+----------+
+| 1            | 2020-02-05   | 60       |
+| 1            | 2020-02-10   | 70       |
+| 2            | 2020-01-18   | 30       |
+| 2            | 2020-02-11   | 80       |
+| 3            | 2020-02-17   | 2        |
+| 3            | 2020-02-24   | 3        |
+| 4            | 2020-03-01   | 20       |
+| 4            | 2020-03-04   | 30       |
+| 4            | 2020-03-04   | 60       |
+| 5            | 2020-02-25   | 50       |
+| 5            | 2020-02-27   | 50       |
+| 5            | 2020-03-01   | 50       |
++--------------+--------------+----------+
+输出：
++--------------------+---------+
+| product_name       | unit    |
++--------------------+---------+
+| Leetcode Solutions | 130     |
+| Leetcode Kit       | 100     |
++--------------------+---------+
+解释：
+2020 年 2 月份下单 product_id = 1 的产品的数目总和为 (60 + 70) = 130 。
+2020 年 2 月份下单 product_id = 2 的产品的数目总和为 80 。
+2020 年 2 月份下单 product_id = 3 的产品的数目总和为 (2 + 3) = 5 。
+2020 年 2 月份 product_id = 4 的产品并没有下单。
+2020 年 2 月份下单 product_id = 5 的产品的数目总和为 (50 + 50) = 100 。
+```
+
+**题解**
+
+```sql
+SELECT product_name, SUM(unit) AS unit
+FROM Products p, Orders o
+WHERE p.product_id = o.product_id and o.order_date like '2020-02%'
+GROUP BY p.product_id
+HAVING SUM(o.unit) >= 100;
 ```
 
