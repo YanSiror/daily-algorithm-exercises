@@ -198,26 +198,12 @@ public int maxProfit(int[] prices) {
 
 ## 数组
 
-### 排序
+### 排序 | 赋值 | 切割 
 
 ```java
-Arrays.sort(nums)
-```
-
-
-
-### 初始赋值
-
-```java
-Arrays.fill(arr, 0);
-```
-
-
-
-### 切割
-
-```java
-Arrays.copyOfRange(nums, stratIndex, endIndex)
+Arrays.sort(nums);		//排序
+Arrays.fill(arr, 0);  	//赋值
+Arrays.copyOfRange(nums, stratIndex, endIndex);	//切割
 ```
 
 
@@ -226,31 +212,21 @@ Arrays.copyOfRange(nums, stratIndex, endIndex)
 
 ```java
 Math.max(a,b);
-
 //比较两个数组对应值是否相等
 List<Integer> arr1 = new ArrayList<Integer>();
 List<Integer> arr2 = new ArrayList<Integer>();
 //true or false
 arr1.equals(arr2);	
-
 ```
 
 
 
 ## 字符串
 
-### 获取第 i 个字符
-
-```java
-t.charAt(i)
-```
-
-
-
-### 字符数组转换
-
 ```java
 String s = "hello";
+t.charAt(i);					//获取第i个字符
+//
 char[] chars = s.toCharArray();		//转换为 char 数组
 String b = new String(chars);		//转换为 String 字符串
 ```
@@ -295,9 +271,24 @@ Arrays.stream(flowerbed).forEach(System.out::println);
 
 
 
-## 哈希表
+### 位运算
 
-### 遍历
+```java
+i & 1    //检测 i 的最低位是多少(0 或 1), 可以用于对2取模
+i | 1    //将 i 的最低位强行设为 1
+i >> 1   //右移一位,相当于除以 2
+i << 1   //左移一位,相当于乘以 2
+```
+
+
+
+
+
+## 数据结构
+
+### 哈希表
+
+#### 遍历
 
 - **Entry**
 
@@ -335,7 +326,7 @@ Arrays.stream(flowerbed).forEach(System.out::println);
 
 
 
-### 取值或设为默认
+#### 取值或设为默认
 
 ```java
  map.getOrDefault('key', 0)		//存在key则返回值, 不存在key则设为0
@@ -343,7 +334,7 @@ Arrays.stream(flowerbed).forEach(System.out::println);
 
 
 
-## 队列
+### 队列
 
 Java 的 ArrayQueue 类（也称为数组队列）实现了 Queue 接口，提供了以下方法：
 
@@ -363,7 +354,7 @@ clear()：移除队列中的所有元素。
 
 
 
-## 栈
+### 栈
 
 ```java
 push() - 添加元素到栈顶
@@ -376,20 +367,9 @@ search() - 查找栈中一个元素
 
 
 
-## 位运算
+### 树
 
-```java
-i & 1    //检测 i 的最低位是多少(0 或 1), 可以用于对2取模
-i | 1    //将 i 的最低位强行设为 1
-i >> 1   //右移一位,相当于除以 2
-i << 1   //左移一位,相当于乘以 2
-```
-
-
-
-## 树
-
-### 二叉树的前 | 中 | 后 | 层序遍历
+#### 二叉树的前 | 中 | 后 | 层序遍历
 
 `前序`
 
@@ -463,7 +443,7 @@ public void preOrder(TreeNode head){
 
 
 
-### 二叉树深度优先遍历(DFS) | 广度优先遍历(BFS)
+#### 二叉树深度优先遍历(DFS) | 广度优先遍历(BFS)
 
 `DFS`
 
@@ -502,9 +482,11 @@ public void BFS(TreeNode head){
 
 
 
-## 图
+### 图
 
-### 
+
+
+
 
 
 
@@ -1108,6 +1090,152 @@ FROM orders;
 
 
 #### REGEXP
+
+
+
+
+
+
+
+#### 窗户函数 OVER - PARTITION BY
+
+> 在 MySQL 中，窗口函数是一种用于对查询结果集进行计算和分析的高级功能。它们允许在查询中应用聚合函数，同时保留原始查询结果的行和列的完整性。
+>
+> 窗口函数使用 **OVER** 子句来定义它们的行为，其中包括 **PARTITION BY** 子句和 ORDER BY 子句。
+>
+> - PARTITION BY：通过指定一个或多个列，将结果集分割成不同的分区。在每个分区中，窗口函数将独立计算结果。
+> - ORDER BY：用于对每个分区内的行进行排序，以确定窗口函数计算的顺序。
+
+**举例**
+
+以下是一个示例，演示如何使用窗口函数在 MySQL 中计算每个部门的销售总额和每个部门中每个员工的销售额排名：
+
+```
+SELECT
+  department,
+  employee,
+  sales,
+  SUM(sales) OVER (PARTITION BY department) AS department_total_sales,
+  RANK() OVER (PARTITION BY department ORDER BY sales DESC) AS rank
+FROM
+  sales_table;
+```
+
+上述查询将从名为 "sales_table" 的表中选择部门、员工和销售额列。使用窗口函数，它计算了每个部门的销售总额，并为每个部门的每个员工计算了销售额的排名。
+
+
+
+**常见的窗口函数包括：**
+
+1. ROW_NUMBER()：为每一行分配一个唯一的整数值，根据指定的排序顺序排序。
+
+2. RANK()：为每个行分配一个唯一的整数值，根据指定的排序顺序排序。如果存在相同的值，则会跳过下一个整数值。`也即当排序数值重复时会为重复数值赋值以不同的编号`
+
+3. DENSE_RANK()：为每个行分配一个唯一的整数值，根据指定的排序顺序排序。如果存在相同的值，则不会跳过下一个整数值。`也即当排序数值重复时会为重复数值赋值以相同的编号`
+
+   LC185 [部门工资前三高的所有员工](https://leetcode.cn/problems/department-top-three-salaries/)
+
+   表: `Employee`
+
+   ```
+   +--------------+---------+
+   | Column Name  | Type    |
+   +--------------+---------+
+   | id           | int     |
+   | name         | varchar |
+   | salary       | int     |
+   | departmentId | int     |
+   +--------------+---------+
+   id 是该表的主键列(具有唯一值的列)。
+   departmentId 是 Department 表中 ID 的外键（reference 列）。
+   该表的每一行都表示员工的ID、姓名和工资。它还包含了他们部门的ID。
+   ```
+
+   表: `Department`
+
+   ```
+   +-------------+---------+
+   | Column Name | Type    |
+   +-------------+---------+
+   | id          | int     |
+   | name        | varchar |
+   +-------------+---------+
+   id 是该表的主键列(具有唯一值的列)。
+   该表的每一行表示部门ID和部门名。
+   ```
+
+   公司的主管们感兴趣的是公司每个部门中谁赚的钱最多。一个部门的 **高收入者** 是指一个员工的工资在该部门的 **不同** 工资中 **排名前三** 。
+
+   编写解决方案，找出每个部门中 **收入高的员工** 。
+
+   以 **任意顺序** 返回结果表。
+
+   返回结果格式如下所示。
+
+   **示例 1:**
+
+   ```
+   输入: 
+   Employee 表:
+   +----+-------+--------+--------------+
+   | id | name  | salary | departmentId |
+   +----+-------+--------+--------------+
+   | 1  | Joe   | 85000  | 1            |
+   | 2  | Henry | 80000  | 2            |
+   | 3  | Sam   | 60000  | 2            |
+   | 4  | Max   | 90000  | 1            |
+   | 5  | Janet | 69000  | 1            |
+   | 6  | Randy | 85000  | 1            |
+   | 7  | Will  | 70000  | 1            |
+   +----+-------+--------+--------------+
+   Department  表:
+   +----+-------+
+   | id | name  |
+   +----+-------+
+   | 1  | IT    |
+   | 2  | Sales |
+   +----+-------+
+   输出: 
+   +------------+----------+--------+
+   | Department | Employee | Salary |
+   +------------+----------+--------+
+   | IT         | Max      | 90000  |
+   | IT         | Joe      | 85000  |
+   | IT         | Randy    | 85000  |
+   | IT         | Will     | 70000  |
+   | Sales      | Henry    | 80000  |
+   | Sales      | Sam      | 60000  |
+   +------------+----------+--------+
+   解释:
+   在IT部门:
+   - Max的工资最高
+   - 兰迪和乔都赚取第二高的独特的薪水
+   - 威尔的薪水是第三高的
+   
+   在销售部:
+   - 亨利的工资最高
+   - 山姆的薪水第二高
+   - 没有第三高的工资，因为只有两名员工
+   ```
+
+   **题解**
+
+   ```sql
+   SELECT d.name AS Department, e.name AS Employee, e.salary AS Salary
+   FROM Department AS d, (
+     SELECT *, DENSE_RANK() OVER(PARTITION BY departmentId ORDER BY salary DESC) AS RK
+     FROM Employee
+   ) e
+   WHERE e.RK < 4 AND  e.departmentId = d.id; 
+   ```
+
+4. SUM()、COUNT()、AVG() 等聚合函数：用于计算分区内的聚合值。
+
+5. LAG()、LEAD(): 用于获取当前行前面或后面的行的值。
+
+
+
+
 
 
 
