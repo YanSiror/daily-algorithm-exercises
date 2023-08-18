@@ -1,4 +1,4 @@
-## 算法思维类型
+## 1 算法思维类型
 
 ### 动态规划
 
@@ -194,11 +194,11 @@ public int maxProfit(int[] prices) {
 
 
 
+## 2 数据结构
 
+### 数组
 
-## 数组
-
-### 排序 | 赋值 | 切割 
+#### 排序 | 赋值 | 切割
 
 ```java
 Arrays.sort(nums);		//排序
@@ -208,7 +208,7 @@ Arrays.copyOfRange(nums, stratIndex, endIndex);	//切割
 
 
 
-### 比较
+#### 比较
 
 ```java
 Math.max(a,b);
@@ -221,7 +221,7 @@ arr1.equals(arr2);
 
 
 
-## 字符串
+### 字符串
 
 ```java
 String s = "hello";
@@ -233,21 +233,7 @@ String b = new String(chars);		//转换为 String 字符串
 
 
 
-## Lambda 表达式
-
-### 遍历
-
-```java
-Arrays.stream(flowerbed).forEach(num ->{
-     System.out.print(num + " ");
-});
->>>         
-Arrays.stream(flowerbed).forEach(System.out::println);
-```
-
-
-
-## 优先队列
+### 优先队列
 
 > PriorityQueue 是 Java 中的一个优先队列实现类，它可以用于实现基于优先级的队列，即队列中的元素会按照优先级被排序，优先级高的元素先出队列。
 >
@@ -271,20 +257,7 @@ Arrays.stream(flowerbed).forEach(System.out::println);
 
 
 
-### 位运算
 
-```java
-i & 1    //检测 i 的最低位是多少(0 或 1), 可以用于对2取模
-i | 1    //将 i 的最低位强行设为 1
-i >> 1   //右移一位,相当于除以 2
-i << 1   //左移一位,相当于乘以 2
-```
-
-
-
-
-
-## 数据结构
 
 ### 哈希表
 
@@ -326,10 +299,11 @@ i << 1   //左移一位,相当于乘以 2
 
 
 
-#### 取值或设为默认
+#### 取值或设为默认 | 取第一个元素
 
 ```java
- map.getOrDefault('key', 0)		//存在key则返回值, 不存在key则设为0
+map.getOrDefault('key', 0)		//存在key则返回值, 不存在key则设为0
+map.entrySet().iterator().next();	//返回第1个元素
 ```
 
 
@@ -483,6 +457,77 @@ public void BFS(TreeNode head){
 
 
 ### 图
+
+
+
+
+
+## 3 常见算法
+
+### Lambda 表达式
+
+```java
+Arrays.stream(flowerbed).forEach(num ->{
+     System.out.print(num + " ");
+});
+>>>         
+Arrays.stream(flowerbed).forEach(System.out::println);
+```
+
+
+
+### 位运算
+
+```java
+i & 1    //检测 i 的最低位是多少(0 或 1), 可以用于对2取模
+i | 1    //将 i 的最低位强行设为 1
+i >> 1   //右移一位,相当于除以 2
+i << 1   //左移一位,相当于乘以 2
+```
+
+
+
+### LRU 
+
+> 最近最久未用(Least Recently Used)算法: 也就是检查最近最少使用的数据的算法。这个算法通常使用在内存淘汰策略中，用于将不常用的数据转移出内存，将空间腾给最近更常用的“热点数据”。
+
+```java
+class LRUCache {
+    int capacity;
+    Map<Integer, Integer> map;
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.map = new LinkedHashMap<Integer, Integer>();
+    }
+
+    public int get(int key) {
+        if(!map.containsKey(key)){
+            return -1;
+        }
+        //先删除旧位置, 再放入新位置
+        Integer value = map.remove(key);
+        map.put(key, value);
+        return value;
+    }
+
+    public void put(int key, int value) {
+        if(map.containsKey(key)){
+            map.remove(key);
+            map.put(key, value);
+            return;
+        }
+        map.put(key, value);
+        //如果 size() 超出 capacity, 删除最近最久未用的元素, 也即删除最前面的一个元素
+        if(map.size() >capacity){
+            Integer tempKey = map.entrySet().iterator().next().getKey();
+            map.remove(tempKey);
+        }
+    }
+}
+```
+
+
 
 
 
