@@ -487,7 +487,44 @@ i << 1   //左移一位,相当于乘以 2
 
 
 
-### LRU 
+### 手撕算法
+
+#### 1) 有效括号
+
+```java
+public boolean isValid(String s) {
+    int n = s.length();
+    if(n % 2 == 1){
+        return false;
+    }
+
+    //定义 MAP 保存 Key - Value
+    Map<Character, Character> map = new HashMap<Character, Character>() {{
+        put(')', '(');
+        put(']', '[');
+        put('}', '{');
+    }};
+    //初始化栈
+    Deque<Character> stack = new LinkedList<Character>();
+    for(int i = 0; i < n; i++){
+        char c = s.charAt(i);
+        if(map.containsKey(c)){
+            //如果后置括号出现: 1) 栈空, 匹配失败 2) 不等于map中匹配的括号, 匹配失败
+            if(stack.isEmpty() || stack.peek() != map.get(c)){
+                return false;
+            }
+            stack.pop();
+        } else{
+            stack.push(c);
+        }
+    }
+    return stack.isEmpty();
+}
+```
+
+
+
+#### 2) LRU
 
 > 最近最久未用(Least Recently Used)算法: 也就是检查最近最少使用的数据的算法。这个算法通常使用在内存淘汰策略中，用于将不常用的数据转移出内存，将空间腾给最近更常用的“热点数据”。
 
@@ -526,6 +563,12 @@ class LRUCache {
     }
 }
 ```
+
+
+
+#### 3)
+
+
 
 
 
