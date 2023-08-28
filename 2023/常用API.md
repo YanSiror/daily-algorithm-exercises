@@ -347,6 +347,8 @@ search() - 查找栈中一个元素
 
 `前序`
 
+$递归$
+
 ```java
 public void preOrder(TreeNode head){
     if(head == null){
@@ -358,35 +360,127 @@ public void preOrder(TreeNode head){
 }
 ```
 
-`中序`
+$迭代$
 
 ```java
-    public void midOrder(TreeNode head){
-        if(head == null){
-            return;
+ public int[] preOrder(TreeNode root){
+        List<Integer> res = new ArrayList<>();
+        if(root == null){
+            return res.stream().mapToInt(Integer::valueOf).toArray();
         }
-        midOrder(head.left);
-        System.out.println(head.val);
-        midOrder(head.right);
+
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();
+        while(root != null || !stack.isEmpty()){
+            //先一条路走到头, 然后退栈
+            while(root != null){
+                stack.push(root);
+                res.add(root.val);     //添加值到lsit
+                root = root.left;
+            }
+            //到头了, 退栈
+            root = stack.pop();
+            root = root.right;      //向右遍历
+        }
+        int[] ress = res.stream().mapToInt(Integer::valueOf).toArray();
+        return ress;
     }
 ```
+
+
+
+`中序`
+
+$递归$
+
+```java
+public void midOrder(TreeNode head){
+    if(head == null){
+        return;
+    }
+    midOrder(head.left);
+    System.out.println(head.val);
+    midOrder(head.right);
+}
+```
+
+$迭代$
+
+```java
+public int[] midOrder(TreeNode root){
+    Deque<TreeNode> stack = new LinkedList<TreeNode>();
+    List<Integer> res = new ArrayList<>();
+    while(root != null || !stack.isEmpty()){
+        //先一条路走到头, 然后退栈
+        while(root != null){
+            stack.push(root);
+            root = root.left;
+        }
+        //到头了, 退栈
+        root = stack.pop();
+        res.add(root.val);     //添加值到lsit
+        root = root.right;      //向右遍历
+    }
+    int[] ress = res.stream().mapToInt(Integer::valueOf).toArray();
+    return ress;
+}
+```
+
+
 
 `后序`
 
+$递归$
+
 ```java
-    public void afterOrder(TreeNode head){
-        if(head == null){
-            return;
-        }
-        afterOrder(head.left);
-        afterOrder(head.right);
-        System.out.println(head.val);
+public void afterOrder(TreeNode head){
+    if(head == null){
+        return;
     }
+    afterOrder(head.left);
+    afterOrder(head.right);
+    System.out.println(head.val);
+}
 ```
+
+$迭代$
+
+```java
+public int[] afterOrder(TreeNode root){
+    List<Integer> res = new ArrayList<>();
+    if(root == null){
+        return res.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    Deque<TreeNode> stack = new LinkedList<TreeNode>();
+    TreeNode pre = null;
+    while(root != null || !stack.isEmpty()){
+        //先一条路走到头, 然后退栈
+        while(root != null){
+            stack.push(root);
+            root = root.left;
+        }
+
+        root = stack.pop();
+        //根据情况判断是否有右结点 && 未被访问过
+        if(root.right == null || root.right == pre){
+            res.add(root.val);
+            pre = root;
+            root = null;
+
+        } else{
+            stack.push(root);
+            root = root.right;
+        }
+    }
+    return res.stream().mapToInt(Integer::valueOf).toArray();
+}
+```
+
+
 
 `层序`
 
-通过 BFS 改造而来, 记录每次入队的个数然后添加到二维数组的对应列
+通过 BFS 改造而来, 记录每次入队的个数然后添加到二维数组的对应列 : 主要是通过BFS得到每一层的结点信息, 然后将节点信息存到新的数组, 再拼接为二维数组即可。
 
 ```java
  public List<List<Integer>> levelOrder(TreeNode root) {
@@ -399,21 +493,23 @@ public void preOrder(TreeNode head){
          List<Integer> level = new ArrayList<>();
          int n = queue.size();
          for(int i = 0; i < n; i++){
-             //遍历每一层的所有节点, 添加到列表内
+             //遍历每一层的所有节点, 添加到列表内 - 以下是层序遍历
              TreeNode node = queue.poll();
-             level.add(node.val);
              if(node.left != null){
                  queue.add(node.left);
              }
              if(node.right != null){
                  queue.add(node.right);
              }
+             level.add(node.val);
          }
          res.add(level);
      }
      return res;
  }
 ```
+
+
 
 
 
@@ -435,24 +531,30 @@ public void DFS(TreeNode head){
 `BFS`
 
 ```java
-public void BFS(TreeNode head){
-    Queue<TreeNode> queue = new ArrayDeque<>();
-    if(head != null){
-        queue.add(head);
+public List<Integer> BFS(TreeNode root){
+    Queue<TreeNode> queue = new LinkedList<TreeNode>();
+    List<Integer> list= new LinkedList<Integer>();
+
+    if(root == null){
+        return res;
     }
+    queue.add(root);
     while(!queue.isEmpty()){
-        System.out.println(queue.peek());
         TreeNode node = queue.poll();
-        //list.add(node.val)
         if(node.left != null){
-            queue.add(head.left);
+            queue.add(node.left);
         }
         if(node.right != null){
-            que.add(head.right);
+            queue.add(node.right);
         }
+        list.add(node.val);
+        System.out.println(node.val);
     }
+    return list;
 }
 ```
+
+
 
 
 
