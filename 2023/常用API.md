@@ -566,18 +566,6 @@ public List<Integer> BFS(TreeNode root){
 
 ## 3 常见算法
 
-### Lambda 表达式
-
-```java
-Arrays.stream(flowerbed).forEach(num ->{
-     System.out.print(num + " ");
-});
->>>         
-Arrays.stream(flowerbed).forEach(System.out::println);
-```
-
-
-
 ### 位运算
 
 ```java
@@ -668,13 +656,101 @@ class LRUCache {
 
 
 
-#### 3)
+#### 3) 
 
 
 
 
 
+### 排序算法
 
+<img src="imgs/image-20230909185243519.png" alt="image-20230909185243519" style="zoom:67%;" />
+
+
+
+#### 1) 冒泡排序
+
+```java
+public static void bubbleSort(int []array){
+    for (int i = 0; i < array.length - 1; i++) {
+        for (int j = 0; j < array.length - i - 1; j++) {
+            if(array[j] < array[j+1]){
+                int temp = array[j];
+                array[j] = array[j+1];
+                array[j+1] = temp;
+            }
+        }
+    }
+}
+```
+
+
+
+#### 2) 快速排序
+
+```java
+public static void quickSort(int []array, int low, int high){
+    if(low >= high){
+        return;
+    }
+    int left = low, right = high;
+    int key = array[left];
+    while(left != right){
+        while(key <= array[right] && left < right){
+            right--;
+        }
+        while(key >= array[left] && left < right){
+            left++;
+        }
+        if(right > left){
+            int temp = array[left];
+            array[left] = array[right];
+            array[right] = temp;
+        }
+    }
+    quickSort(array, low, left - 1);
+    quickSort(array, left + 1, high);
+}
+```
+
+
+
+#### 3) 插入排序
+
+```java
+public static void insertSort(int []array) {
+    for (int i = 1; i < array.length; i++) {
+        int key = array[i];
+        //已排序元素下标
+        int index = i - 1;
+        //当前元素大于插入位置元素时, 整体后移直到找到小于插入位置元素的下标进行插入
+        while(index >= 0 && array[index] > key){
+            array[index + 1] = array[index];
+            index--;
+        }
+        //插入元素
+        array[index + 1] = key;
+    }
+}
+```
+
+
+
+### 单例模式
+
+#### 1) 饿汉式
+
+```java
+```
+
+
+
+
+
+#### 2) 懒汉式
+
+```java
+```
 
 
 
