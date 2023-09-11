@@ -740,19 +740,40 @@ public static void insertSort(int []array) {
 
 #### 1) 饿汉式
 
+`一开始就生成实例`
+
 ```java
+public class Singleton {
+    private static Singleton instance = new Singleton();
+
+    private Singleton(){};
+
+    private static Singleton getInstance(){
+        return instance;
+    }
+}
 ```
-
-
 
 
 
 #### 2) 懒汉式
 
+`用时才生成实例`
+
 ```java
+public class Singleton {
+    private static Singleton instance;
+
+    private Singleton(){};
+
+    private static synchronized Singleton getInstance(){
+        if(instance == null){
+            instance = new Singleton();
+        }
+        return instance;
+    }
+}
 ```
-
-
 
 
 
