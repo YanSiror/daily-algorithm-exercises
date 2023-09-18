@@ -192,6 +192,118 @@ public int maxProfit(int[] prices) {
 
 
 
+### 回溯
+
+> 从问题的某一种可能出发, 搜索从这种情况出发所能达到的所有可能, 当这一条路走到"尽头"的时候, 再倒回出发点, 从另一个可能出发, 继续搜索. 这种不断” 回溯 “寻找解的方法   *回溯法*
+>
+> **在函数中调用自身的方法称为递归** 从问题的某一种可能出发, 不断循环的执行函数, 直到遍历出所有的可能结果(不会回头 - 回溯)   *递归法*
+
+
+
+*LC 257* [二叉树的所有路径](https://leetcode.cn/problems/binary-tree-paths/)   `递归`
+
+给你一个二叉树的根节点 root ，按 **任意顺序** ，返回所有从根节点到叶子节点的路径。
+
+**叶子节点** 是指没有子节点的节点。
+
+```java
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> res = new ArrayList<>();
+        dfsTrace(root, "", res);
+        return res;
+    }
+
+    public void dfsTrace(TreeNode root, String path, List<String> paths) {
+        if(root  != null){
+            StringBuffer pathSB = new StringBuffer(path);
+            pathSB.append(Integer.toString(root.val));
+            if(root.left == null && root.right == null){
+                paths.add(pathSB.toString());
+            } else{
+                pathSB.append("->");
+                dfsTrace(root.left, pathSB.toString(), paths);
+                dfsTrace(root.right, pathSB.toString(), paths);
+            }
+        }
+    }
+}
+```
+
+
+
+*LC 83* [全排列](https://leetcode.cn/problems/VvJkup/) `回溯 - visited 数组`
+
+给定一个不含重复数字的整数数组 `nums` ，返回其 **所有可能的全排列** 。可以 **按任意顺序** 返回答案。
+
+**示例 1：**
+
+```
+输入：nums = [1,2,3]
+输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+```
+
+**示例 2：**
+
+```
+输入：nums = [0,1]
+输出：[[0,1],[1,0]]
+```
+
+**示例 3：**
+
+```
+输入：nums = [1]
+输出：[[1]]
+```
+
+
+
+```java
+import javax.swing.tree.TreeNode;
+import java.util.*;
+
+public class Main {
+    public static List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        backtrack(result, new ArrayList<>(), nums);
+        for(int i = 0; i < result.size(); i++){
+            for(int j = 0; j < result.get(i).size(); j++){
+                System.out.print(result.get(i).get(j).toString() + "");
+            }
+            System.out.println();
+        }
+        return result;
+    }
+
+    private static void backtrack(List<List<Integer>> res, List<Integer> visited, int[] nums) {
+        if(visited.size() == nums.length){
+            res.add(new ArrayList<>(visited));
+        } else{
+            for(int i = 0; i < nums.length; i++){
+                //如果包含则跳过
+                if(visited.contains(nums[i])){
+                    continue;
+                }
+                visited.add(nums[i]);
+                backtrack(res, visited, nums);
+                //回溯
+                visited.remove(visited.size() - 1);
+            }
+        }
+    }
+
+    public static void main(String args[]){
+        permute(new int[]{1,2,3});
+    }
+
+}
+```
+
+
+
+
+
 
 
 ## 2 数据结构
@@ -656,10 +768,6 @@ class LRUCache {
 
 
 
-#### 3) 
-
-
-
 
 
 ### 排序算法
@@ -733,6 +841,51 @@ public static void insertSort(int []array) {
     }
 }
 ```
+
+
+
+### 4) 选择排序
+
+`选择最小的插入到前面, 维护有序和无序数组`
+
+```java
+import javax.swing.tree.TreeNode;
+import java.util.*;
+
+public class Main {
+    public static void selectionSort(int []arr){
+        for(int i = 0;i < arr.length; i++){
+            int index = i;
+            for(int j = i+1; j< arr.length; j++){
+                if(arr[index] > arr[j]){
+                    index = j;
+                }
+            }
+            //swap
+            if(index != i){
+                int temp = arr[i];
+                arr[i] = arr[index];
+                arr[index] = temp;
+            }
+        }
+        for(int i = 0; i < arr.length; i++){
+            System.out.print(" " + arr[i]);
+        }
+    }
+
+
+    public static void main(String args[]){
+        selectionSort(new int[] {
+            1,2,3,6,2,5,6,8,3,4,9,1
+        });
+    }
+
+}
+```
+
+
+
+
 
 
 
